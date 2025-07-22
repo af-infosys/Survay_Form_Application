@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./SurvayForm.scss";
+import apiPath from "../isProduction";
 
 const SurvayForm = () => {
   const [formData, setFormData] = useState({
@@ -80,7 +81,7 @@ const SurvayForm = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:4000/api/sheet/add", {
+      const response = await fetch(`${await apiPath()}/api/sheet/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -145,7 +146,7 @@ const SurvayForm = () => {
     // વિસ્તારો લાવવા માટેનું ફંક્શન
     const fetchAreas = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/sheet/areas"); // તમારા બેકએન્ડ રૂટને કૉલ કરો
+        const response = await fetch(`${await apiPath()}/api/sheet/areas`); // તમારા બેકએન્ડ રૂટને કૉલ કરો
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -174,15 +175,14 @@ const SurvayForm = () => {
         {`
           body {
             font-family: "Inter", sans-serif;
-            background-color: #f0f2f5; /* Light gray background */
-          }
+                   }
           .form-container {
-            max-width: 960px;
-            margin: 2rem auto;
+            {/* max-width: 960px; */}
+            {/* margin: 2rem auto; */}
             padding: 2rem;
             background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            {/* border-radius: 12px; */}
+            {/* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); */}
           }
           .form-field {
             margin-bottom: 1.5rem;
@@ -272,7 +272,7 @@ const SurvayForm = () => {
       </style>
 
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        આકારણી ફોર્મ
+        સર્વ ફોર્મ
       </h1>
 
       <form onSubmit={handleSubmit}>
@@ -318,8 +318,8 @@ const SurvayForm = () => {
               >
                 <option value="">વિસ્તાર પસંદ કરો</option>
                 {areas.map((area, index) => (
-                  <option key={index} value={area}>
-                    {area}
+                  <option key={area?.id} value={area?.name}>
+                    {area?.id}. {area?.name}
                   </option>
                 ))}
               </select>

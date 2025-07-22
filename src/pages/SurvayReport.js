@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import apiPath from "../isProduction";
 // import './SurvayReport.scss'; // CSS ને હવે ઇનલાઇન કરવામાં આવ્યું છે
 
 const SurvayReport = () => {
@@ -24,7 +25,7 @@ const SurvayReport = () => {
 
     const fetchRecords = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/sheet");
+        const response = await fetch(`${await apiPath()}/api/sheet`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
