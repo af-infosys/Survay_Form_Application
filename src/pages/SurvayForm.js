@@ -272,7 +272,7 @@ const SurvayForm = () => {
       </style>
 
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        સર્વ ફોર્મ
+        સર્વે ફોર્મ
       </h1>
 
       <form onSubmit={handleSubmit}>
@@ -694,7 +694,7 @@ const SurvayForm = () => {
         {/* Field 21: રીમાર્કસ */}
         <div className="form-field md:col-span-2">
           <label htmlFor="remarks" className="form-label">
-            16. રીમાર્કસ
+            16. રીમાર્કસ/નોંધ
           </label>
           <textarea
             id="remarks"

@@ -148,12 +148,12 @@ const SurvayReport = () => {
               <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                 કબ્જેદારનું નામ
               </th>
-              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {/* <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                 વાર્ષિક ભાડાની કિંમત અથવા બીજી કિંમતની આકારણી
               </th>
               <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                 આકારેલી વેરાની રકમ
-              </th>
+              </th> */}
               <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                 પાણી નો નળ
               </th>
@@ -161,7 +161,7 @@ const SurvayReport = () => {
                 શૌચાલય
               </th>
               <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">
-                શેરો/નોંધ
+                રીમાર્કસ/નોંધ
               </th>
             </tr>
           </thead>
@@ -189,11 +189,11 @@ const SurvayReport = () => {
                   {record[3]}
                 </td>{" "}
                 {/* માલિકનું નામ (ownerName) */}
-                <td className="px-6 py-4 whitespace-normal text-sm text-gray-500"></td>{" "}
+                <td className="px-6 py-4 whitespace-normal text-sm text-gray-500"></td>
                 {/* કબ્જેદારનું નામ (rowData માં નથી) */}
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>{" "}
+                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>{" "} */}
                 {/* વાર્ષિક ભાડાની કિંમત... (rowData માં નથી) */}
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>{" "}
+                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>{" "} */}
                 {/* આકારેલી વેરાની રકમ (rowData માં નથી) */}
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {record[11]}
@@ -206,7 +206,7 @@ const SurvayReport = () => {
                 <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
                   {record[13]}
                 </td>{" "}
-                {/* શેરો/નોંધ (remarks) */}
+                {/* રીમાર્કસ/નોંધ (remarks) */}
               </tr>
             ))}
             {records.length === 0 && !loading && !error && (
