@@ -4,7 +4,7 @@ import "./SurvayForm.scss";
 const SurvayForm = () => {
   const [formData, setFormData] = useState({
     serialNumber: "",
-    areaName: "",
+    areaName: "", // હવે આ select field નું value હશે
     propertyNumber: "",
     ownerName: "",
     oldPropertyNumber: "",
@@ -29,6 +29,10 @@ const SurvayForm = () => {
       roomHallShopGodown: "",
     },
   ]);
+
+  const [areas, setAreas] = useState([]); // વિસ્તારો સ્ટોર કરવા માટે નવું સ્ટેટ
+  const [areasLoading, setAreasLoading] = useState(true);
+  const [areasError, setAreasError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,7 +69,7 @@ const SurvayForm = () => {
     if (index === 1) return "પ્રથમ માળ";
     if (index === 2) return "બીજો માળ";
     if (index === 3) return "ત્રીજો માળ";
-    return `${index}મો માળ`; // For 4th floor and above
+    return `${index + 1}મો માળ`; // For 4th floor and above
   };
 
   const handleSubmit = async (e) => {
@@ -84,65 +88,78 @@ const SurvayForm = () => {
         body: JSON.stringify(fullFormData),
       });
 
-      // const result = await response.json();
+      const result = await response.json();
 
-      // if (response.ok) {
-      //   // Use a custom message box instead of alert()
-      //   console.log("Success:", result.message);
-      //   // You might want to clear the form or show a success message to the user
-      //   alert("ફોર્મ સફળતાપૂર્વક સબમિટ થયું!"); // Using alert for simplicity, replace with custom modal
-      //   // Optionally, reset the form
-      //   setFormData({
-      //     serialNumber: "",
-      //     areaName: "",
-      //     propertyNumber: "",
-      //     ownerName: "",
-      //     oldPropertyNumber: "",
-      //     mobileNumber: "",
-      //     propertyNameOnRecord: "",
-      //     houseCategory: "",
-      //     kitchenCount: 0,
-      //     bathroomCount: 0,
-      //     verandaCount: 0,
-      //     tapCount: 0,
-      //     toiletCount: 0,
-      //     remarks: "",
-      //   });
-      //   setFloors([
-      //     {
-      //       type: "",
-      //       slabRooms: 0,
-      //       tinRooms: 0,
-      //       woodenRooms: 0,
-      //       tileRooms: 0,
-      //       roomHallShopGodown: "",
-      //     },
-      //   ]);
-      // } else {
-      //   console.error("Error submitting form:", result.message);
-      //   alert(`ફોર્મ સબમિટ કરવામાં ભૂલ: ${result.message}`); // Using alert for simplicity, replace with custom modal
-      // }
+      if (response.ok) {
+        console.log("Success:", result.message);
+        alert("ફોર્મ સફળતાપૂર્વક સબમિટ થયું!");
+        // Optionally, reset the form
+        setFormData({
+          serialNumber: "",
+          areaName: "",
+          propertyNumber: "",
+          ownerName: "",
+          oldPropertyNumber: "",
+          mobileNumber: "",
+          propertyNameOnRecord: "",
+          houseCategory: "",
+          kitchenCount: 0,
+          bathroomCount: 0,
+          verandaCount: 0,
+          tapCount: 0,
+          toiletCount: 0,
+          remarks: "",
+        });
+        setFloors([
+          {
+            type: "",
+            slabRooms: 0,
+            tinRooms: 0,
+            woodenRooms: 0,
+            tileRooms: 0,
+            roomHallShopGodown: "",
+          },
+        ]);
+      } else {
+        console.error("Error submitting form:", result.message);
+        alert(`ફોર્મ સબમિટ કરવામાં ભૂલ: ${result.message}`);
+      }
     } catch (error) {
       console.error("Network error or unexpected issue:", error);
-      alert("નેટવર્ક ભૂલ અથવા અણધારી સમસ્યા આવી."); // Using alert for simplicity, replace with custom modal
+      alert("નેટવર્ક ભૂલ અથવા અણધારી સમસ્યા આવી.");
     }
   };
 
-  // You can include your CSS directly in an index.css file or use styled components
-  // For simplicity, I'm assuming you'll copy the CSS to index.css
   useEffect(() => {
-    // This useEffect is just to apply the Inter font.
-    // In a real project, you'd typically import fonts differently.
+    // Google Fonts અને Tailwind CSS CDN સ્ક્રિપ્ટો ઉમેરો
     const link = document.createElement("link");
     link.href =
       "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap";
     link.rel = "stylesheet";
     document.head.appendChild(link);
 
-    // Add Tailwind CSS CDN script
     const tailwindScript = document.createElement("script");
     tailwindScript.src = "https://cdn.tailwindcss.com";
     document.head.appendChild(tailwindScript);
+
+    // વિસ્તારો લાવવા માટેનું ફંક્શન
+    const fetchAreas = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/api/sheet/areas"); // તમારા બેકએન્ડ રૂટને કૉલ કરો
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        setAreas(result.data); // લાવવામાં આવેલા વિસ્તારોને સ્ટેટમાં સેટ કરો
+      } catch (err) {
+        console.error("Error fetching areas:", err);
+        setAreasError("વિસ્તારો લાવવામાં નિષ્ફળ.");
+      } finally {
+        setAreasLoading(false);
+      }
+    };
+
+    fetchAreas(); // વિસ્તારો લાવવા માટે કૉલ કરો
 
     return () => {
       document.head.removeChild(link);
@@ -152,6 +169,108 @@ const SurvayForm = () => {
 
   return (
     <div className="form-container">
+      {/* ઇનલાઇન CSS */}
+      <style>
+        {`
+          body {
+            font-family: "Inter", sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+          }
+          .form-container {
+            max-width: 960px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          }
+          .form-field {
+            margin-bottom: 1.5rem;
+          }
+          .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+          }
+          .form-input,
+          .form-select,
+          .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #374151;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+          }
+          .form-input:focus,
+          .form-select:focus,
+          .form-textarea:focus {
+            outline: none;
+            border-color: #3b82f6; /* Blue focus ring */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+          }
+          .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.75rem;
+          }
+          .floor-section {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            background-color: #f9fafb;
+          }
+          .floor-section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 1rem;
+          }
+          .add-floor-button {
+            background-color: #2563eb; /* Blue */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out,
+              transform 0.1s ease-in-out;
+            margin-top: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+          }
+          .add-floor-button:hover {
+            background-color: #1d4ed8; /* Darker blue */
+            transform: translateY(-1px);
+          }
+          .submit-button {
+            background-color: #10b981; /* Green */
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out,
+              transform 0.1s ease-in-out;
+            margin-top: 2rem;
+            width: 100%;
+            font-size: 1.125rem;
+          }
+          .submit-button:hover {
+            background-color: #059669; /* Darker green */
+            transform: translateY(-1px);
+          }
+        `}
+      </style>
+
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
         આકારણી ફોર્મ
       </h1>
@@ -175,21 +294,36 @@ const SurvayForm = () => {
             />
           </div>
 
-          {/* Field 2: વિસ્તારનું નામ */}
+          {/* Field 2: વિસ્તારનું નામ (હવે select dropdown) */}
           <div className="form-field">
             <label htmlFor="areaName" className="form-label">
               2. વિસ્તારનું નામ
             </label>
-            <input
-              type="text"
-              id="areaName"
-              name="areaName"
-              className="form-input"
-              placeholder="દા.ત. રામનગર"
-              value={formData.areaName}
-              onChange={handleChange}
-              required
-            />
+            {areasLoading ? (
+              <select className="form-select" disabled>
+                <option>વિસ્તારો લોડ થઈ રહ્યા છે...</option>
+              </select>
+            ) : areasError ? (
+              <select className="form-select" disabled>
+                <option>વિસ્તારો લોડ કરવામાં ભૂલ</option>
+              </select>
+            ) : (
+              <select
+                id="areaName"
+                name="areaName"
+                className="form-select"
+                value={formData.areaName}
+                onChange={handleChange}
+                required
+              >
+                <option value="">વિસ્તાર પસંદ કરો</option>
+                {areas.map((area, index) => (
+                  <option key={index} value={area}>
+                    {area}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           {/* Field 3: મિલ્કત ક્રમાંક */}
@@ -292,7 +426,7 @@ const SurvayForm = () => {
               required
             >
               <option value="">કેટેગરી પસંદ કરો</option>
-              <option value="રહેણાંક">1. રહેણાંક - મકાન</option>ન
+              <option value="રહેણાંક">1. રહેણાંક - મકાન</option>
               <option value="દુકાન">2. દુકાન</option>
               <option value="ધાર્મિક સ્થળ">3. ધાર્મિક સ્થળ</option>
               <option value="સરકારી મિલ્ક્ત">4. સરકારી મિલ્ક્ત</option>
