@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
-import "./SurvayForm.scss";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../config/AuthContext";
 import apiPath from "../isProduction";
 
 const SurvayForm = () => {
+  const { user } = useAuth();
+
+  const { id } = useParams();
+  const isEditMode = !!id;
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     serialNumber: "",
-    areaName: "", // હવે આ select field નું value હશે
+    areaName: "",
     propertyNumber: "",
     ownerName: "",
     oldPropertyNumber: "",
@@ -18,6 +26,7 @@ const SurvayForm = () => {
     tapCount: 0,
     toiletCount: 0,
     remarks: "",
+    survayor: user?.id,
   });
 
   const [floors, setFloors] = useState([
@@ -31,9 +40,11 @@ const SurvayForm = () => {
     },
   ]);
 
-  const [areas, setAreas] = useState([]); // વિસ્તારો સ્ટોર કરવા માટે નવું સ્ટેટ
+  const [areas, setAreas] = useState([]);
   const [areasLoading, setAreasLoading] = useState(true);
   const [areasError, setAreasError] = useState(null);
+  const [formLoading, setFormLoading] = useState(false); // For form submission/load
+  const [formError, setFormError] = useState(null); // For form submission/load errors
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,19 +81,27 @@ const SurvayForm = () => {
     if (index === 1) return "પ્રથમ માળ";
     if (index === 2) return "બીજો માળ";
     if (index === 3) return "ત્રીજો માળ";
-    return `${index + 1}મો માળ`; // For 4th floor and above
+    return `${index + 1}મો માળ`;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormLoading(true);
+    setFormError(null);
+
     const fullFormData = {
       ...formData,
       floors: floors,
     };
 
     try {
-      const response = await fetch(`${await apiPath()}/api/sheet/add`, {
-        method: "POST",
+      const method = isEditMode ? "PUT" : "POST";
+      const endpoint = isEditMode
+        ? `${await apiPath()}/api/sheet/${id}`
+        : `${await apiPath()}/api/sheet/add`;
+
+      const response = await fetch(endpoint, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -93,46 +112,136 @@ const SurvayForm = () => {
 
       if (response.ok) {
         console.log("Success:", result.message);
-        alert("ફોર્મ સફળતાપૂર્વક સબમિટ થયું!");
-        // Optionally, reset the form
-        setFormData({
-          serialNumber: "",
-          areaName: "",
-          propertyNumber: "",
-          ownerName: "",
-          oldPropertyNumber: "",
-          mobileNumber: "",
-          propertyNameOnRecord: "",
-          houseCategory: "",
-          kitchenCount: 0,
-          bathroomCount: 0,
-          verandaCount: 0,
-          tapCount: 0,
-          toiletCount: 0,
-          remarks: "",
-        });
-        setFloors([
-          {
-            type: "",
-            slabRooms: 0,
-            tinRooms: 0,
-            woodenRooms: 0,
-            tileRooms: 0,
-            roomHallShopGodown: "",
-          },
-        ]);
+        alert(`ફોર્મ સફળતાપૂર્વક ${isEditMode ? "અપડેટ" : "સબમિટ"} થયું!`);
+        navigate("/report");
+
+        // Reset form only if it's a new submission
+        if (!isEditMode) {
+          setFormData({
+            serialNumber: "",
+            areaName: "",
+            propertyNumber: "",
+            ownerName: "",
+            oldPropertyNumber: "",
+            mobileNumber: "",
+            propertyNameOnRecord: "",
+            houseCategory: "",
+            kitchenCount: 0,
+            bathroomCount: 0,
+            verandaCount: 0,
+            tapCount: 0,
+            toiletCount: 0,
+            remarks: "",
+            survayor: user?.id,
+          });
+          setFloors([
+            {
+              type: "",
+              slabRooms: 0,
+              tinRooms: 0,
+              woodenRooms: 0,
+              tileRooms: 0,
+              roomHallShopGodown: "",
+            },
+          ]);
+        }
       } else {
         console.error("Error submitting form:", result.message);
-        alert(`ફોર્મ સબમિટ કરવામાં ભૂલ: ${result.message}`);
+        setFormError(
+          `ફોર્મ ${isEditMode ? "અપડેટ" : "સબમિટ"} કરવામાં ભૂલ: ${
+            result.message
+          }`
+        );
       }
     } catch (error) {
       console.error("Network error or unexpected issue:", error);
-      alert("નેટવર્ક ભૂલ અથવા અણધારી સમસ્યા આવી.");
+      setFormError("નેટવર્ક ભૂલ અથવા અણધારી સમસ્યા આવી.");
+    } finally {
+      setFormLoading(false);
     }
   };
 
+  // Effect to load existing data if in edit mode
   useEffect(() => {
-    // Google Fonts અને Tailwind CSS CDN સ્ક્રિપ્ટો ઉમેરો
+    const fetchRecordForEdit = async () => {
+      if (!isEditMode || !id) return;
+
+      setFormLoading(true);
+      setFormError(null);
+      try {
+        const response = await fetch(`${await apiPath()}/api/sheet/${id}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+
+        const record = result.data;
+
+        if (record) {
+          // Populate formData
+          setFormData({
+            serialNumber: record[0] || "",
+            areaName: record[1] || "",
+            propertyNumber: record[2] || "",
+            ownerName: record[3] || "",
+            oldPropertyNumber: record[4] || "",
+            mobileNumber: record[5] | "",
+            propertyNameOnRecord: record[6] || "",
+            houseCategory: record[7] || "",
+            kitchenCount: Number(record[8]) || 0,
+            bathroomCount: Number(record[9]) || 0,
+            verandaCount: Number(record[10]) || 0,
+            tapCount: Number(record[11]) || 0,
+            toiletCount: Number(record[12]) || 0,
+            remarks: record[13] || "",
+          });
+
+          // Populate floors, parsing JSON if necessary
+          if (record[14]) {
+            try {
+              const parsedFloors = JSON.parse(record[14]);
+              setFloors(parsedFloors);
+            } catch (jsonError) {
+              console.error("Error parsing floors JSON:", jsonError);
+              setFloors([
+                {
+                  type: "",
+                  slabRooms: 0,
+                  tinRooms: 0,
+                  woodenRooms: 0,
+                  tileRooms: 0,
+                  roomHallShopGodown: "",
+                },
+              ]);
+            }
+          } else {
+            setFloors([
+              {
+                type: "",
+                slabRooms: 0,
+                tinRooms: 0,
+                woodenRooms: 0,
+                tileRooms: 0,
+                roomHallShopGodown: "",
+              },
+            ]);
+          }
+        } else {
+          setFormError("રેકોર્ડ મળ્યો નથી.");
+        }
+      } catch (err) {
+        console.error("Error fetching record for edit:", err);
+        setFormError("રેકોર્ડ લાવવામાં નિષ્ફળ.");
+      } finally {
+        setFormLoading(false);
+      }
+    };
+
+    fetchRecordForEdit();
+  }, [id, isEditMode, user?.id]);
+
+  // Effect for loading external CSS and JS (Tailwind)
+  useEffect(() => {
     const link = document.createElement("link");
     link.href =
       "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap";
@@ -143,15 +252,17 @@ const SurvayForm = () => {
     tailwindScript.src = "https://cdn.tailwindcss.com";
     document.head.appendChild(tailwindScript);
 
-    // વિસ્તારો લાવવા માટેનું ફંક્શન
+    // Fetch areas for the dropdown
     const fetchAreas = async () => {
+      setAreasLoading(true);
+      setAreasError(null);
       try {
-        const response = await fetch(`${await apiPath()}/api/sheet/areas`); // તમારા બેકએન્ડ રૂટને કૉલ કરો
+        const response = await fetch(`${await apiPath()}/api/sheet/areas`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const result = await response.json();
-        setAreas(result.data); // લાવવામાં આવેલા વિસ્તારોને સ્ટેટમાં સેટ કરો
+        setAreas(result.data);
       } catch (err) {
         console.error("Error fetching areas:", err);
         setAreasError("વિસ્તારો લાવવામાં નિષ્ફળ.");
@@ -160,7 +271,7 @@ const SurvayForm = () => {
       }
     };
 
-    fetchAreas(); // વિસ્તારો લાવવા માટે કૉલ કરો
+    fetchAreas();
 
     return () => {
       document.head.removeChild(link);
@@ -169,20 +280,19 @@ const SurvayForm = () => {
   }, []);
 
   return (
-    <div className="form-container">
-      {/* ઇનલાઇન CSS */}
+    <div className="form-container p-8">
+      {/* Added margin for sidebar */}
       <style>
         {`
           body {
             font-family: "Inter", sans-serif;
-                   }
+            background-color: #f0f2f5; /* Light gray background */
+          }
           .form-container {
-            {/* max-width: 960px; */}
-            {/* margin: 2rem auto; */}
             padding: 2rem;
             background-color: #ffffff;
-            {/* border-radius: 12px; */}
-            {/* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); */}
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
           }
           .form-field {
             margin-bottom: 1.5rem;
@@ -270,11 +380,20 @@ const SurvayForm = () => {
           }
         `}
       </style>
-
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        સર્વે ફોર્મ
+        પંચાયત હિસાબ નમુનો નંબર - ૮ આકારણી ફોર્મ{" "}
+        {isEditMode ? "(સંપાદિત કરો)" : ""}
       </h1>
-
+      {formLoading && (
+        <div className="text-center text-blue-600 text-lg mb-4">
+          {isEditMode
+            ? "રેકોર્ડ લોડ થઈ રહ્યો છે..."
+            : "ફોર્મ સબમિટ થઈ રહ્યું છે..."}
+        </div>
+      )}
+      {formError && (
+        <div className="text-center text-red-600 text-lg mb-4">{formError}</div>
+      )}
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
           {/* Field 1: અનું ક્રમાંક */}
@@ -291,6 +410,7 @@ const SurvayForm = () => {
               value={formData.serialNumber}
               onChange={handleChange}
               required
+              disabled={isEditMode}
             />
           </div>
 
@@ -317,7 +437,7 @@ const SurvayForm = () => {
                 required
               >
                 <option value="">વિસ્તાર પસંદ કરો</option>
-                {areas.map((area, index) => (
+                {areas?.map((area) => (
                   <option key={area?.id} value={area?.name}>
                     {area?.id}. {area?.name}
                   </option>
@@ -708,7 +828,7 @@ const SurvayForm = () => {
         </div>
 
         <button type="submit" className="submit-button">
-          ફોર્મ સબમિટ કરો
+          {isEditMode ? "ફોર્મ અપડેટ કરો" : "ફોર્મ સબમિટ કરો"}
         </button>
       </form>
     </div>

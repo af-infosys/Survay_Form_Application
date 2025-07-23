@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom"; // Assuming react-router-dom is installed
+import { useAuth } from "../config/AuthContext";
 
 const MenuBar = () => {
   useEffect(() => {
@@ -20,13 +21,17 @@ const MenuBar = () => {
     };
   }, []);
 
+  const { user } = useAuth();
+
+  console.log(user);
+
   return (
     <>
       {/* Desktop Sidebar Menu (hidden on small screens) */}
       <nav className="hidden md:flex flex-col fixed left-0 top-0 h-screen w-64 bg-blue-700 text-white p-4 shadow-lg rounded-r-xl">
         <div className="flex flex-col items-start w-full">
           <div className="text-3xl font-bold rounded-md p-2 mb-6 cursor-pointer">
-            Dashboard
+            {user?.work?.gaam}
           </div>
           <div className="flex flex-col space-y-4 w-full">
             <NavLink
@@ -124,33 +129,37 @@ const MenuBar = () => {
               </svg>
               સોસાયટી
             </NavLink>
-            <NavLink
-              to="/analytics"
-              className={({ isActive }) =>
-                `p-3 rounded-md transition-colors font-medium text-lg flex items-center gap-3 ${
-                  isActive ? "bg-blue-800 shadow-md" : "hover:bg-blue-600"
-                }`
-              }
-            >
-              {/* Analytics Icon */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-bar-chart"
+
+            {user?.role === "owner" && (
+              <NavLink
+                to="/analytics"
+                className={({ isActive }) =>
+                  `p-3 rounded-md transition-colors font-medium text-lg flex items-center gap-3 ${
+                    isActive ? "bg-blue-800 shadow-md" : "hover:bg-blue-600"
+                  }`
+                }
               >
-                <line x1="12" x2="12" y1="20" y2="10" />
-                <line x1="18" x2="18" y1="20" y2="4" />
-                <line x1="6" x2="6" y1="20" y2="16" />
-              </svg>
-              એનાલિટિક્સ
-            </NavLink>
+                {/* Analytics Icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-bar-chart"
+                >
+                  <line x1="12" x2="12" y1="20" y2="10" />
+                  <line x1="18" x2="18" y1="20" y2="4" />
+                  <line x1="6" x2="6" y1="20" y2="16" />
+                </svg>
+                એનાલિટિક્સ
+              </NavLink>
+            )}
+
             <NavLink
               to="/profile"
               className={({ isActive }) =>
@@ -279,32 +288,36 @@ const MenuBar = () => {
             </svg>
             <span className="mt-1">સોસાયટી</span>
           </NavLink>
-          <NavLink
-            to="/analytics"
-            className={({ isActive }) =>
-              `flex flex-col items-center p-2 rounded-md transition-colors text-xs font-medium ${
-                isActive ? "bg-blue-800 shadow-md" : "hover:bg-blue-600"
-              }`
-            }
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-bar-chart"
+
+          {user?.role === "owner" && (
+            <NavLink
+              to="/analytics"
+              className={({ isActive }) =>
+                `flex flex-col items-center p-2 rounded-md transition-colors text-xs font-medium ${
+                  isActive ? "bg-blue-800 shadow-md" : "hover:bg-blue-600"
+                }`
+              }
             >
-              <line x1="12" x2="12" y1="20" y2="10" />
-              <line x1="18" x2="18" y1="20" y2="4" />
-              <line x1="6" x2="6" y1="20" y2="16" />
-            </svg>
-            <span className="mt-1">એનાલિટિક્સ</span>
-          </NavLink>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-bar-chart"
+              >
+                <line x1="12" x2="12" y1="20" y2="10" />
+                <line x1="18" x2="18" y1="20" y2="4" />
+                <line x1="6" x2="6" y1="20" y2="16" />
+              </svg>
+              <span className="mt-1">એનાલિટિક્સ</span>
+            </NavLink>
+          )}
+
           <NavLink
             to="/profile"
             className={({ isActive }) =>

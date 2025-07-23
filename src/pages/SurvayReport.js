@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import apiPath from "../isProduction";
+import { useAuth } from "../config/AuthContext";
+import { useNavigate } from "react-router-dom";
 // import './SurvayReport.scss'; // CSS ને હવે ઇનલાઇન કરવામાં આવ્યું છે
 
 const SurvayReport = () => {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
+
+  const { user } = useAuth();
 
   useEffect(() => {
     // Google Sheets અને Inter ફોન્ટ માટે CDN સ્ક્રિપ્ટો ઉમેરો
@@ -67,6 +73,10 @@ const SurvayReport = () => {
       </div>
     );
   }
+
+  const handleDelete = async () => {
+    return;
+  };
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
@@ -134,6 +144,9 @@ const SurvayReport = () => {
                 અનું કૂમાંક
               </th>
               <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                માલિકનું નામ
+              </th>
+              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                 વિસ્તારનું નામ
               </th>
               <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -143,17 +156,9 @@ const SurvayReport = () => {
                 મિલકતનું વર્ણન
               </th>
               <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                માલિકનું નામ
+                mobile number
               </th>
-              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                કબ્જેદારનું નામ
-              </th>
-              {/* <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                વાર્ષિક ભાડાની કિંમત અથવા બીજી કિંમતની આકારણી
-              </th>
-              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                આકારેલી વેરાની રકમ
-              </th> */}
+
               <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                 પાણી નો નળ
               </th>
@@ -163,8 +168,12 @@ const SurvayReport = () => {
               <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">
                 રીમાર્કસ/નોંધ
               </th>
+              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">
+                Action
+              </th>
             </tr>
           </thead>
+
           <tbody className="bg-white divide-y divide-gray-200">
             {records.map((record, index) => (
               <tr key={index}>
@@ -174,26 +183,26 @@ const SurvayReport = () => {
                 </td>{" "}
                 {/* અનું કૂમાંક (serialNumber) */}
                 <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                  {record[1]}
+                  {record[3]}
                 </td>{" "}
                 {/* વિસ્તારનું નામ (areaName) */}
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {record[2]}
+                  {record[1]}
                 </td>{" "}
                 {/* મિલ્કત ક્રમાંક (propertyNumber) */}
                 <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                  {record[15]}
+                  {record[2]}
                 </td>{" "}
                 {/* મિલકતનું વર્ણન (description) */}
                 <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                  {record[3]}
+                  {record[15]}
                 </td>{" "}
                 {/* માલિકનું નામ (ownerName) */}
-                <td className="px-6 py-4 whitespace-normal text-sm text-gray-500"></td>
+                <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                  {record[5]}
+                </td>
                 {/* કબ્જેદારનું નામ (rowData માં નથી) */}
-                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>{" "} */}
-                {/* વાર્ષિક ભાડાની કિંમત... (rowData માં નથી) */}
-                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>{" "} */}
+                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td> */}
                 {/* આકારેલી વેરાની રકમ (rowData માં નથી) */}
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {record[11]}
@@ -207,8 +216,29 @@ const SurvayReport = () => {
                   {record[13]}
                 </td>{" "}
                 {/* રીમાર્કસ/નોંધ (remarks) */}
+                {user.id === record[16] ? (
+                  <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                    <button
+                      onClick={() => navigate(`/form/${record[0]}`)}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(record[0])}
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                ) : (
+                  <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                    Added by {record[16]}
+                  </td>
+                )}
               </tr>
             ))}
+
             {records.length === 0 && !loading && !error && (
               <tr>
                 <td

@@ -22,6 +22,8 @@ function App() {
         }
       >
         <Route index element={<SurvayForm />} />
+        <Route path="form" element={<SurvayForm />} />
+        <Route path="form/:id" element={<SurvayForm />} />
         <Route path="report" element={<SurvayReport />} />
         <Route path="society" element={<Society />} />
         <Route path="analytics" element={<Analytics />} />
