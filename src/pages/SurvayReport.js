@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import apiPath from "../isProduction";
 import { useAuth } from "../config/AuthContext";
 import { useNavigate } from "react-router-dom";
+import WorkSpot from "../components/WorkSpot";
 // import './SurvayReport.scss'; // CSS ને હવે ઇનલાઇન કરવામાં આવ્યું છે
 
 const SurvayReport = () => {
@@ -44,7 +45,6 @@ const SurvayReport = () => {
         setLoading(false);
       }
     };
-
     fetchRecords();
 
     // કમ્પોનન્ટ અનમાઉન્ટ થાય ત્યારે સ્ક્રિપ્ટોને સાફ કરો
@@ -57,6 +57,20 @@ const SurvayReport = () => {
       if (interFontLink) document.head.removeChild(interFontLink);
     };
   }, []); // કમ્પોનન્ટ માઉન્ટ થાય ત્યારે ફક્ત એક જ વાર ચલાવો
+
+  async function fetchUserName(id) {
+    try {
+      fetch(`${await apiPath()}/api/user/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data); // data.name;
+        });
+    } catch (err) {
+      console.log("Error Fetching User Name,", err);
+    }
+
+    return "Jatin Poriya  !";
+  }
 
   if (loading) {
     return (
@@ -129,12 +143,15 @@ const SurvayReport = () => {
       </style>
 
       <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
-        પંચાયત હિસાબનો નમુનો ૮ (આકારણી રજીસ્ટર)
+        સર્વેયર રજીસ્ટર
       </h1>
       <h2 className="text-xl text-center mb-8 text-gray-600">
         સન ૨૦૨૫–૨૬ ના વર્ષ માટેના વેરાપાત્ર હોય તેવા મકાનો જમીનનો આકારણી ની યાદી
         - મોજે:- પીપરડી
       </h2>
+
+      <WorkSpot />
+      <br />
 
       <div className="table-container rounded-lg shadow-md border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200">
@@ -152,11 +169,14 @@ const SurvayReport = () => {
               <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                 મિલ્કત ક્રમાંક
               </th>
-              <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                style={{ minWidth: "80px" }}
+              >
                 મિલકતનું વર્ણન
               </th>
               <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                mobile number
+                મોબાઈલ નંબર
               </th>
 
               <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -233,7 +253,10 @@ const SurvayReport = () => {
                   </td>
                 ) : (
                   <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                    Added by {record[16]}
+                    Added by{" "}
+                    {async () => {
+                      await fetchUserName(record[16]);
+                    }}
                   </td>
                 )}
               </tr>

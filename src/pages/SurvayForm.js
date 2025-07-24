@@ -3,6 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../config/AuthContext";
 import apiPath from "../isProduction";
 
+import "./SurvayForm.scss";
+import WorkSpot from "../components/WorkSpot";
+
 const SurvayForm = () => {
   const { user } = useAuth();
 
@@ -282,108 +285,13 @@ const SurvayForm = () => {
   return (
     <div className="form-container p-8">
       {/* Added margin for sidebar */}
-      <style>
-        {`
-          body {
-            font-family: "Inter", sans-serif;
-            background-color: #f0f2f5; /* Light gray background */
-          }
-          .form-container {
-            padding: 2rem;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-          }
-          .form-field {
-            margin-bottom: 1.5rem;
-          }
-          .form-label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #333;
-          }
-          .form-input,
-          .form-select,
-          .form-textarea {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 1rem;
-            color: #374151;
-            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-          }
-          .form-input:focus,
-          .form-select:focus,
-          .form-textarea:focus {
-            outline: none;
-            border-color: #3b82f6; /* Blue focus ring */
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-          }
-          .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 0.75rem;
-          }
-          .floor-section {
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-            background-color: #f9fafb;
-          }
-          .floor-section-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #4b5563;
-            margin-bottom: 1rem;
-          }
-          .add-floor-button {
-            background-color: #2563eb; /* Blue */
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out,
-              transform 0.1s ease-in-out;
-            margin-top: 2rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-          }
-          .add-floor-button:hover {
-            background-color: #1d4ed8; /* Darker blue */
-            transform: translateY(-1px);
-          }
-          .submit-button {
-            background-color: #10b981; /* Green */
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out,
-              transform 0.1s ease-in-out;
-            margin-top: 2rem;
-            width: 100%;
-            font-size: 1.125rem;
-          }
-          .submit-button:hover {
-            background-color: #059669; /* Darker green */
-            transform: translateY(-1px);
-          }
-        `}
-      </style>
+
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        પંચાયત હિસાબ નમુનો નંબર - ૮ આકારણી ફોર્મ{" "}
-        {isEditMode ? "(સંપાદિત કરો)" : ""}
+        સર્વે ફોર્મ {isEditMode ? "(સંપાદિત કરો)" : ""}
       </h1>
+
+      <WorkSpot />
+
       {formLoading && (
         <div className="text-center text-blue-600 text-lg mb-4">
           {isEditMode

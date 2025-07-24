@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { NavLink } from "react-router-dom"; // Assuming react-router-dom is installed
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../config/AuthContext";
 
 const MenuBar = () => {
@@ -23,15 +23,13 @@ const MenuBar = () => {
 
   const { user } = useAuth();
 
-  console.log(user);
-
   return (
     <>
       {/* Desktop Sidebar Menu (hidden on small screens) */}
       <nav className="hidden md:flex flex-col fixed left-0 top-0 h-screen w-64 bg-blue-700 text-white p-4 shadow-lg rounded-r-xl">
         <div className="flex flex-col items-start w-full">
           <div className="text-3xl font-bold rounded-md p-2 mb-6 cursor-pointer">
-            {user?.work?.gaam}
+            Dashboard
           </div>
           <div className="flex flex-col space-y-4 w-full">
             <NavLink
