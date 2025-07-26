@@ -12,6 +12,23 @@ body {
 .form-field {
   margin-bottom: 1.5rem;
 }
+
+.form-group {
+  display: flex;
+  gap: 1.4rem;
+  margin-top: -1rem;
+  margin-bottom: -1rem;
+
+  .form-field {
+    label {
+      transform-origin: top left;
+      transform: translate(-10px, -40px);
+
+      rotate: 90deg;
+    }
+  }
+}
+
 .form-label {
   display: block;
   font-weight: 600;

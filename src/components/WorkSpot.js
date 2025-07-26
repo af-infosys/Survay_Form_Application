@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import apiPath from "../isProduction";
 import { useAuth } from "../config/AuthContext";
 
+import "./WorkSpot.scss";
+
 const WorkSpot = () => {
   const [workSpot, setWorkSpot] = useState({});
 
@@ -32,7 +34,7 @@ const WorkSpot = () => {
   }, []);
 
   return (
-    <h3 className="text-xl font-bold text-center text-gray-800 mb-4">
+    <h3 className="workspot">
       <p>ગામ: {workSpot?.gaam}</p>
       <p>તાલુકો: {workSpot?.taluka}</p>
       <p>જિલ્લો: {workSpot?.district}</p>

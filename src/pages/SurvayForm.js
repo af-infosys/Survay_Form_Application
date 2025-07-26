@@ -29,7 +29,7 @@ const SurvayForm = () => {
     tapCount: 0,
     toiletCount: 0,
     remarks: "",
-    survayor: user?.id,
+    survayor: { id: user?.id, name: user?.name },
   });
 
   const [floors, setFloors] = useState([
@@ -46,21 +46,37 @@ const SurvayForm = () => {
   const [areas, setAreas] = useState([]);
   const [areasLoading, setAreasLoading] = useState(true);
   const [areasError, setAreasError] = useState(null);
-  const [formLoading, setFormLoading] = useState(false); // For form submission/load
-  const [formError, setFormError] = useState(null); // For form submission/load errors
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState(null);
+
+  const convertGujaratiToEnglishDigits = (input) => {
+    const gujaratiDigits = "૦૧૨૩૪૫૬૭૮૯";
+    const englishDigits = "0123456789";
+
+    return input.replace(
+      /[૦૧૨૩૪૫૬૭૮૯]/g,
+      (char) => englishDigits[gujaratiDigits.indexOf(char)]
+    );
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Convert Gujarati digits to English
+    const englishValue = convertGujaratiToEnglishDigits(value);
+
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: englishValue,
     }));
   };
 
   const handleFloorChange = (index, e) => {
     const { name, value } = e.target;
+    const englishValue = convertGujaratiToEnglishDigits(value);
+
     const updatedFloors = floors.map((floor, i) =>
-      i === index ? { ...floor, [name]: value } : floor
+      i === index ? { ...floor, [name]: englishValue } : floor
     );
     setFloors(updatedFloors);
   };
@@ -107,6 +123,7 @@ const SurvayForm = () => {
         method: method,
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(fullFormData),
       });
@@ -135,7 +152,7 @@ const SurvayForm = () => {
             tapCount: 0,
             toiletCount: 0,
             remarks: "",
-            survayor: user?.id,
+            survayor: { id: user?.id, name: user?.name },
           });
           setFloors([
             {
@@ -197,6 +214,7 @@ const SurvayForm = () => {
             tapCount: Number(record[11]) || 0,
             toiletCount: Number(record[12]) || 0,
             remarks: record[13] || "",
+            survayor: { id: user?.id, name: user?.name },
           });
 
           // Populate floors, parsing JSON if necessary
@@ -484,9 +502,7 @@ const SurvayForm = () => {
             </select>
           </div>
         </div>
-
         <h2 className="section-title mt-8">9. માળની વિગતો</h2>
-
         <div id="floorsContainer">
           {floors.map((floor, index) => (
             <div key={index} className="floor-section">
@@ -508,82 +524,113 @@ const SurvayForm = () => {
                     onChange={(e) => handleFloorChange(index, e)}
                     required
                   >
-                    <option value="">પ્રકાર પસંદ કરો</option>
                     <option value="પાકા">પાકા</option>
                     <option value="કાચા">કાચા</option>
                   </select>
                 </div>
 
+                <br />
                 {/* Field 11: સ્લેબ */}
-                <div className="form-field">
-                  <label htmlFor={`slabRooms-${index}`} className="form-label">
-                    સ્લેબ
-                  </label>
-                  <input
-                    type="number"
-                    id={`slabRooms-${index}`}
-                    name="slabRooms"
-                    className="form-input"
-                    min="0"
-                    value={floor.slabRooms}
-                    onChange={(e) => handleFloorChange(index, e)}
-                    required
-                  />
+                <div className="form-group">
+                  <div className="form-field">
+                    <label
+                      htmlFor={`slabRooms-${index}`}
+                      className="form-label"
+                    >
+                      સ્લેબ
+                    </label>
+                    <input
+                      type="number"
+                      id={`slabRooms-${index}`}
+                      name="slabRooms"
+                      className="form-input"
+                      min="0"
+                      value={floor.slabRooms}
+                      onChange={(e) => handleFloorChange(index, e)}
+                      required
+                    />
+                  </div>
+
+                  {/* Field 12: પતરા */}
+                  <div className="form-field">
+                    <label htmlFor={`tinRooms-${index}`} className="form-label">
+                      પતરા
+                    </label>
+                    <input
+                      type="number"
+                      id={`tinRooms-${index}`}
+                      name="tinRooms"
+                      className="form-input"
+                      min="0"
+                      value={floor.tinRooms}
+                      onChange={(e) => handleFloorChange(index, e)}
+                      required
+                      onClick={() => {
+                        if (formData.bathroomCount === 0)
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            bathroomCount: 1,
+                          }));
+                      }}
+                    />
+                  </div>
+
+                  {/* Field 13: પીઢીયા */}
+                  <div className="form-field">
+                    <label
+                      htmlFor={`woodenRooms-${index}`}
+                      className="form-label"
+                    >
+                      પીઢીયા
+                    </label>
+                    <input
+                      type="number"
+                      id={`woodenRooms-${index}`}
+                      name="woodenRooms"
+                      className="form-input"
+                      min="0"
+                      value={floor.woodenRooms}
+                      onChange={(e) => handleFloorChange(index, e)}
+                      required
+                      onClick={() => {
+                        if (formData.bathroomCount === 0)
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            bathroomCount: 1,
+                          }));
+                      }}
+                    />
+                  </div>
+
+                  {/* Field 14: નળીયા */}
+                  <div className="form-field">
+                    <label
+                      htmlFor={`tileRooms-${index}`}
+                      className="form-label"
+                    >
+                      નળીયા
+                    </label>
+                    <input
+                      type="number"
+                      id={`tileRooms-${index}`}
+                      name="tileRooms"
+                      className="form-input"
+                      min="0"
+                      value={floor.tileRooms}
+                      onChange={(e) => handleFloorChange(index, e)}
+                      required
+                      onClick={() => {
+                        if (formData.bathroomCount === 0)
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            bathroomCount: 1,
+                          }));
+                      }}
+                    />
+                  </div>
                 </div>
 
-                {/* Field 12: પતરા */}
-                <div className="form-field">
-                  <label htmlFor={`tinRooms-${index}`} className="form-label">
-                    પતરા
-                  </label>
-                  <input
-                    type="number"
-                    id={`tinRooms-${index}`}
-                    name="tinRooms"
-                    className="form-input"
-                    min="0"
-                    value={floor.tinRooms}
-                    onChange={(e) => handleFloorChange(index, e)}
-                    required
-                  />
-                </div>
-
-                {/* Field 13: પીઢીયા */}
-                <div className="form-field">
-                  <label
-                    htmlFor={`woodenRooms-${index}`}
-                    className="form-label"
-                  >
-                    પીઢીયા
-                  </label>
-                  <input
-                    type="number"
-                    id={`woodenRooms-${index}`}
-                    name="woodenRooms"
-                    className="form-input"
-                    min="0"
-                    value={floor.woodenRooms}
-                    onChange={(e) => handleFloorChange(index, e)}
-                    required
-                  />
-                </div>
-
-                {/* Field 14: નળીયા */}
-                <div className="form-field">
-                  <label htmlFor={`tileRooms-${index}`} className="form-label">
-                    નળીયા
-                  </label>
-                  <input
-                    type="number"
-                    id={`tileRooms-${index}`}
-                    name="tileRooms"
-                    className="form-input"
-                    min="0"
-                    value={floor.tileRooms}
-                    onChange={(e) => handleFloorChange(index, e)}
-                    required
-                  />
-                </div>
+                <br />
 
                 {/* Field 15: રૂમ હોલ દુકાન ગોડાઉન */}
                 <div className="form-field">
@@ -612,7 +659,6 @@ const SurvayForm = () => {
             </div>
           ))}
         </div>
-
         <button type="button" onClick={addFloor} className="add-floor-button">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -628,95 +674,134 @@ const SurvayForm = () => {
           </svg>
           વધુ માળ ઉમેરો
         </button>
-
+        <br />
+        <br />
+        <br />
+        <hr />
         <br />
         <br />
 
-        {/* Field 16: રસોડું */}
-        <div className="form-field">
-          <label htmlFor="kitchenCount" className="form-label">
-            10. રસોડું (કેટલા)
-          </label>
-          <input
-            type="number"
-            id="kitchenCount"
-            name="kitchenCount"
-            className="form-input"
-            min="0"
-            value={formData.kitchenCount}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <div className="form-group">
+          {/* Field 16: રસોડું */}
+          <div className="form-field">
+            <label htmlFor="kitchenCount" className="form-label">
+              રસોડું
+            </label>
+            <input
+              type="number"
+              id="kitchenCount"
+              name="kitchenCount"
+              className="form-input"
+              min="0"
+              value={formData.kitchenCount}
+              onChange={handleChange}
+              onClick={() => {
+                if (formData.kitchenCount === 0)
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    kitchenCount: 1,
+                  }));
+              }}
+              required
+            />
+          </div>
 
-        {/* Field 17: બાથરૂમ */}
-        <div className="form-field">
-          <label htmlFor="bathroomCount" className="form-label">
-            11. બાથરૂમ (કેટલા)
-          </label>
-          <input
-            type="number"
-            id="bathroomCount"
-            name="bathroomCount"
-            className="form-input"
-            min="0"
-            value={formData.bathroomCount}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          {/* Field 17: બાથરૂમ */}
+          <div className="form-field">
+            <label htmlFor="bathroomCount" className="form-label">
+              બાથરૂમ
+            </label>
+            <input
+              type="number"
+              id="bathroomCount"
+              name="bathroomCount"
+              className="form-input"
+              min="0"
+              value={formData.bathroomCount}
+              onChange={handleChange}
+              onClick={() => {
+                if (formData.bathroomCount === 0)
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    bathroomCount: 1,
+                  }));
+              }}
+              required
+            />
+          </div>
 
-        {/* Field 18: ફરજો */}
-        <div className="form-field">
-          <label htmlFor="verandaCount" className="form-label">
-            13. ફરજો (કેટલા)
-          </label>
-          <input
-            type="number"
-            id="verandaCount"
-            name="verandaCount"
-            className="form-input"
-            min="0"
-            value={formData.verandaCount}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          {/* Field 18: ફરજો */}
+          <div className="form-field">
+            <label htmlFor="verandaCount" className="form-label">
+              ફરજો
+            </label>
+            <input
+              type="number"
+              id="verandaCount"
+              name="verandaCount"
+              className="form-input"
+              min="0"
+              value={formData.verandaCount}
+              onChange={handleChange}
+              onClick={() => {
+                if (formData.verandaCount === 0)
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    verandaCount: 1,
+                  }));
+              }}
+              required
+            />
+          </div>
 
-        {/* Field 19: નળ */}
-        <div className="form-field">
-          <label htmlFor="tapCount" className="form-label">
-            14. નળ (કેટલા)
-          </label>
-          <input
-            type="number"
-            id="tapCount"
-            name="tapCount"
-            className="form-input"
-            min="0"
-            value={formData.tapCount}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          {/* Field 19: નળ */}
+          <div className="form-field">
+            <label htmlFor="tapCount" className="form-label">
+              નળ
+            </label>
+            <input
+              type="number"
+              id="tapCount"
+              name="tapCount"
+              className="form-input"
+              min="0"
+              value={formData.tapCount}
+              onChange={handleChange}
+              onClick={() => {
+                if (formData.tapCount === 0)
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    tapCount: 1,
+                  }));
+              }}
+              required
+            />
+          </div>
 
-        {/* Field 20: શોચાલ્ય */}
-        <div className="form-field">
-          <label htmlFor="toiletCount" className="form-label">
-            15. શોચાલ્ય (કેટલા)
-          </label>
-          <input
-            type="number"
-            id="toiletCount"
-            name="toiletCount"
-            className="form-input"
-            min="0"
-            value={formData.toiletCount}
-            onChange={handleChange}
-            required
-          />
+          {/* Field 20: શોચાલ્ય */}
+          <div className="form-field">
+            <label htmlFor="toiletCount" className="form-label">
+              શોચાલ્ય
+            </label>
+            <input
+              type="number"
+              id="toiletCount"
+              name="toiletCount"
+              className="form-input"
+              min="0"
+              value={formData.toiletCount}
+              onChange={handleChange}
+              onClick={() => {
+                if (formData.toiletCount === 0)
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    toiletCount: 1,
+                  }));
+              }}
+              required
+            />
+          </div>
         </div>
-
         <br />
         <br />
         {/* Field 21: રીમાર્કસ */}
@@ -734,9 +819,8 @@ const SurvayForm = () => {
             onChange={handleChange}
           ></textarea>
         </div>
-
         <button type="submit" className="submit-button">
-          {isEditMode ? "ફોર્મ અપડેટ કરો" : "ફોર્મ સબમિટ કરો"}
+          {isEditMode ? "અપડેટ" : "સબમિટ"}
         </button>
       </form>
     </div>
