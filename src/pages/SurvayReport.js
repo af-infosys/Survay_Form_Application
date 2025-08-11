@@ -92,6 +92,8 @@ const SurvayReport = () => {
     }
   };
 
+  const background = "rgb(59 130 246)";
+
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       {/* ઇનલાઇન CSS */}
@@ -129,6 +131,7 @@ const SurvayReport = () => {
             font-size: 0.75rem;
             letter-spacing: 0.05em;
           }
+        
           tbody tr:nth-child(even) {
             background-color: #f3f4f6; /* વૈકલ્પિક પંક્તિઓ માટે શેડિંગ */
           }
@@ -157,51 +160,92 @@ const SurvayReport = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
+              <th
+                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg"
+                id="thead"
+              >
                 અનું કૂમાંક
               </th>
               <th
                 className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                id="thead"
                 style={{ minWidth: "150px" }}
               >
                 માલિકનું નામ
               </th>
-              <th className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                id="thead"
+              >
                 વિસ્તારનું નામ
               </th>
-              <th className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                id="thead"
+              >
                 મિલ્કત ક્રમાંક
               </th>
               <th
                 className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                id="thead"
                 style={{ minWidth: "300px" }}
               >
                 મિલકતનું વર્ણન
               </th>
-              <th className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                id="thead"
+              >
                 મોબાઈલ નંબર
               </th>
 
               <th
                 className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ rotate: "90deg", transform: "translateY(2px)" }}
+                id="thead"
+                // style={{ rotate: "90deg", transform: "translateY(2px)" }}
               >
                 નળ
               </th>
               <th
                 className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ rotate: "90deg", transform: "translateY(10px)" }}
+                id="thead"
+                // style={{ rotate: "90deg", transform: "translateY(10px)" }}
               >
                 શૌચાલય
               </th>
-              <th className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">
-                રીમાર્કસ/નોંધ
+              <th
+                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                id="thead"
+              >
+                નોંધ/રીમાર્કસ
               </th>
-              <th className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">
+              <th
+                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg"
+                id="thead"
+              >
                 Action
               </th>
             </tr>
           </thead>
+
+          {/* Index Start */}
+          <tr>
+            {/* 1 to 18 th for index */}
+            {Array.from({ length: 10 }).map((_, index) => (
+              <th
+                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                style={{
+                  textAlign: "center",
+                  color: "white",
+                  background: background,
+                }}
+                key={index}
+              >
+                {index + 1}
+              </th>
+            ))}
+          </tr>
+          {/* Index End */}
 
           <tbody className="bg-white divide-y divide-gray-200">
             {records.map((record, index) => {
