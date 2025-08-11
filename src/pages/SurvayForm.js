@@ -595,6 +595,9 @@ const SurvayForm = () => {
                         }
                         required
                       >
+                        <option value="" selected disabled>
+                          Select
+                        </option>
                         <option value="પાકા">પાકા</option>
                         <option value="કાચા">કાચા</option>
                       </select>
@@ -712,6 +715,9 @@ const SurvayForm = () => {
                         }
                         required
                       >
+                        <option value="" selected disabled>
+                          Select
+                        </option>
                         <option value="રૂમ">રૂમ (Room)</option>
                         <option value="હોલ">હોલ (Hall)</option>
                         <option value="દુકાન">દુકાન (Shop)</option>
