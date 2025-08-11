@@ -34,9 +34,9 @@ const SurvayForm = () => {
 
   const [floors, setFloors] = useState([
     {
-      type: "",
       roomDetails: [
         {
+          type: "",
           roomHallShopGodown: "",
           slabRooms: "",
           tinRooms: "",
@@ -90,7 +90,7 @@ const SurvayForm = () => {
     const { name, value } = e.target;
     // Convert Gujarati digits to English for numerical inputs
     const processedValue =
-      name !== "roomHallShopGodown"
+      name !== "roomHallShopGodown" && name !== "type"
         ? convertGujaratiToEnglishDigits(value)
         : value;
 
@@ -108,9 +108,9 @@ const SurvayForm = () => {
     setFloors((prevFloors) => [
       ...prevFloors,
       {
-        type: "",
         roomDetails: [
           {
+            type: "",
             roomHallShopGodown: "",
             slabRooms: "",
             tinRooms: "",
@@ -198,9 +198,9 @@ const SurvayForm = () => {
           });
           setFloors([
             {
-              type: "",
               roomDetails: [
                 {
+                  type: "",
                   roomHallShopGodown: "",
                   slabRooms: "",
                   tinRooms: "",
@@ -272,9 +272,9 @@ const SurvayForm = () => {
               console.error("Error parsing floors JSON:", jsonError);
               setFloors([
                 {
-                  type: "",
                   roomDetails: [
                     {
+                      type: "",
                       roomHallShopGodown: "",
                       slabRooms: "",
                       tinRooms: "",
@@ -288,9 +288,9 @@ const SurvayForm = () => {
           } else {
             setFloors([
               {
-                type: "",
                 roomDetails: [
                   {
+                    type: "",
                     roomHallShopGodown: "",
                     slabRooms: "",
                     tinRooms: "",
@@ -567,65 +567,41 @@ const SurvayForm = () => {
                 {getFloorName(floorIndex)}
               </h3>
 
-              {/* Floor-level type select */}
-              <div className="form-field mb-4">
-                <label
-                  htmlFor={`floorType-${floorIndex}`}
-                  className="form-label"
-                >
-                  પ્રકાર
-                </label>
-                <select
-                  id={`floorType-${floorIndex}`}
-                  name="type"
-                  className="form-select w-full p-2 border rounded"
-                  value={floor.type}
-                  onChange={(e) => handleFloorChange(floorIndex, e)}
-                  required
-                >
-                  <option value="પાકા">પાકા</option>
-                  <option value="કાચા">કાચા</option>
-                </select>
-              </div>
-
-              {/* Nested loop for multiple room detail entries */}
               {floor.roomDetails.map((room, roomIndex) => (
                 <div
                   key={roomIndex}
                   className="room-details-section p-4 my-4 bg-gray-50 rounded-md"
+                  style={{ background: "#ffd7d3" }}
                 >
                   <h4 className="font-medium text-gray-700 mb-3">
                     રૂમની વિગતો {roomIndex + 1}
                   </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                    {/* Field: રૂમ હોલ દુકાન ગોડાઉન */}
-                    <div className="form-field">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+                    {/* Floor-level type select, now inside the room loop */}
+                    <div className="form-field mb-4">
                       <label
-                        htmlFor={`roomType-${floorIndex}-${roomIndex}`}
+                        htmlFor={`roomTypeSelect-${floorIndex}-${roomIndex}`}
                         className="form-label"
                       >
-                        રૂમ હોલ દુકાન ગોડાઉન
+                        પ્રકાર
                       </label>
                       <select
-                        id={`roomType-${floorIndex}-${roomIndex}`}
-                        name="roomHallShopGodown"
+                        id={`roomTypeSelect-${floorIndex}-${roomIndex}`}
+                        name="type"
                         className="form-select w-full p-2 border rounded"
-                        value={room.roomHallShopGodown}
+                        value={room.type}
                         onChange={(e) =>
                           handleRoomDetailsChange(floorIndex, roomIndex, e)
                         }
                         required
                       >
-                        <option value="">પ્રકાર પસંદ કરો</option>
-                        <option value="રૂમ">રૂમ (Room)</option>
-                        <option value="હોલ">હોલ (Hall)</option>
-                        <option value="દુકાન">દુકાન (Shop)</option>
-                        <option value="ગોડાઉન">ગોડાઉન (Godown)</option>
+                        <option value="પાકા">પાકા</option>
+                        <option value="કાચા">કાચા</option>
                       </select>
                     </div>
 
                     {/* Inputs for number of rooms */}
-                    <div className="form-group flex space-x-2 items-end">
+                    <div className="form-group flex space-x-2 items-end mt-4">
                       {/* સ્લેબ */}
                       <div className="form-field">
                         <label
@@ -644,6 +620,7 @@ const SurvayForm = () => {
                           onChange={(e) =>
                             handleRoomDetailsChange(floorIndex, roomIndex, e)
                           }
+                          style={{ maxWidth: "45px" }}
                         />
                       </div>
 
@@ -665,6 +642,7 @@ const SurvayForm = () => {
                           onChange={(e) =>
                             handleRoomDetailsChange(floorIndex, roomIndex, e)
                           }
+                          style={{ maxWidth: "45px" }}
                         />
                       </div>
 
@@ -686,6 +664,7 @@ const SurvayForm = () => {
                           onChange={(e) =>
                             handleRoomDetailsChange(floorIndex, roomIndex, e)
                           }
+                          style={{ maxWidth: "45px" }}
                         />
                       </div>
 
@@ -707,18 +686,44 @@ const SurvayForm = () => {
                           onChange={(e) =>
                             handleRoomDetailsChange(floorIndex, roomIndex, e)
                           }
+                          style={{ maxWidth: "45px" }}
                         />
                       </div>
+                    </div>
+
+                    {/* Field: રૂમ હોલ દુકાન ગોડાઉન */}
+                    <div className="form-field">
+                      <label
+                        htmlFor={`roomType-${floorIndex}-${roomIndex}`}
+                        className="form-label"
+                      >
+                        રૂમ હોલ દુકાન ગોડાઉન
+                      </label>
+                      <select
+                        id={`roomType-${floorIndex}-${roomIndex}`}
+                        name="roomHallShopGodown"
+                        className="form-select w-full p-2 border rounded"
+                        value={room.roomHallShopGodown}
+                        onChange={(e) =>
+                          handleRoomDetailsChange(floorIndex, roomIndex, e)
+                        }
+                        required
+                      >
+                        <option value="રૂમ">રૂમ (Room)</option>
+                        <option value="હોલ">હોલ (Hall)</option>
+                        <option value="દુકાન">દુકાન (Shop)</option>
+                        <option value="ગોડાઉન">ગોડાઉન (Godown)</option>
+                      </select>
                     </div>
                   </div>
                 </div>
               ))}
 
-              {/* Button to add another room type for the current floor */}
               <button
                 type="button"
                 onClick={() => addRoomDetails(floorIndex)}
                 className="flex items-center px-4 py-2 mt-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+                style={{ background: "#8f40bc" }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -732,7 +737,7 @@ const SurvayForm = () => {
                     clipRule="evenodd"
                   />
                 </svg>
-                વધુ રૂમનો પ્રકાર ઉમેરો
+                વધુ રૂમ ઉમેરો
               </button>
             </div>
           ))}
