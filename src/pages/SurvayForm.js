@@ -601,7 +601,10 @@ const SurvayForm = () => {
                     </div>
 
                     {/* Inputs for number of rooms */}
-                    <div className="form-group flex space-x-2 items-end mt-4">
+                    <div
+                      className="form-group flex space-x-0 items-end mt-4"
+                      style={{ justifyContent: "space-between" }}
+                    >
                       {/* સ્લેબ */}
                       <div className="form-field">
                         <label
