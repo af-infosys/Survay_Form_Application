@@ -149,8 +149,7 @@ const SurvayReport = () => {
         સર્વેયર રજીસ્ટર
       </h1>
       <h2 className="text-xl text-center mb-8 text-gray-600">
-        સન ૨૦૨૫–૨૬ ના વર્ષ માટેના વેરાપાત્ર હોય તેવા મકાનો જમીનનો આકારણી ની યાદી
-        - મોજે:- પીપરડી
+        - By A.F. Infosys
       </h2>
 
       <WorkSpot />

@@ -391,6 +391,8 @@ const SurvayForm = () => {
               onChange={handleChange}
               required
               disabled={isEditMode}
+              style={{ maxWidth: "82px" }}
+              maxLength="5"
             />
           </div>
 
@@ -440,6 +442,8 @@ const SurvayForm = () => {
               value={formData.propertyNumber}
               onChange={handleChange}
               required
+              style={{ maxWidth: "82px" }}
+              maxLength="5"
             />
           </div>
 
@@ -473,6 +477,8 @@ const SurvayForm = () => {
               placeholder="જો હોય તો દાખલ કરો"
               value={formData.oldPropertyNumber}
               onChange={handleChange}
+              style={{ maxWidth: "82px" }}
+              maxLength="5"
             />
           </div>
 
@@ -490,6 +496,8 @@ const SurvayForm = () => {
               title="કૃપા કરીને 10 અંકનો મોબાઇલ નંબર દાખલ કરો"
               value={formData.mobileNumber}
               onChange={handleChange}
+              style={{ maxWidth: "130px" }}
+              maxLength="10"
               required
             />
           </div>
@@ -626,6 +634,7 @@ const SurvayForm = () => {
                           onChange={(e) =>
                             handleRoomDetailsChange(floorIndex, roomIndex, e)
                           }
+                          maxLength="3"
                           style={{ maxWidth: "45px" }}
                         />
                       </div>
@@ -648,6 +657,7 @@ const SurvayForm = () => {
                           onChange={(e) =>
                             handleRoomDetailsChange(floorIndex, roomIndex, e)
                           }
+                          maxLength="3"
                           style={{ maxWidth: "45px" }}
                         />
                       </div>
@@ -670,6 +680,7 @@ const SurvayForm = () => {
                           onChange={(e) =>
                             handleRoomDetailsChange(floorIndex, roomIndex, e)
                           }
+                          maxLength="3"
                           style={{ maxWidth: "45px" }}
                         />
                       </div>
@@ -692,6 +703,7 @@ const SurvayForm = () => {
                           onChange={(e) =>
                             handleRoomDetailsChange(floorIndex, roomIndex, e)
                           }
+                          maxLength="3"
                           style={{ maxWidth: "45px" }}
                         />
                       </div>
@@ -788,6 +800,7 @@ const SurvayForm = () => {
               min="0"
               value={formData.kitchenCount}
               onChange={handleChange}
+              maxLength="3"
               // onClick={() => {
               //   if (formData.kitchenCount === 0)
               //     setFormData((prevData) => ({
@@ -811,6 +824,7 @@ const SurvayForm = () => {
               min="0"
               value={formData.bathroomCount}
               onChange={handleChange}
+              maxLength="3"
             />
           </div>
 
@@ -827,6 +841,7 @@ const SurvayForm = () => {
               min="0"
               value={formData.verandaCount}
               onChange={handleChange}
+              maxLength="3"
             />
           </div>
 
@@ -843,6 +858,7 @@ const SurvayForm = () => {
               min="0"
               value={formData.tapCount}
               onChange={handleChange}
+              maxLength="3"
             />
           </div>
 
@@ -859,6 +875,7 @@ const SurvayForm = () => {
               min="0"
               value={formData.toiletCount}
               onChange={handleChange}
+              maxLength="3"
             />
           </div>
         </div>
