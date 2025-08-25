@@ -457,7 +457,7 @@ const SurvayForm = () => {
               id="ownerName"
               name="ownerName"
               className="form-input"
-              placeholder="દા.ત. સુરેશભાઈ પટેલ"
+              placeholder="Name Fathername Surname"
               value={formData.ownerName}
               onChange={handleChange}
               required
@@ -485,14 +485,14 @@ const SurvayForm = () => {
           {/* Field 6: મોબાઈલ નંબર */}
           <div className="form-field">
             <label htmlFor="mobileNumber" className="form-label">
-              6. મોબાઈલ નંબર
+              6. મોબાઈલ નંબર (Whatsapp)
             </label>
             <input
               type="tel"
               id="mobileNumber"
               name="mobileNumber"
               className="form-input"
-              placeholder="દા.ત. 9876543210"
+              placeholder="9876543210"
               title="કૃપા કરીને 10 અંકનો મોબાઇલ નંબર દાખલ કરો"
               value={formData.mobileNumber}
               onChange={handleChange}
@@ -512,7 +512,7 @@ const SurvayForm = () => {
               id="propertyNameOnRecord"
               name="propertyNameOnRecord"
               className="form-input"
-              placeholder="દા.ત. શ્રી ગણેશ નિવાસ"
+              placeholder=""
               value={formData.propertyNameOnRecord}
               onChange={handleChange}
               required

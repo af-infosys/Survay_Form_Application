@@ -32,19 +32,19 @@ const SurvayReport = () => {
 
   useEffect(() => {
     // Google Sheets અને Inter ફોન્ટ માટે CDN સ્ક્રિપ્ટો ઉમેરો
-    const addExternalScripts = () => {
-      const tailwindScript = document.createElement("script");
-      tailwindScript.src = "https://cdn.tailwindcss.com";
-      document.head.appendChild(tailwindScript);
+    // const addExternalScripts = () => {
+    //   const tailwindScript = document.createElement("script");
+    //   tailwindScript.src = "https://cdn.tailwindcss.com";
+    //   document.head.appendChild(tailwindScript);
 
-      const interFontLink = document.createElement("link");
-      interFontLink.href =
-        "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap";
-      interFontLink.rel = "stylesheet";
-      document.head.appendChild(interFontLink);
-    };
+    //   const interFontLink = document.createElement("link");
+    //   interFontLink.href =
+    //     "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap";
+    //   interFontLink.rel = "stylesheet";
+    //   document.head.appendChild(interFontLink);
+    // };
 
-    addExternalScripts();
+    // addExternalScripts();
 
     fetchRecords();
 
