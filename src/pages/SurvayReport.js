@@ -316,7 +316,16 @@ const SurvayReport = () => {
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDelete(record[0])}
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              `ID = '${record[0]}' \nAre you Sure to Delete this Record?`
+                            )
+                          )
+                            return;
+
+                          handleDelete(record[0]);
+                        }}
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                       >
                         Delete

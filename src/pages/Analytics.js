@@ -1,6 +1,20 @@
 import React, { useEffect, useState } from "react";
 import apiPath from "../isProduction";
 
+import TotalHouseIcon from "../assets/icon/Total.png";
+import HouseIcon from "../assets/icon/House.png";
+import PakaMakanIcon from "../assets/icon/PakaMakan.png";
+import KachaMakanIcon from "../assets/icon/KachaMakan.png";
+import StoreIcon from "../assets/icon/Store.png";
+
+import FactoryIcon from "../assets/icon/Factory.png";
+// import ShopIcon from "../assets/icon/Shop.png";
+// import AgricultureIcon from "../assets/icon/Agriculture.png";
+// import Agriculture2Icon from "../assets/icon/Agriculture2.png";
+// import Agriculture3Icon from "../assets/icon/Agriculture3.png";
+// import Agriculture4Icon from "../assets/icon/Agriculture4.png";
+import PhoneUserIcon from "../assets/icon/PhoneUser.png";
+
 // The main component for the analytics report
 const AnalyticsReport = () => {
   // Use state to manage all the report data
@@ -14,386 +28,115 @@ const AnalyticsReport = () => {
         id: 1,
         description: "ગામની કુલ ટોટલ મિલ્કતોની સંખ્યા",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-blue-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2m0 0V5a2 2 0 00-2-2h-2a2 2 0 00-2 2v2M7 7a2 2 0 00-2 2v6a2 2 0 002 2h2m2-4h2m-4-2h4m-2 2v4m2-4v4m-2-4h2v4h-2V7z"
-            />
-          </svg>
-        ),
+        icon: TotalHouseIcon,
       },
       {
         id: 2,
         description: "કુલ રહેણાંક વાળા મકાનો",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-green-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6-4h4"
-            />
-          </svg>
-        ),
+        icon: HouseIcon,
       },
       {
         id: 3,
         description: "કુલ રહેણાંક વાળા પાકા મકાનો",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-green-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6-4h4"
-            />
-          </svg>
-        ),
+        icon: PakaMakanIcon,
       },
       {
         id: 4,
         description: "ગામના કુલ રહેણાંક વાળા કાચા મકાનો",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-yellow-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6-4h4"
-            />
-          </svg>
-        ),
+        icon: KachaMakanIcon,
       },
       {
         id: 5,
         description: "ગામની કુલ દુકાનો",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-purple-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M16 11V7a4 4 0 00-8 0v4M5 9h14v12H5V9z"
-            />
-          </svg>
-        ),
+        icon: StoreIcon,
       },
       {
         id: 6,
         description: "કારખાનાઓ / ફેક્ટરી પ્રાઈવેટ-ખાનગી કુલ",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-red-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 5a1 1 0 011-1h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5z"
-            />
-          </svg>
-        ),
+        icon: FactoryIcon,
       },
       {
         id: 7,
-        description: "પ્લોટ/ખુલ્લી જગ્યા પ્રાઈવેટ કુલ",
+        description: "પ્લોટ ખાનગી - ખુલ્લી જગ્યા",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-yellow-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2m0 0V5a2 2 0 00-2-2h-2a2 2 0 00-2 2v2M7 7a2 2 0 00-2 2v6a2 2 0 002 2h2m2-4h2m-4-2h4m-2 2v4m2-4v4m-2-4h2v4h-2V7z"
-            />
-          </svg>
-        ),
+        icon: TotalHouseIcon,
       },
+
       {
         id: 8,
-        description: "સરકારી મિલ્કતો કુલ",
+        description: "પ્લોટ સરકારી - કોમનપ્લોટ કુલ",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-red-700"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2m0 0V5a2 2 0 00-2-2h-2a2 2 0 00-2 2v2M7 7a2 2 0 00-2 2v6a2 2 0 002 2h2m2-4h2m-4-2h4m-2 2v4m2-4v4m-2-4h2v4h-2V7z"
-            />
-          </svg>
-        ),
+        icon: TotalHouseIcon,
       },
       {
         id: 9,
-        description: "ધાર્મિક સ્થળો કુલ",
+        description: "સરકારી મિલ્કતો કુલ",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-purple-700"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a48.555 48.555 0 01.127 1.391l-.621 1.954c-.237.747-.942 1.251-1.748 1.251H5.77a2 2 0 01-1.748-1.251l-.621-1.954a48.56 48.56 0 01.127-1.391L12 14z" />
-          </svg>
-        ),
+        icon: TotalHouseIcon,
       },
       {
         id: 10,
-        description: "પ્લોટ/ખુલ્લી જગ્યા સરકારી કુલ",
+        description: "ધાર્મિક સ્થળો કુલ",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-yellow-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2m0 0V5a2 2 0 00-2-2h-2a2 2 0 00-2 2v2M7 7a2 2 0 00-2 2v6a2 2 0 002 2h2m2-4h2m-4-2h4m-2 2v4m2-4v4m-2-4h2v4h-2V7z"
-            />
-          </svg>
-        ),
+        icon: TotalHouseIcon,
       },
       {
         id: 11,
         description: "નળની કુલ સંખ્યા",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-blue-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path d="M10 14a2 2 0 100 4 2 2 0 000-4zM21 21v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2z" />
-          </svg>
-        ),
+        icon: TotalHouseIcon,
       },
       {
         id: 12,
         description: "શૌચાલયની કુલ સંખ્યા",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-700"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 21a9 9 0 009-9H3a9 9 0 009 9z"
-            />
-          </svg>
-        ),
+        icon: TotalHouseIcon,
       },
       {
         id: 13,
         description: "મોબાઈલ ટાવરની કુલ સંખ્યા",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-indigo-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M10 12h.01M16 12h.01M13 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        ),
+        icon: TotalHouseIcon,
       },
       {
         id: 14,
-        description: "વાહનોની કુલ સંખ્યા",
+        description: "વિસ્તાર - ગામના કુલ એરીયાની સંખ્યા",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M10 14a2 2 0 100 4 2 2 0 000-4zM21 21v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2z"
-            />
-          </svg>
-        ),
+        icon: TotalHouseIcon,
       },
       {
         id: 15,
-        description: "વિસ્તાર ગામના કુલ એરીયાની સંખ્યા",
+        description: "એરીયા/વિસ્તાર વાઇઝ મિલ્કતની સંખ્યા",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path d="M10 14a2 2 0 100 4 2 2 0 000-4zM21 21v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2z" />
-          </svg>
-        ),
+        icon: TotalHouseIcon,
       },
       {
         id: 16,
-        description: "એરીયા વિસ્તાર વાઇઝ મિલ્કત માલીકની સંખ્યા",
+        description: "૧-મિલ્કતથી વધારે મિલ્કતો ધરાવતા હોય તેવા માલીકની સંખ્યા",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path d="M10 14a2 2 0 100 4 2 2 0 000-4zM21 21v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2z" />
-          </svg>
-        ),
+        icon: TotalHouseIcon,
       },
       {
         id: 17,
-        description: "૧-મિલ્કતથી વધારે મિલ્કતો ધરાવતા હોય તેવા માલીકની સંખ્યા",
+        description: "ફક્ત ૧ જ મિલ્કત હોય તેવા મિલ્કત માલીકની સંખ્યા",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.3-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.3.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-            />
-          </svg>
-        ),
+        icon: TotalHouseIcon,
       },
       {
         id: 18,
-        description: "ફક્ત ૧ જ મિલ્કત હોય તેવા મિલ્કત માલીકની સંખ્યા",
-        count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            />
-          </svg>
-        ),
-      },
-      {
-        id: 19,
         description: "મોબાઇલ ફોન ઉપયોગ કરતા વ્યકિતઓની નંબરની કુલ સંખ્યા",
         count: 0,
-        icon: (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-            />
-          </svg>
-        ),
+        icon: PhoneUserIcon,
       },
     ],
   });
 
   const [records, setRecords] = useState([]);
-
   const fetchRecords = async () => {
     try {
       const response = await fetch(`${await apiPath()}/api/sheet`);
@@ -408,8 +151,24 @@ const AnalyticsReport = () => {
     }
   };
 
+  const [societies, setSocieties] = useState([]);
+  const fetchAreas = async () => {
+    try {
+      const response = await fetch(`${await apiPath()}/api/sheet/areas`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      setSocieties(result.data); // Set the fetched areas to state
+    } catch (err) {
+      console.error("Error fetching areas:", err);
+      alert("વિસ્તારો લાવવામાં નિષ્ફળ.");
+    }
+  };
+
   useEffect(() => {
     fetchRecords();
+    fetchAreas();
   }, []);
 
   useEffect(() => {
@@ -425,10 +184,15 @@ const AnalyticsReport = () => {
 
     const RahenankPakaCount = records.filter(
       (record) =>
-        record[7]?.trim() === "રહેણાંક" && record[15]?.includes("પાકા")
+        record[7]?.trim() === "રહેણાંક" &&
+        record[15]?.includes("પાકા") &&
+        !record[15]?.includes("કાચા")
     ).length;
 
-    const RahenankKachaCount = RahenankCount - RahenankPakaCount;
+    const RahenankKachaCount = records.filter(
+      (record) =>
+        record[7]?.trim() === "રહેણાંક" && record[15]?.includes("કાચા")
+    ).length;
 
     const DukanCount = records.filter(
       (record) => record[7]?.trim() === "દુકાન" || record[15]?.includes("દુકાન")
@@ -439,20 +203,20 @@ const AnalyticsReport = () => {
     ).length;
 
     const PlotCount = records.filter(
-      (record) => record[7]?.trim() === "પ્લોટ - ખુલ્લી જગ્યા ખાનગી"
+      (record) => record[7]?.trim() === "પ્લોટ ખાનગી - ખુલ્લી જગ્યા"
+    ).length;
+
+    const GovnPlotCount = records.filter(
+      (record) => record[7]?.trim() === "પ્લોટ સરકારી - કોમનપ્લોટ"
     ).length;
 
     const GovnOwnedCount = records.filter((record) =>
-      record[7]?.includes("સરકારી")
+      record[7]?.includes("સરકારી મિલ્ક્ત")
     ).length;
 
     const DharmikCount = records.filter(
       (record) => record[7]?.trim() === "ધાર્મિક સ્થળ"
     ).length;
-
-    const GovnPlotCount = records.filter(
-      (record) => record[7]?.trim() === "પ્લોટ - ખુલ્લી જગ્યા ખાનગી"
-    ).length; // Edit
 
     let TapCount = 0;
     records.forEach((record) => {
@@ -464,15 +228,27 @@ const AnalyticsReport = () => {
       ToiletCount += Number(record[12]) || 0;
     });
 
-    const DuplicateCount = records.reduce((count, record) => {
-      const value = record[3];
-      return count + (records.filter((r) => r[3] === value).length > 1 ? 1 : 0);
-    }, 0); // Fix
+    const MobileTowerCount = records.filter(
+      (record) =>
+        record[6]?.includes("મોબાઈલ ટાવર") ||
+        record[13]?.includes("મોબાઈલ ટાવર")
+    ).length;
+
+    const TotalAreaCount = societies?.length;
+
+    const AreaWiseCount = TotalAreaCount; // fix
+
+    const counts = records.reduce((acc, record) => {
+      const name = record[3];
+      acc[name] = (acc[name] || 0) + 1;
+      return acc;
+    }, {});
+    // Duplicate & Unique Counts
+    const DuplicateCount = Object.values(counts).filter((c) => c > 1).length;
+    const UniqueCount = Object.values(counts).filter((c) => c === 1).length;
 
     // count not null on 5th index
     const usePhoneCount = records.filter((record) => record[5] !== "").length;
-
-    const Count = -1;
 
     setReportData((prev) => {
       return {
@@ -485,18 +261,17 @@ const AnalyticsReport = () => {
           { ...prev.metrics[4], count: DukanCount },
           { ...prev.metrics[5], count: FactoryCount },
           { ...prev.metrics[6], count: PlotCount },
-          { ...prev.metrics[7], count: GovnOwnedCount },
-          { ...prev.metrics[8], count: DharmikCount },
-          { ...prev.metrics[9], count: GovnPlotCount },
+          { ...prev.metrics[7], count: GovnPlotCount },
+          { ...prev.metrics[8], count: GovnOwnedCount },
+          { ...prev.metrics[9], count: DharmikCount },
           { ...prev.metrics[10], count: TapCount },
           { ...prev.metrics[11], count: ToiletCount },
-          { ...prev.metrics[12], count: Count },
-          { ...prev.metrics[13], count: Count },
-          { ...prev.metrics[14], count: Count },
-          { ...prev.metrics[15], count: Count },
-          { ...prev.metrics[16], count: DuplicateCount },
-          { ...prev.metrics[17], count: Count },
-          { ...prev.metrics[18], count: usePhoneCount },
+          { ...prev.metrics[12], count: MobileTowerCount },
+          { ...prev.metrics[13], count: TotalAreaCount },
+          { ...prev.metrics[14], count: AreaWiseCount },
+          { ...prev.metrics[15], count: DuplicateCount },
+          { ...prev.metrics[16], count: UniqueCount },
+          { ...prev.metrics[17], count: usePhoneCount },
         ],
       };
     });
@@ -569,7 +344,7 @@ const AnalyticsReport = () => {
           <h2 className="text-lg sm:text-xl text-gray-600 mb-4">
             સને {reportData.year}
           </h2>
-          <hr className="border-t-2 border-dashed border-gray-300 w-24 mx-auto" />
+          <hr className="border-t-2 border-dashed border-gray-300 mx-auto w-full" />
         </header>
 
         {/* Village details section */}
@@ -597,17 +372,21 @@ const AnalyticsReport = () => {
             >
               <div className="flex items-center space-x-3 mb-2">
                 <span className="p-2 bg-gray-100 rounded-full">
-                  {metric.icon}
+                  <img
+                    src={metric.icon}
+                    alt="Metric Icon"
+                    style={{ width: "40px", height: "40px" }}
+                  />
                 </span>
-                <span className="text-sm font-semibold text-gray-500">
-                  ક્રમ: {metric.id}
+                <span className="text-sm text-gray-500">
+                  ક્રમ: <b>{metric.id}</b>
                 </span>
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-1">
-                વર્ણન: {metric.description}
+              <h3 className="text-base sm:text-lg text-gray-800 mb-1">
+                વર્ણન: <b>{metric.description}</b>
               </h3>
-              <p className="text-lg sm:text-xl font-bold text-blue-600">
-                સંખ્યા: {metric.count}
+              <p className="text-lg sm:text-xl text-blue-600">
+                સંખ્યા: <b>{metric.count}</b>
               </p>
             </div>
           ))}

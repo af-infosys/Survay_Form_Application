@@ -3,24 +3,6 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../config/AuthContext";
 
 const MenuBar = () => {
-  useEffect(() => {
-    // Google Fonts અને Tailwind CSS CDN સ્ક્રિપ્ટો ઉમેરો
-    const link = document.createElement("link");
-    link.href =
-      "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-
-    const tailwindScript = document.createElement("script");
-    tailwindScript.src = "https://cdn.tailwindcss.com";
-    document.head.appendChild(tailwindScript);
-
-    return () => {
-      document.head.removeChild(link);
-      document.head.removeChild(tailwindScript);
-    };
-  }, []);
-
   const { user } = useAuth();
 
   return (
