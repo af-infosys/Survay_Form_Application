@@ -9,6 +9,7 @@ import Analytics from "./pages/Analytics";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import ProtectedRoute from "./ProtectedRoute";
+import IndexReport from "./pages/IndexReport";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="report" element={<SurvayReport />} />
         <Route path="society" element={<Society />} />
         <Route path="analytics" element={<Analytics />} />
+        <Route path="index" element={<IndexReport />} />
         <Route path="profile" element={<Profile />} />
       </Route>
       <Route path="/login" element={<Login />} />

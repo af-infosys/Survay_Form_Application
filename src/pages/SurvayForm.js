@@ -29,7 +29,7 @@ const SurvayForm = () => {
     tapCount: "",
     toiletCount: "",
     remarks: "",
-    survayor: { id: user?.id, name: user?.name },
+    survayor: { id: user?.id, name: user?.name, time: new Date() },
   });
 
   const [floors, setFloors] = useState([

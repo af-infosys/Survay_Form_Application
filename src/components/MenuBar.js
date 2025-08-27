@@ -111,33 +111,63 @@ const MenuBar = () => {
             </NavLink>
 
             {user?.role === "owner" && (
-              <NavLink
-                to="/analytics"
-                className={({ isActive }) =>
-                  `p-3 rounded-md transition-colors font-medium text-lg flex items-center gap-3 ${
-                    isActive ? "bg-blue-800 shadow-md" : "hover:bg-blue-600"
-                  }`
-                }
-              >
-                {/* Analytics Icon */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-bar-chart"
+              <>
+                <NavLink
+                  to="/analytics"
+                  className={({ isActive }) =>
+                    `p-3 rounded-md transition-colors font-medium text-lg flex items-center gap-3 ${
+                      isActive ? "bg-blue-800 shadow-md" : "hover:bg-blue-600"
+                    }`
+                  }
                 >
-                  <line x1="12" x2="12" y1="20" y2="10" />
-                  <line x1="18" x2="18" y1="20" y2="4" />
-                  <line x1="6" x2="6" y1="20" y2="16" />
-                </svg>
-                એનાલિટિક્સ
-              </NavLink>
+                  {/* Analytics Icon */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-bar-chart"
+                  >
+                    <line x1="12" x2="12" y1="20" y2="10" />
+                    <line x1="18" x2="18" y1="20" y2="4" />
+                    <line x1="6" x2="6" y1="20" y2="16" />
+                  </svg>
+                  એનાલિટિક્સ
+                </NavLink>
+
+                <NavLink
+                  to="/index"
+                  className={({ isActive }) =>
+                    `p-3 rounded-md transition-colors font-medium text-lg flex items-center gap-3 ${
+                      isActive ? "bg-blue-800 shadow-md" : "hover:bg-blue-600"
+                    }`
+                  }
+                >
+                  {/* Analytics Icon */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-bar-chart"
+                  >
+                    <line x1="12" x2="12" y1="20" y2="10" />
+                    <line x1="18" x2="18" y1="20" y2="4" />
+                    <line x1="6" x2="6" y1="20" y2="16" />
+                  </svg>
+                  Index
+                </NavLink>
+              </>
             )}
 
             <NavLink

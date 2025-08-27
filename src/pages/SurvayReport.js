@@ -160,67 +160,89 @@ const SurvayReport = () => {
           <thead className="bg-gray-50">
             <tr>
               <th
-                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg"
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg"
+                style={{ padding: "5px 8px", textAlign: "center" }}
                 id="thead"
               >
                 અનું કૂમાંક
               </th>
               <th
-                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider"
                 id="thead"
-                style={{ minWidth: "150px" }}
+                style={{
+                  minWidth: "150px",
+
+                  padding: "5px 8px",
+                  textAlign: "center",
+                }}
               >
                 માલિકનું નામ
               </th>
               <th
-                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                style={{ padding: "5px 8px", textAlign: "center" }}
                 id="thead"
               >
                 વિસ્તારનું નામ
               </th>
               <th
-                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                style={{ padding: "5px 8px", textAlign: "center" }}
                 id="thead"
               >
                 મિલ્કત ક્રમાંક
               </th>
               <th
-                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider"
                 id="thead"
-                style={{ minWidth: "300px" }}
+                style={{
+                  minWidth: "300px",
+
+                  padding: "5px 8px",
+                  textAlign: "center",
+                }}
               >
                 મિલકતનું વર્ણન
               </th>
               <th
-                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                style={{ padding: "5px 8px", textAlign: "center" }}
                 id="thead"
               >
                 મોબાઈલ નંબર
               </th>
 
               <th
-                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                style={{ padding: "5px 8px", textAlign: "center" }}
                 id="thead"
                 // style={{ rotate: "90deg", transform: "translateY(2px)" }}
               >
                 નળ
               </th>
               <th
-                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                style={{ padding: "5px 8px", textAlign: "center" }}
                 id="thead"
                 // style={{ rotate: "90deg", transform: "translateY(10px)" }}
               >
                 શૌચાલય
               </th>
               <th
-                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                style={{ padding: "5px 8px", textAlign: "center" }}
                 id="thead"
               >
                 નોંધ/રીમાર્કસ
               </th>
               <th
-                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg"
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg"
                 id="thead"
+                style={{
+                  minWidth: "130px",
+                  padding: "5px 8px",
+                  textAlign: "center",
+                }}
               >
                 Action
               </th>
@@ -232,11 +254,12 @@ const SurvayReport = () => {
             {/* 1 to 18 th for index */}
             {Array.from({ length: 10 }).map((_, index) => (
               <th
-                className="px-2 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider"
                 style={{
                   textAlign: "center",
                   color: "white",
                   background: background,
+                  padding: "3px",
                 }}
                 key={index}
               >
@@ -262,51 +285,77 @@ const SurvayReport = () => {
               return (
                 <tr key={index}>
                   {/* અહીં Google Sheet માંથી આવતા ડેટાને કૉલમમાં મેપ કરો */}
-                  <td className="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <td
+                    className="whitespace-nowrap text-sm font-medium text-gray-900"
+                    style={{ padding: "3px 8px" }}
+                  >
                     {record[0]}
                   </td>{" "}
                   {/* અનું કૂમાંક (serialNumber) */}
-                  <td className="px-2 py-4 whitespace-normal text-sm text-gray-500">
+                  <td
+                    className="whitespace-normal text-sm text-gray-500"
+                    style={{ padding: "3px 8px" }}
+                  >
                     {record[3]}
                   </td>{" "}
                   {/* વિસ્તારનું નામ (areaName) */}
-                  <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td
+                    className="whitespace-nowrap text-sm text-gray-500"
+                    style={{ padding: "3px 8px" }}
+                  >
                     {record[1]}
                   </td>{" "}
                   {/* મિલ્કત ક્રમાંક (propertyNumber) */}
-                  <td className="px-2 py-4 whitespace-normal text-sm text-gray-500">
+                  <td
+                    className="whitespace-normal text-sm text-gray-500"
+                    style={{ padding: "3px 8px" }}
+                  >
                     {record[2]}
                   </td>{" "}
                   {/* મિલકતનું વર્ણન (description) */}
-                  <td className="px-2 py-4 whitespace-normal text-sm text-gray-500">
+                  <td
+                    className="whitespace-normal text-sm text-gray-500"
+                    style={{ padding: "3px 8px" }}
+                  >
                     {record[15]}
                   </td>{" "}
                   {/* માલિકનું નામ (ownerName) */}
-                  <td className="px-2 py-4 whitespace-normal text-sm text-gray-500">
+                  <td
+                    className="whitespace-normal text-sm text-gray-500"
+                    style={{ padding: "3px 8px" }}
+                  >
                     {record[5]}
                   </td>
-                  {/* કબ્જેદારનું નામ (rowData માં નથી) */}
-                  {/* <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-500"></td> */}
                   {/* આકારેલી વેરાની રકમ (rowData માં નથી) */}
-                  <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td
+                    className="whitespace-nowrap text-sm text-gray-500"
+                    style={{ padding: "3px 8px" }}
+                  >
                     {record[11]}
                   </td>{" "}
                   {/* પાણી નો નળ (tapCount) */}
-                  <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td
+                    className="whitespace-nowrap text-sm text-gray-500"
+                    style={{ padding: "3px 8px" }}
+                  >
                     {record[12]}
                   </td>{" "}
                   {/* શૌચાલય (toiletCount) */}
-                  <td className="px-2 py-4 whitespace-normal text-sm text-gray-500">
+                  <td
+                    className="whitespace-normal text-sm text-gray-500"
+                    style={{ padding: "3px 8px" }}
+                  >
                     {record[13]}
                   </td>{" "}
                   {/* રીમાર્કસ/નોંધ (remarks) */}
                   {user.id === survayorData?.id ? (
                     <td
-                      className="px-2 py-4 whitespace-normal text-sm text-gray-500"
+                      className="whitespace-normal text-sm text-gray-500"
                       style={{
                         display: "flex",
                         gap: ".5rem",
                         height: "100%",
+                        padding: "3px 8px",
                       }}
                     >
                       <button
@@ -332,8 +381,14 @@ const SurvayReport = () => {
                       </button>
                     </td>
                   ) : (
-                    <td className="px-2 py-4 whitespace-normal text-sm text-gray-500">
-                      Added by <br /> {survayorData?.name || "Unknown"}
+                    <td
+                      className="whitespace-normal text-gray-500"
+                      style={{ fontSize: ".7rem", padding: "3px 8px" }}
+                    >
+                      Added by <br />{" "}
+                      <b style={{ fontSize: ".8rem" }}>
+                        {survayorData?.name || "Unknown"}
+                      </b>
                     </td>
                   )}
                 </tr>
