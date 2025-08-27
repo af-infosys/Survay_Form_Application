@@ -268,7 +268,7 @@ const IndexReport = () => {
             </thead>
 
             <tbody>
-              {sortedKeys.map((key) => (
+              {sortedKeys.map((key, index1) => (
                 <React.Fragment key={key}>
                   <tr>
                     <td
@@ -279,7 +279,7 @@ const IndexReport = () => {
                     </td>
                   </tr>
                   {groupedRecords[key].map((data, index) => (
-                    <tr key={index}>
+                    <tr key={index1}>
                       <td
                         className="px-1 py-2 whitespace-normal text-sm text-gray-500"
                         style={{ padding: "3px 8px" }}
