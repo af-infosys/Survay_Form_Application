@@ -317,16 +317,6 @@ const SurvayForm = () => {
 
   // Effect for loading external CSS and JS (Tailwind)
   useEffect(() => {
-    const link = document.createElement("link");
-    link.href =
-      "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-
-    const tailwindScript = document.createElement("script");
-    tailwindScript.src = "https://cdn.tailwindcss.com";
-    document.head.appendChild(tailwindScript);
-
     // Fetch areas for the dropdown
     const fetchAreas = async () => {
       setAreasLoading(true);
@@ -347,12 +337,33 @@ const SurvayForm = () => {
     };
 
     fetchAreas();
-
-    return () => {
-      document.head.removeChild(link);
-      document.head.removeChild(tailwindScript);
-    };
   }, []);
+
+  const fetchIndex = async () => {
+    try {
+      const response = await fetch(`${await apiPath()}/api/contactList`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+
+      const data = result?.data;
+      if (!Array.isArray(data) || data?.length === 0) return;
+
+      // Set new serial number
+      setFormData((prevData) => ({
+        ...prevData,
+        serialNumber: Number(data[data?.length - 1][1]) + 1 || "",
+        propertyNumber: Number(data[data?.length - 1][1]) + 1 || "",
+      }));
+    } catch (err) {
+      console.error("Error fetching records:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (!isEditMode) fetchIndex();
+  }, [isEditMode]);
 
   return (
     <div className="form-container p-8">
