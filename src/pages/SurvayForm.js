@@ -365,6 +365,28 @@ const SurvayForm = () => {
     if (!isEditMode) fetchIndex();
   }, [isEditMode]);
 
+  const deleteFloor = (floorIndex) => {
+    if (!window.confirm("Sure to Delete!")) return;
+
+    setFloors((prevFloors) => prevFloors.filter((_, i) => i !== floorIndex));
+  };
+
+  const deleteRoomDetails = (floorIndex, roomIndex) => {
+    if (!window.confirm("Sure to Delete!")) return;
+
+    setFloors((prevFloors) => {
+      const newFloors = [...prevFloors]; // Create a shallow copy of the floors array
+      const newRoomDetails = newFloors[floorIndex].roomDetails.filter(
+        (_, i) => i !== roomIndex
+      );
+      newFloors[floorIndex] = {
+        ...newFloors[floorIndex], // Copy the rest of the floor data
+        roomDetails: newRoomDetails, // Update the roomDetails array
+      };
+      return newFloors;
+    });
+  };
+
   return (
     <div className="form-container p-8">
       {/* Added margin for sidebar */}
@@ -581,10 +603,34 @@ const SurvayForm = () => {
               key={floorIndex}
               className="floor-section mb-6 p-4 border rounded-lg shadow-sm"
             >
-              <h3 className="floor-section-title text-lg font-semibold mb-4">
-                માળ <span className="floor-index">{floorIndex + 1}</span>:{" "}
-                {getFloorName(floorIndex)}
-              </h3>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="floor-section-title text-lg font-semibold">
+                  માળ <span className="floor-index">{floorIndex + 1}</span>:{" "}
+                  {getFloorName(floorIndex)}
+                </h3>
+                {floors.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => deleteFloor(floorIndex)}
+                    className="delete-button text-red-600 hover:text-red-800"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                  </button>
+                )}
+              </div>
 
               {floor.roomDetails.map((room, roomIndex) => (
                 <div
@@ -592,9 +638,33 @@ const SurvayForm = () => {
                   className="room-details-section p-4 my-4 bg-gray-50 rounded-md"
                   style={{ background: "#ffd7d3" }}
                 >
-                  <h4 className="font-medium text-gray-700 mb-3">
-                    રૂમની વિગતો {roomIndex + 1}
-                  </h4>
+                  <div className="flex justify-between items-center mb-3">
+                    <h4 className="font-medium text-gray-700">
+                      રૂમની વિગતો {roomIndex + 1}
+                    </h4>
+                    {floor.roomDetails.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => deleteRoomDetails(floorIndex, roomIndex)}
+                        className="delete-button text-red-600 hover:text-red-800"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Delete
+                      </button>
+                    )}
+                  </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
                     {/* Floor-level type select, now inside the room loop */}
                     <div className="form-field mb-4">
