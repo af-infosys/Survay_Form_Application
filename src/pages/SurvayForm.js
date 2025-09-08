@@ -593,6 +593,17 @@ const SurvayForm = () => {
               <option value="બેંક - પ્રાઇટ બેંક">13. બેંક - પ્રાઇટ બેંક</option>
               <option value="સરકારી સહાય આવાસ">14. સરકારી સહાય આવાસ</option>
               <option value="કોમ્પપ્લેક્ષ">15. કોમ્પપ્લેક્ષ</option>
+
+              <option value="હિરાના કારખાના નાના">
+                16. હિરાના કારખાના નાના
+              </option>
+              <option value="હિરાના કારખાના મોટા">
+                17. હિરાના કારખાના મોટા
+              </option>
+              <option value="મોબાઈલ ટાવર">18. મોબાઈલ ટાવર</option>
+              <option value="પેટ્રોલ પંપ, ગેસ પંપ">
+                19. પેટ્રોલ પંપ, ગેસ પંપ
+              </option>
             </select>
           </div>
         </div>
@@ -689,6 +700,7 @@ const SurvayForm = () => {
                         </option>
                         <option value="પાકા">પાકા</option>
                         <option value="કાચા">કાચા</option>
+                        <option value="પ્લોટ">પ્લોટ</option>
                       </select>
                     </div>
 
@@ -812,9 +824,27 @@ const SurvayForm = () => {
                           Select
                         </option>
                         <option value="રૂમ">રૂમ (Room)</option>
-                        <option value="હોલ">હોલ (Hall)</option>
-                        <option value="દુકાન">દુકાન (Shop)</option>
-                        <option value="ગોડાઉન">ગોડાઉન (Godown)</option>
+
+                        <option value="હોલ નાનો">હોલ નાનો</option>
+                        <option value="હોલ મોટો">હોલ મોટો</option>
+                        {/* <option value="હોલ">હોલ (Hall)</option> */}
+
+                        <option value="દુકાન નાની">દુકાન નાની</option>
+                        <option value="દુકાન મોટી">દુકાન મોટી/</option>
+                        {/* <option value="દુકાન">દુકાન (Shop)</option> */}
+
+                        <option value="ગોડાઉન નાનું">ગોડાઉન નાનું </option>
+                        <option value="ગોડાઉન મોટું">ગોડાઉન મોટું </option>
+                        {/* <option value="ગોડાઉન">ગોડાઉન (Godown)</option> */}
+
+                        <option value="ઢાળિયું">ઢાળિયું </option>
+                        <option value="કેબિન">કેબિન </option>
+                        <option value="પાળું">પાળું </option>
+
+                        <option value="શેડ નાનું">શેડ નાનું</option>
+                        <option value="શેડ મોટું">શેડ મોટું</option>
+
+                        <option value="પ્લોટ">પ્લોટ (Plot)</option>
                       </select>
                     </div>
                   </div>
