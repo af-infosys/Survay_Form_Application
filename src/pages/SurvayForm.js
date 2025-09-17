@@ -571,11 +571,11 @@ const SurvayForm = () => {
               <option value="ધાર્મિક સ્થળ">3. ધાર્મિક સ્થળ</option>
               <option value="સરકારી મિલ્ક્ત">4. સરકારી મિલ્ક્ત</option>
               <option value="પ્રાઈવેટ - સંસ્થાઓ">5. પ્રાઈવેટ - સંસ્થાઓ</option>
-              <option value="પ્લોટ - ખુલ્લી જગ્યા ખાનગી">
-                6. પ્લોટ - ખુલ્લી જગ્યા ખાનગી
+              <option value="પ્લોટ ખાનગી - ખુલ્લી જગ્યા">
+                6. પ્લોટ ખાનગી - ખુલ્લી જગ્યા
               </option>
-              <option value="કોમનપ્લોટ - સરકારી પ્લોટ">
-                7. કોમનપ્લોટ - સરકારી પ્લોટ
+              <option value="પ્લોટ સરકારી - કોમનપ્લોટ">
+                7. પ્લોટ સરકારી - કોમનપ્લોટ
               </option>
               <option value="કારખાના - ઇન્ડસ્ટ્રીજ઼">
                 8. કારખાના - ઇન્ડસ્ટ્રીજ઼
@@ -830,21 +830,21 @@ const SurvayForm = () => {
                         {/* <option value="હોલ">હોલ (Hall)</option> */}
 
                         <option value="દુકાન નાની">દુકાન નાની</option>
-                        <option value="દુકાન મોટી">દુકાન મોટી/</option>
+                        <option value="દુકાન મોટી">દુકાન મોટી</option>
                         {/* <option value="દુકાન">દુકાન (Shop)</option> */}
 
                         <option value="ગોડાઉન નાનું">ગોડાઉન નાનું </option>
-                        <option value="ગોડાઉન મોટું">ગોડાઉન મોટું </option>
+                        <option value="ગોડાઉન મોટું">ગોડાઉન મોટું</option>
                         {/* <option value="ગોડાઉન">ગોડાઉન (Godown)</option> */}
 
-                        <option value="ઢાળિયું">ઢાળિયું </option>
-                        <option value="કેબિન">કેબિન </option>
-                        <option value="પાળું">પાળું </option>
+                        <option value="ઢાળિયું">ઢાળિયું</option>
+                        <option value="કેબિન">કેબિન</option>
+                        <option value="પાળું">પાળું</option>
 
                         <option value="શેડ નાનું">શેડ નાનું</option>
                         <option value="શેડ મોટું">શેડ મોટું</option>
 
-                        <option value="પ્લોટ">પ્લોટ (Plot)</option>
+                        <option value="પ્લોટ">પ્લોટ</option>
                       </select>
                     </div>
                   </div>
