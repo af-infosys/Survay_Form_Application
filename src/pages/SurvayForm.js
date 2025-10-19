@@ -5,6 +5,7 @@ import apiPath from "../isProduction";
 
 import "./SurvayForm.scss";
 import WorkSpot from "../components/WorkSpot";
+import ImageUploadSlot from "../components/ImageUploadSlot.jsx";
 
 const SurvayForm = () => {
   const { user } = useAuth();
@@ -30,6 +31,10 @@ const SurvayForm = () => {
     toiletCount: "",
     remarks: "",
     survayor: { id: user?.id, name: user?.name, time: new Date() },
+
+    img1: "",
+    img2: "",
+    img3: "",
   });
 
   const [floors, setFloors] = useState([
@@ -195,6 +200,10 @@ const SurvayForm = () => {
             toiletCount: "",
             remarks: "",
             survayor: { id: user?.id, name: user?.name },
+
+            img1: "",
+            img2: "",
+            img3: "",
           });
           setFloors([
             {
@@ -261,6 +270,10 @@ const SurvayForm = () => {
             toiletCount: Number(record[12]) || 0,
             remarks: record[13] || "",
             survayor: { id: user?.id, name: user?.name },
+
+            img1: record[25],
+            img2: record[26],
+            img3: record[27],
           });
 
           // Populate floors, parsing JSON if necessary
@@ -607,7 +620,9 @@ const SurvayForm = () => {
             </select>
           </div>
         </div>
+
         <h2 className="section-title mt-8">9. માળની વિગતો</h2>
+
         <div id="floorsContainer">
           {floors.map((floor, floorIndex) => (
             <div
@@ -890,6 +905,7 @@ const SurvayForm = () => {
           </svg>
           વધુ માળ ઉમેરો
         </button>
+
         <br />
         <br />
         <br />
@@ -990,8 +1006,10 @@ const SurvayForm = () => {
             />
           </div>
         </div>
+
         <br />
         <br />
+
         {/* Field 21: રીમાર્કસ */}
         <div className="form-field md:col-span-2">
           <label htmlFor="remarks" className="form-label">
@@ -1007,6 +1025,53 @@ const SurvayForm = () => {
             onChange={handleChange}
           ></textarea>
         </div>
+
+        <br />
+        <br />
+        <br />
+
+        {/* Image Upload Section */}
+        <h2 className="text-2xl font-bold text-gray-800 pt-4 border-t mt-8">
+          Image Documentation
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <ImageUploadSlot
+            label="1. Main Gate (Mandatory)"
+            slotKey="img1"
+            formData={formData}
+            setFormData={setFormData}
+          />
+          <ImageUploadSlot
+            label="2. Room Interior"
+            slotKey="img2"
+            formData={formData}
+            setFormData={setFormData}
+          />
+          <ImageUploadSlot
+            label="3. Other (Optional)"
+            slotKey="img3"
+            formData={formData}
+            setFormData={setFormData}
+          />
+        </div>
+
+        <div className="mt-8 pt-6 border-t border-gray-200 text-sm text-gray-600">
+          <h3 className="font-semibold mb-2">
+            Current Form State (for debug):
+          </h3>
+          <pre className="bg-gray-50 p-3 rounded-lg overflow-x-auto text-xs">
+            {JSON.stringify(
+              { img1: formData.img1, img2: formData.img2, img3: formData.img3 },
+              null,
+              2
+            )}
+          </pre>
+        </div>
+
+        <br />
+        <br />
+
         <button type="submit" className="submit-button">
           {isEditMode ? "અપડેટ" : "સબમિટ"}
         </button>
