@@ -1037,19 +1037,19 @@ const SurvayForm = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <ImageUploadSlot
-            label="1. Main Gate (Mandatory)"
+            label="1. મુખ્ય દરવાજો / Main Gate"
             slotKey="img1"
             formData={formData}
             setFormData={setFormData}
           />
           <ImageUploadSlot
-            label="2. Room Interior"
+            label="2. રૂમનો દરવાજો"
             slotKey="img2"
             formData={formData}
             setFormData={setFormData}
           />
           <ImageUploadSlot
-            label="3. Other (Optional)"
+            label="3. માલિકનો ફોટો (Optional)"
             slotKey="img3"
             formData={formData}
             setFormData={setFormData}
