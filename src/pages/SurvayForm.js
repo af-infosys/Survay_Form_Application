@@ -179,7 +179,7 @@ const SurvayForm = () => {
 
       if (response.ok) {
         console.log("Success:", result.message);
-        alert(`ફોર્મ સફળતાપૂર્વક ${isEditMode ? "અપડેટ" : "સબમિટ"} થયું!`);
+        alert(`Entry ${isEditMode ? "Updated" : "Saved"} ✅`);
         navigate("/report");
 
         // Reset form only if it's a new submission
@@ -412,9 +412,7 @@ const SurvayForm = () => {
 
       {formLoading && (
         <div className="text-center text-blue-600 text-lg mb-4">
-          {isEditMode
-            ? "રેકોર્ડ લોડ થઈ રહ્યો છે..."
-            : "ફોર્મ સબમિટ થઈ રહ્યું છે..."}
+          {isEditMode ? "Loading..." : "Submitting..."}
         </div>
       )}
       {formError && (
@@ -856,8 +854,12 @@ const SurvayForm = () => {
                         <option value="કેબિન">કેબિન</option>
                         <option value="પાળું">પાળું</option>
 
-                        <option value="શેડ નાનું">શેડ નાનું</option>
-                        <option value="શેડ મોટું">શેડ મોટું</option>
+                        <option value="શેડ નાના પતરાવાળા">
+                          શેડ નાના પતરાવાળા
+                        </option>
+                        <option value="શેડ મોટા પતરાવાળા">
+                          શેડ મોટા પતરાવાળા
+                        </option>
 
                         <option value="પ્લોટ">પ્લોટ</option>
                       </select>
@@ -865,6 +867,15 @@ const SurvayForm = () => {
                   </div>
                 </div>
               ))}
+
+              {/*              
+               પાકા સ્લેબવાળા રૂમ-૨, પાકા સ્લેબવાળા રૂમ-૨, કાચા પતરાવાળી રૂમ-૧, રસોડું-૩
+
+Ground Floor -        પાકા સ્લેબવાળા રૂમ-૨,
+First Floor -            ઉપરના પહેલા માળે પાકા સ્લેબવાળા રૂમ-૨, કાચા પતરાવાળી રૂમ-૧, 
+Second Floorr -        ઉપરના બીજા માળે પાકા સ્લેબવાળા રૂમ-૨, કાચા પતરાવાળી રૂમ-૧, 
+Third Floor -           ઉપરના ત્રીજા માળે પાકા સ્લેબવાળા રૂમ-૨, કાચા પતરાવાળી રૂમ-૧, રસોડું-5
+ */}
 
               <button
                 type="button"
