@@ -7,57 +7,56 @@ import "./SurvayForm.scss";
 import WorkSpot from "../components/WorkSpot";
 import ImageUploadSlot from "../components/ImageUploadSlot.jsx";
 
+// --- Constants for Local Storage Keys ---
+const FORM_DATA_KEY = "surveyFormData";
+const FLOORS_DATA_KEY = "surveyFloorsData";
+
+// --- Initial State Definition ---
+const initialFormData = (user) => ({
+  serialNumber: "",
+  areaName: "",
+  propertyNumber: "",
+  ownerName: "",
+  oldPropertyNumber: "",
+  mobileNumber: "",
+  propertyNameOnRecord: "",
+  houseCategory: "",
+  kitchenCount: "",
+  bathroomCount: "",
+  verandaCount: "",
+  tapCount: "",
+  toiletCount: "",
+  remarks: "",
+  survayor: { id: user?.id, name: user?.name, time: new Date() },
+  img1: "",
+  img2: "",
+  img3: "",
+});
+
+const initialFloorsState = [
+  {
+    floorType: "",
+    roomDetails: [
+      {
+        type: "",
+        roomHallShopGodown: "",
+        slabRooms: "",
+        tinRooms: "",
+        woodenRooms: "",
+        tileRooms: "",
+      },
+    ],
+  },
+];
+// ----------------------------------------
+
 const SurvayForm = () => {
   const { user } = useAuth();
-
   const { id } = useParams();
   const isEditMode = !!id;
-
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    serialNumber: "",
-    areaName: "",
-    propertyNumber: "",
-    ownerName: "",
-    oldPropertyNumber: "",
-    mobileNumber: "",
-    propertyNameOnRecord: "",
-    houseCategory: "",
-    kitchenCount: "",
-    bathroomCount: "",
-    verandaCount: "",
-    tapCount: "",
-    toiletCount: "",
-    remarks: "",
-    survayor: { id: user?.id, name: user?.name, time: new Date() },
-
-    img1: "",
-    img2: "",
-    img3: "",
-  });
-
-  const [floors, setFloors] = useState([
-    {
-      roomDetails: [
-        {
-          type: "",
-          roomHallShopGodown: "",
-          slabRooms: "",
-          tinRooms: "",
-          woodenRooms: "",
-          tileRooms: "",
-        },
-      ],
-    },
-  ]);
-
-  const [areas, setAreas] = useState([]);
-  const [areasLoading, setAreasLoading] = useState(true);
-  const [areasError, setAreasError] = useState(null);
-  const [formLoading, setFormLoading] = useState(false);
-  const [formError, setFormError] = useState(null);
-
+  // --- Utility to convert Gujarati to English Digits ---
   const convertGujaratiToEnglishDigits = (input) => {
     const gujaratiDigits = "૦૧૨૩૪૫૬૭૮૯";
     const englishDigits = "0123456789";
@@ -67,11 +66,71 @@ const SurvayForm = () => {
       (char) => englishDigits[gujaratiDigits.indexOf(char)]
     );
   };
+  // ----------------------------------------------------
+
+  // 1. STATE INITIALIZATION - Check Local Storage for non-edit mode
+  const [formData, setFormData] = useState(() => {
+    if (isEditMode) {
+      return initialFormData(user); // Use initial state for edit mode
+    }
+
+    // Try to load from localStorage
+    const savedFormData = localStorage.getItem(FORM_DATA_KEY);
+    if (savedFormData) {
+      try {
+        const parsedData = JSON.parse(savedFormData);
+        // Ensure survayor data is updated with the current user
+        return {
+          ...parsedData,
+          survayor: { id: user?.id, name: user?.name, time: new Date() },
+        };
+      } catch (e) {
+        console.error("Failed to parse saved form data:", e);
+        return initialFormData(user);
+      }
+    }
+    return initialFormData(user);
+  });
+
+  const [floors, setFloors] = useState(() => {
+    if (isEditMode) {
+      return initialFloorsState; // Use initial state for edit mode
+    }
+
+    // Try to load from localStorage
+    const savedFloorsData = localStorage.getItem(FLOORS_DATA_KEY);
+    if (savedFloorsData) {
+      try {
+        const parsedData = JSON.parse(savedFloorsData);
+        return parsedData;
+      } catch (e) {
+        console.error("Failed to parse saved floors data:", e);
+        return initialFloorsState;
+      }
+    }
+    return initialFloorsState;
+  });
+
+  const [areas, setAreas] = useState([]);
+  const [areasLoading, setAreasLoading] = useState(true);
+  const [areasError, setAreasError] = useState(null);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState(null);
+  const [imageAkarni, setImageAkarni] = useState(false);
+
+  // 2. AUTO-SAVE EFFECT - Save formData and floors to localStorage on change
+  useEffect(() => {
+    if (!isEditMode) {
+      // Save formData
+      localStorage.setItem(FORM_DATA_KEY, JSON.stringify(formData));
+      // Save floors
+      localStorage.setItem(FLOORS_DATA_KEY, JSON.stringify(floors));
+    }
+  }, [formData, floors, isEditMode]);
+  // ----------------------------------------------------
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // Convert Gujarati digits to English
     const englishValue = convertGujaratiToEnglishDigits(value);
 
     setFormData((prevData) => ({
@@ -90,10 +149,8 @@ const SurvayForm = () => {
     setFloors(updatedFloors);
   };
 
-  // Handles changes for the nested room details fields
   const handleRoomDetailsChange = (floorIndex, roomIndex, e) => {
     const { name, value } = e.target;
-    // Convert Gujarati digits to English for numerical inputs
     const processedValue =
       name !== "roomHallShopGodown" && name !== "type"
         ? convertGujaratiToEnglishDigits(value)
@@ -113,6 +170,7 @@ const SurvayForm = () => {
     setFloors((prevFloors) => [
       ...prevFloors,
       {
+        floorType: "",
         roomDetails: [
           {
             type: "",
@@ -127,11 +185,11 @@ const SurvayForm = () => {
     ]);
   };
 
-  // Adds a new room detail entry to a specific floor
   const addRoomDetails = (floorIndex) => {
     setFloors((prevFloors) => {
       const newFloors = [...prevFloors];
       newFloors[floorIndex].roomDetails.push({
+        type: "",
         roomHallShopGodown: "",
         slabRooms: "",
         tinRooms: "",
@@ -142,12 +200,16 @@ const SurvayForm = () => {
     });
   };
 
-  const getFloorName = (index) => {
-    if (index === 0) return "ગ્રાઉન્ડ ફ્લોર";
-    if (index === 1) return "પ્રથમ માળ";
-    if (index === 2) return "બીજો માળ";
-    if (index === 3) return "ત્રીજો માળ";
-    return `${index + 1}મો માળ`;
+  const handleFloorTypeChange = (floorIndex, e) => {
+    const { value } = e.target;
+    setFloors((prevFloors) => {
+      const newFloors = [...prevFloors];
+      newFloors[floorIndex] = {
+        ...newFloors[floorIndex],
+        floorType: value,
+      };
+      return newFloors;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -155,8 +217,10 @@ const SurvayForm = () => {
     setFormLoading(true);
     setFormError(null);
 
-    const fullFormData = {
+    // Update time just before submission
+    const finalFormData = {
       ...formData,
+      survayor: { ...formData.survayor, time: new Date() },
       floors: floors,
     };
 
@@ -172,7 +236,7 @@ const SurvayForm = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify(fullFormData),
+        body: JSON.stringify(finalFormData),
       });
 
       const result = await response.json();
@@ -182,43 +246,18 @@ const SurvayForm = () => {
         alert(`Entry ${isEditMode ? "Updated" : "Saved"} ✅`);
         navigate("/report");
 
-        // Reset form only if it's a new submission
+        // 3. CLEAR LOCAL STORAGE ON SUCCESSFUL SUBMISSION (Only for new submissions)
         if (!isEditMode) {
-          setFormData({
-            serialNumber: "",
-            areaName: "",
-            propertyNumber: "",
-            ownerName: "",
-            oldPropertyNumber: "",
-            mobileNumber: "",
-            propertyNameOnRecord: "",
-            houseCategory: "",
-            kitchenCount: "",
-            bathroomCount: "",
-            verandaCount: "",
-            tapCount: "",
-            toiletCount: "",
-            remarks: "",
-            survayor: { id: user?.id, name: user?.name },
+          localStorage.removeItem(FORM_DATA_KEY);
+          localStorage.removeItem(FLOORS_DATA_KEY);
+        }
 
-            img1: "",
-            img2: "",
-            img3: "",
-          });
-          setFloors([
-            {
-              roomDetails: [
-                {
-                  type: "",
-                  roomHallShopGodown: "",
-                  slabRooms: "",
-                  tinRooms: "",
-                  woodenRooms: "",
-                  tileRooms: "",
-                },
-              ],
-            },
-          ]);
+        // Reset form for a *new* submission
+        if (!isEditMode) {
+          setFormData(initialFormData(user));
+          setFloors(initialFloorsState);
+          // Re-fetch index after successful submission
+          fetchIndex();
         }
       } else {
         console.error("Error submitting form:", result.message);
@@ -236,7 +275,7 @@ const SurvayForm = () => {
     }
   };
 
-  // Effect to load existing data if in edit mode
+  // Effect to load existing data if in edit mode (No Change Needed Here)
   useEffect(() => {
     const fetchRecordForEdit = async () => {
       if (!isEditMode || !id) return;
@@ -269,7 +308,7 @@ const SurvayForm = () => {
             tapCount: Number(record[11]) || 0,
             toiletCount: Number(record[12]) || 0,
             remarks: record[13] || "",
-            survayor: { id: user?.id, name: user?.name },
+            survayor: { id: user?.id, name: user?.name, time: new Date() }, // Update survayor data on load
 
             img1: record[25],
             img2: record[26],
@@ -283,36 +322,10 @@ const SurvayForm = () => {
               setFloors(parsedFloors);
             } catch (jsonError) {
               console.error("Error parsing floors JSON:", jsonError);
-              setFloors([
-                {
-                  roomDetails: [
-                    {
-                      type: "",
-                      roomHallShopGodown: "",
-                      slabRooms: "",
-                      tinRooms: "",
-                      woodenRooms: "",
-                      tileRooms: "",
-                    },
-                  ],
-                },
-              ]);
+              setFloors(initialFloorsState);
             }
           } else {
-            setFloors([
-              {
-                roomDetails: [
-                  {
-                    type: "",
-                    roomHallShopGodown: "",
-                    slabRooms: "",
-                    tinRooms: "",
-                    woodenRooms: "",
-                    tileRooms: "",
-                  },
-                ],
-              },
-            ]);
+            setFloors(initialFloorsState);
           }
         } else {
           setFormError("રેકોર્ડ મળ્યો નથી.");
@@ -326,19 +339,20 @@ const SurvayForm = () => {
     };
 
     fetchRecordForEdit();
-  }, [id, isEditMode, user?.id]);
+  }, [id, isEditMode, user?.id, user?.name]);
 
-  // Effect for loading external CSS and JS (Tailwind)
+  // Effect for loading areas and Image Mode (No Change Needed Here)
   useEffect(() => {
-    // Fetch areas for the dropdown
     const fetchAreas = async () => {
       setAreasLoading(true);
       setAreasError(null);
       try {
         const response = await fetch(`${await apiPath()}/api/sheet/areas`);
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+
         const result = await response.json();
         setAreas(result.data);
       } catch (err) {
@@ -354,7 +368,7 @@ const SurvayForm = () => {
 
   const fetchIndex = async () => {
     try {
-      const response = await fetch(`${await apiPath()}/api/contactList`);
+      const response = await fetch(`${await apiPath()}/api/sheet`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -366,8 +380,8 @@ const SurvayForm = () => {
       // Set new serial number
       setFormData((prevData) => ({
         ...prevData,
-        serialNumber: Number(data[data?.length - 1][1]) + 1 || "",
-        propertyNumber: Number(data[data?.length - 1][1]) + 1 || "",
+        serialNumber: Number(data[data?.length - 1][0]) + 1 || "",
+        propertyNumber: Number(data[data?.length - 1][0]) + 1 || "",
       }));
     } catch (err) {
       console.error("Error fetching records:", err);
@@ -375,8 +389,14 @@ const SurvayForm = () => {
   };
 
   useEffect(() => {
-    if (!isEditMode) fetchIndex();
+    // Only fetch index if not in edit mode AND not already loaded from local storage
+    if (!isEditMode && !localStorage.getItem(FORM_DATA_KEY)) {
+      fetchIndex();
+    }
   }, [isEditMode]);
+
+  // The rest of the component logic (deleteFloor, deleteRoomDetails, fetchImageMode, and render)
+  // remains largely the same, but include the necessary imports and functions.
 
   const deleteFloor = (floorIndex) => {
     if (!window.confirm("Sure to Delete!")) return;
@@ -400,6 +420,36 @@ const SurvayForm = () => {
     });
   };
 
+  // Original fetchImageMode logic
+  useEffect(() => {
+    const fetchImageMode = async () => {
+      try {
+        const res = await fetch(
+          `${await apiPath()}/api/valuation/getImageMode/${user.id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const data = await res.json();
+        console.log("Image Mode: ", data);
+        setImageAkarni(data?.isImage);
+      } catch (err) {
+        console.log("Image Catched", err);
+        setImageAkarni(false);
+      }
+    };
+
+    if (user?.id) {
+      // Only run if user ID is available
+      fetchImageMode();
+    }
+  }, [user?.id]);
+
+  // --- Render (Omitted for brevity, as it's the same) ---
   return (
     <div className="form-container p-8">
       {/* Added margin for sidebar */}
@@ -415,6 +465,7 @@ const SurvayForm = () => {
           {isEditMode ? "Loading..." : "Submitting..."}
         </div>
       )}
+
       {formError && (
         <div className="text-center text-red-600 text-lg mb-4">{formError}</div>
       )}
@@ -629,9 +680,40 @@ const SurvayForm = () => {
             >
               <div className="flex justify-between items-center mb-4">
                 <h3 className="floor-section-title text-lg font-semibold">
-                  માળ <span className="floor-index">{floorIndex + 1}</span>:{" "}
-                  {getFloorName(floorIndex)}
+                  માળ:{" "}
+                  <span className="floor-index">
+                    {floor.floorType || `માળ ${floorIndex + 1}`}
+                  </span>
                 </h3>
+
+                <div className="form-field mb-4" style={{ display: "flex" }}>
+                  <label
+                    htmlFor={`floorTypeSelect-${floorIndex}`}
+                    className="form-label"
+                  >
+                    માળનો પ્રકાર
+                  </label>
+                  <select
+                    id={`floorTypeSelect-${floorIndex}`}
+                    name="floorType"
+                    className="form-select w-full p-2 border rounded"
+                    value={floor.floorType} // 👈 floorType સ્ટેટમાંથી મૂલ્યનો ઉપયોગ કરો
+                    onChange={(e) => handleFloorTypeChange(floorIndex, e)} // 👈 નવું હેન્ડલર
+                    required
+                  >
+                    <option value="" selected disabled>
+                      માળ પસંદ કરો
+                    </option>
+                    <option value="ગ્રાઉન્ડ ફ્લોર">ગ્રાઉન્ડ ફ્લોર</option>
+                    <option value="પ્રથમ માળ">પ્રથમ માળ</option>
+                    <option value="બીજો માળ">બીજો માળ</option>
+                    <option value="ત્રીજો માળ">ત્રીજો માળ</option>
+                    <option value="ચોથો માળ">ચોથો માળ</option>
+
+                    {/* જરૂર મુજબ વધુ માળ ઉમેરો */}
+                  </select>
+                </div>
+
                 {floors.length > 1 && (
                   <button
                     type="button"
@@ -1038,50 +1120,55 @@ Third Floor -           ઉપરના ત્રીજા માળે પા�
         </div>
 
         <br />
-        <br />
-        <br />
 
         {/* Image Upload Section */}
-        <h2 className="text-2xl font-bold text-gray-800 pt-4 border-t mt-8">
-          Image Documentation
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <ImageUploadSlot
-            label="1. મુખ્ય દરવાજો / Main Gate"
-            slotKey="img1"
-            formData={formData}
-            setFormData={setFormData}
-          />
-          <ImageUploadSlot
-            label="2. રૂમનો દરવાજો"
-            slotKey="img2"
-            formData={formData}
-            setFormData={setFormData}
-          />
-          <ImageUploadSlot
-            label="3. માલિકનો ફોટો (Optional)"
-            slotKey="img3"
-            formData={formData}
-            setFormData={setFormData}
-          />
-        </div>
-
-        <div className="mt-8 pt-6 border-t border-gray-200 text-sm text-gray-600">
-          <h3 className="font-semibold mb-2">
-            Current Form State (for debug):
-          </h3>
-          <pre className="bg-gray-50 p-3 rounded-lg overflow-x-auto text-xs">
-            {JSON.stringify(
-              { img1: formData.img1, img2: formData.img2, img3: formData.img3 },
-              null,
-              2
-            )}
-          </pre>
-        </div>
-
-        <br />
-        <br />
+        {imageAkarni ? (
+          <>
+            <br />
+            <br />{" "}
+            <h2 className="text-2xl font-bold text-gray-800 pt-4 border-t mt-8">
+              Image Documentation
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <ImageUploadSlot
+                label="1. મુખ્ય દરવાજો / Main Gate"
+                slotKey="img1"
+                formData={formData}
+                setFormData={setFormData}
+              />
+              <ImageUploadSlot
+                label="2. રૂમનો દરવાજો"
+                slotKey="img2"
+                formData={formData}
+                setFormData={setFormData}
+              />
+              <ImageUploadSlot
+                label="3. માલિકનો ફોટો (Optional)"
+                slotKey="img3"
+                formData={formData}
+                setFormData={setFormData}
+              />
+            </div>{" "}
+            <div className="mt-8 pt-6 border-t border-gray-200 text-sm text-gray-600">
+              <h3 className="font-semibold mb-2">
+                Current Form State (for debug):
+              </h3>
+              <pre className="bg-gray-50 p-3 rounded-lg overflow-x-auto text-xs">
+                {JSON.stringify(
+                  {
+                    img1: formData.img1,
+                    img2: formData.img2,
+                    img3: formData.img3,
+                  },
+                  null,
+                  2
+                )}
+              </pre>
+            </div>
+            <br />
+            <br />
+          </>
+        ) : null}
 
         <button type="submit" className="submit-button">
           {isEditMode ? "અપડેટ" : "સબમિટ"}
