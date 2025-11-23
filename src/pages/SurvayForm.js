@@ -369,6 +369,7 @@ const SurvayForm = () => {
   const fetchIndex = async () => {
     try {
       const response = await fetch(`${await apiPath()}/api/sheet`);
+      console.log(response);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -392,7 +393,7 @@ const SurvayForm = () => {
 
   useEffect(() => {
     // Only fetch index if not in edit mode AND not already loaded from local storage
-    if (!isEditMode && !localStorage.getItem(FORM_DATA_KEY)) {
+    if (!isEditMode) {
       fetchIndex();
     }
   }, [isEditMode]);

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.471aaecd.css",
-    "main.js": "/static/js/main.22366e07.js",
+    "main.js": "/static/js/main.89bfe98a.js",
     "static/js/453.5bd9c90b.chunk.js": "/static/js/453.5bd9c90b.chunk.js",
     "static/media/KachaMakan.png": "/static/media/KachaMakan.48d30bd246c3006b6119.png",
     "static/media/Total.png": "/static/media/Total.c134310de067dd459257.png",
@@ -12,11 +12,11 @@
     "static/media/House.png": "/static/media/House.640d0b1e39b36fd2550c.png",
     "index.html": "/index.html",
     "main.471aaecd.css.map": "/static/css/main.471aaecd.css.map",
-    "main.22366e07.js.map": "/static/js/main.22366e07.js.map",
+    "main.89bfe98a.js.map": "/static/js/main.89bfe98a.js.map",
     "453.5bd9c90b.chunk.js.map": "/static/js/453.5bd9c90b.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.471aaecd.css",
-    "static/js/main.22366e07.js"
+    "static/js/main.89bfe98a.js"
   ]
 }
