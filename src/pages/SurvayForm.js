@@ -474,7 +474,7 @@ const SurvayForm = () => {
           {/* Field 1: અનું ક્રમાંક */}
           <div className="form-field">
             <label htmlFor="serialNumber" className="form-label">
-              1. અનું ક્રમાંક
+              1. અનું ક્રમાંક *
             </label>
             <input
               type="text"
@@ -494,7 +494,7 @@ const SurvayForm = () => {
           {/* Field 2: વિસ્તારનું નામ (હવે select dropdown) */}
           <div className="form-field">
             <label htmlFor="areaName" className="form-label">
-              2. વિસ્તારનું નામ
+              2. વિસ્તારનું નામ *
             </label>
             {areasLoading ? (
               <select className="form-select" disabled>
@@ -526,7 +526,7 @@ const SurvayForm = () => {
           {/* Field 3: મિલ્કત ક્રમાંક */}
           <div className="form-field">
             <label htmlFor="propertyNumber" className="form-label">
-              3. મિલ્કત ક્રમાંક
+              3. મિલ્કત ક્રમાંક *
             </label>
             <input
               type="text"
@@ -545,7 +545,7 @@ const SurvayForm = () => {
           {/* Field 4: માલિકનું નામ */}
           <div className="form-field">
             <label htmlFor="ownerName" className="form-label">
-              4. માલિકનું નામ
+              4. માલિકનું નામ *
             </label>
             <input
               type="text"
@@ -580,7 +580,7 @@ const SurvayForm = () => {
           {/* Field 6: મોબાઈલ નંબર */}
           <div className="form-field">
             <label htmlFor="mobileNumber" className="form-label">
-              6. મોબાઈલ નંબર (Whatsapp)
+              6. મોબાઈલ નંબર (Whatsapp) *
             </label>
             <input
               type="tel"
@@ -610,14 +610,13 @@ const SurvayForm = () => {
               placeholder=""
               value={formData.propertyNameOnRecord}
               onChange={handleChange}
-              required
             />
           </div>
 
           {/* Field 9: મકાન category */}
           <div className="form-field">
             <label htmlFor="houseCategory" className="form-label">
-              8. મકાન category
+              8. મકાન category *
             </label>
             <select
               id="houseCategory"
@@ -670,7 +669,7 @@ const SurvayForm = () => {
           </div>
         </div>
 
-        <h2 className="section-title mt-8">9. માળની વિગતો</h2>
+        <h2 className="section-title mt-8">9. માળની વિગતો *</h2>
 
         <div id="floorsContainer">
           {floors.map((floor, floorIndex) => (
@@ -691,7 +690,7 @@ const SurvayForm = () => {
                     htmlFor={`floorTypeSelect-${floorIndex}`}
                     className="form-label"
                   >
-                    માળનો પ્રકાર
+                    માળનો પ્રકાર *
                   </label>
                   <select
                     id={`floorTypeSelect-${floorIndex}`}
@@ -746,7 +745,7 @@ const SurvayForm = () => {
                 >
                   <div className="flex justify-between items-center mb-3">
                     <h4 className="font-medium text-gray-700">
-                      રૂમની વિગતો {roomIndex + 1}
+                      રૂમની વિગતો {roomIndex + 1} *
                     </h4>
                     {floor.roomDetails.length > 1 && (
                       <button
