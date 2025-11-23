@@ -377,6 +377,8 @@ const SurvayForm = () => {
       const data = result?.data;
       if (!Array.isArray(data) || data?.length === 0) return;
 
+      console.log(data || "No data found");
+
       // Set new serial number
       setFormData((prevData) => ({
         ...prevData,
@@ -580,7 +582,7 @@ const SurvayForm = () => {
           {/* Field 6: મોબાઈલ નંબર */}
           <div className="form-field">
             <label htmlFor="mobileNumber" className="form-label">
-              6. મોબાઈલ નંબર (Whatsapp) *
+              6. મોબાઈલ નંબર (Whatsapp)
             </label>
             <input
               type="tel"
@@ -593,7 +595,6 @@ const SurvayForm = () => {
               onChange={handleChange}
               style={{ maxWidth: "130px" }}
               maxLength="10"
-              required
             />
           </div>
 
