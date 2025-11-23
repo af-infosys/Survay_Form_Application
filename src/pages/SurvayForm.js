@@ -712,7 +712,7 @@ const SurvayForm = () => {
                     <option value="ચોથો માળ">ચોથો માળ</option>
                     <option value="પાંચમો માળ">પાંચમો માળ</option>
 
-                    <option value="ફળિયું">ફળિયું (ખાલી પ્લોટ)</option>
+                    <option value="ફળિયું">ફળિયું (ખુલ્લી જગ્યા)</option>
 
                     {/* જરૂર મુજબ વધુ માળ ઉમેરો */}
                   </select>
