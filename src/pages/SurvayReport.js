@@ -77,6 +77,7 @@ const SurvayReport = () => {
 
   const handleDelete = async (id) => {
     try {
+      console.log("Attempting to delete record with ID:", id);
       await fetch(`${await apiPath()}/api/sheet/${id}`, {
         method: "DELETE",
         headers: {
@@ -84,7 +85,7 @@ const SurvayReport = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      setRecords(records.filter((record) => record.id !== id));
+      setRecords([]);
 
       fetchRecords();
     } catch (err) {
@@ -367,7 +368,7 @@ const SurvayReport = () => {
                       <button
                         onClick={() => {
                           if (
-                            window.confirm(
+                            !window.confirm(
                               `ID = '${record[0]}' \nAre you Sure to Delete this Record?`
                             )
                           )
@@ -383,7 +384,11 @@ const SurvayReport = () => {
                   ) : (
                     <td
                       className="whitespace-normal text-gray-500"
-                      style={{ fontSize: ".7rem", padding: "3px 8px" }}
+                      style={{
+                        fontSize: ".7rem",
+                        padding: "3px 8px",
+                        minWidth: "200px",
+                      }}
                     >
                       Added by <br />{" "}
                       <b style={{ fontSize: ".8rem" }}>
