@@ -27,6 +27,7 @@ const initialFormData = (user) => ({
   tapCount: "",
   toiletCount: "",
   remarks: "",
+  bp: "",
   survayor: { id: user?.id, name: user?.name, time: new Date() },
   img1: "",
   img2: "",
@@ -155,6 +156,27 @@ const SurvayForm = () => {
       } else {
         // delete floor with type == ફળિયું
         setFloors(floors.filter((floor) => floor.floorType !== "ફળિયું"));
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        [name]: checked,
+      }));
+
+      return;
+    }
+
+    if (name === "bp") {
+      if (checked === true) {
+        setFormData((prev) => ({
+          ...prev,
+          remarks: `બિ.પ. ${prev?.remarks}`?.trim(),
+        }));
+      } else {
+        setFormData((prev) => ({
+          ...prev,
+          remarks: `${prev?.remarks.replace("બિ.પ.", "")}`?.trim(),
+        }));
       }
 
       setFormData((prev) => ({
@@ -324,6 +346,16 @@ const SurvayForm = () => {
         const record = result.data;
 
         if (record) {
+          const isLandArea = () => {
+            JSON.parse(record[14]).map((floors) => {
+              if (floors?.floorType === "ફળિયું") {
+                return true;
+              }
+            });
+
+            return false;
+          };
+
           // Populate formData
           setFormData({
             serialNumber: record[0] || "",
@@ -340,6 +372,10 @@ const SurvayForm = () => {
             tapCount: Number(record[11]) || 0,
             toiletCount: Number(record[12]) || 0,
             remarks: record[13] || "",
+
+            landArea: isLandArea(),
+            bp: record[13]?.includes("બિ.પ.") ? true : false,
+
             survayor: { id: user?.id, name: user?.name, time: new Date() }, // Update survayor data on load
 
             img1: record[25],
@@ -417,6 +453,7 @@ const SurvayForm = () => {
         ...prevData,
         serialNumber: Number(data[data?.length - 1][0]) + 1 || "",
         propertyNumber: Number(data[data?.length - 1][0]) + 1 || "",
+        areaName: data[data?.length - 1][1] || "",
       }));
     } catch (err) {
       console.error("Error fetching records:", err);
@@ -517,12 +554,13 @@ const SurvayForm = () => {
               name="serialNumber"
               className="form-input"
               placeholder="દા.ત. 001"
-              value={formData.serialNumber}
+              value={Number(formData.serialNumber)}
               onChange={handleChange}
               required
-              disabled={isEditMode}
+              // disabled={isEditMode}
               style={{ maxWidth: "82px" }}
               maxLength="5"
+              disabled="disabled"
             />
           </div>
 
@@ -569,7 +607,7 @@ const SurvayForm = () => {
               name="propertyNumber"
               className="form-input"
               placeholder="દા.ત. P12345"
-              value={formData.propertyNumber}
+              value={Number(formData.propertyNumber)}
               onChange={handleChange}
               required
               style={{ maxWidth: "82px" }}
@@ -779,7 +817,7 @@ const SurvayForm = () => {
                   >
                     <div className="flex justify-between items-center mb-3">
                       <h4 className="font-medium text-gray-700">
-                        રૂમની વિગતો {roomIndex + 1} *
+                        વર્ણન : {roomIndex + 1} *
                       </h4>
 
                       {floor.roomDetails.length > 1 && (
@@ -1005,7 +1043,7 @@ const SurvayForm = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  વધુ રૂમ ઉમેરો
+                  વધુ વર્ણન ઉમેરો
                 </button>
               </div>
             )
@@ -1036,26 +1074,51 @@ const SurvayForm = () => {
         <br />
 
         {/* ફળિયું (ખુલ્લી જગ્યા) */}
+        <div style={{ display: "flex", gap: "20px" }}>
+          <div className="form-field" style={{ display: "flex", gap: "20px" }}>
+            <label
+              className="form-label"
+              htmlFor="landArea"
+              style={{ textWrap: "nowrap", userSelect: "none" }}
+            >
+              10. ફળિયું (ખુલ્લી જગ્યા)
+            </label>
 
-        <div className="form-field" style={{ display: "flex", gap: "20px" }}>
-          <label
-            className="form-label"
-            htmlFor="landArea"
-            style={{ textWrap: "nowrap", userSelect: "none" }}
-          >
-            ફળિયું (ખુલ્લી જગ્યા)
-          </label>
+            <input
+              type="checkbox"
+              id="landArea"
+              name="landArea"
+              className="form-input"
+              value={formData.landArea}
+              onChange={handleChange}
+              checked={formData.landArea}
+              style={{ width: "20px" }}
+            />
+          </div>
 
-          <input
-            type="checkbox"
-            id="landArea"
-            name="landArea"
-            className="form-input"
-            value={formData.landArea}
-            onChange={handleChange}
-            checked={formData.landArea}
-            style={{ width: "20px" }}
-          />
+          <div>|</div>
+
+          {/* બિ.પ. */}
+          <div className="form-field" style={{ display: "flex", gap: "20px" }}>
+            <label
+              className="form-label"
+              htmlFor="bp"
+              style={{ textWrap: "nowrap", userSelect: "none" }}
+            >
+              11. બિ.પ.
+            </label>
+
+            <input
+              type="checkbox"
+              id="bp"
+              name="bp"
+              className="form-input"
+              value={formData.bp}
+              onChange={handleChange}
+              checked={formData.bp}
+              style={{ width: "20px" }}
+            />
+          </div>
         </div>
 
         <br />
@@ -1161,7 +1224,7 @@ const SurvayForm = () => {
         {/* Field 21: રીમાર્કસ */}
         <div className="form-field md:col-span-2">
           <label htmlFor="remarks" className="form-label">
-            16. નોંધ/રીમાર્કસ
+            17. નોંધ/રીમાર્કસ
           </label>
           <textarea
             id="remarks"
