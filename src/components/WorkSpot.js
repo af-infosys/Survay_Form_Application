@@ -24,7 +24,7 @@ const WorkSpot = () => {
             setWorkSpot(data?.work?.spot);
           });
 
-        setWorkSpot(user.workSpot);
+        // setWorkSpot(user.workSpot);
       } catch (err) {
         console.log(err);
       }

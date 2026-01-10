@@ -5,7 +5,7 @@ import apiPath from "../isProduction";
 
 import "./SurvayForm.scss";
 import WorkSpot from "../components/WorkSpot";
-import ImageUploadSlot from "../components/ImageUploadSlot.jsx";
+// import ImageUploadSlot from "../components/ImageUploadSlot.jsx";
 
 // --- Constants for Local Storage Keys ---
 const FORM_DATA_KEY = "surveyFormData";
@@ -117,7 +117,7 @@ const SurvayForm = () => {
   const [areasError, setAreasError] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState(null);
-  const [imageAkarni, setImageAkarni] = useState(false);
+  // const [imageAkarni, setImageAkarni] = useState(false);
 
   // 2. AUTO-SAVE EFFECT - Save formData and floors to localStorage on change
   useEffect(() => {
@@ -205,6 +205,7 @@ const SurvayForm = () => {
 
   const handleRoomDetailsChange = (floorIndex, roomIndex, e) => {
     const { name, value } = e.target;
+
     const processedValue =
       name !== "roomHallShopGodown" && name !== "type"
         ? convertGujaratiToEnglishDigits(value)
@@ -274,6 +275,7 @@ const SurvayForm = () => {
     // Update time just before submission
     const finalFormData = {
       ...formData,
+      mobileNumber: Number(formData.mobileNumber),
       survayor: { ...formData.survayor, time: new Date() },
       floors: floors,
     };
@@ -363,7 +365,7 @@ const SurvayForm = () => {
             propertyNumber: record[2] || "",
             ownerName: record[3] || "",
             oldPropertyNumber: record[4] || "",
-            mobileNumber: record[5] | "",
+            mobileNumber: Number(record[5]) | "",
             propertyNameOnRecord: record[6] || "",
             houseCategory: record[7] || "",
             kitchenCount: Number(record[8]) || 0,
@@ -434,6 +436,8 @@ const SurvayForm = () => {
     fetchAreas();
   }, []);
 
+  console.log(formData);
+
   const fetchIndex = async () => {
     try {
       const response = await fetch(`${await apiPath()}/api/sheet`);
@@ -493,33 +497,33 @@ const SurvayForm = () => {
   };
 
   // Original fetchImageMode logic
-  useEffect(() => {
-    const fetchImageMode = async () => {
-      try {
-        const res = await fetch(
-          `${await apiPath()}/api/valuation/getImageMode/${user.id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        const data = await res.json();
-        console.log("Image Mode: ", data);
-        setImageAkarni(data?.isImage);
-      } catch (err) {
-        console.log("Image Catched", err);
-        setImageAkarni(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchImageMode = async () => {
+  //     try {
+  //       const res = await fetch(
+  //         `${await apiPath()}/api/valuation/getImageMode/${user.id}`,
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //           },
+  //         }
+  //       );
+  //       const data = await res.json();
+  //       console.log("Image Mode: ", data);
+  //       setImageAkarni(data?.isImage);
+  //     } catch (err) {
+  //       console.log("Image Catched", err);
+  //       setImageAkarni(false);
+  //     }
+  //   };
 
-    if (user?.id) {
-      // Only run if user ID is available
-      fetchImageMode();
-    }
-  }, [user?.id]);
+  //   if (user?.id) {
+  //     // Only run if user ID is available
+  //     fetchImageMode();
+  //   }
+  // }, [user?.id]);
 
   // --- Render (Omitted for brevity, as it's the same) ---
   return (
@@ -662,7 +666,7 @@ const SurvayForm = () => {
               className="form-input"
               placeholder="9876543210"
               title="કૃપા કરીને 10 અંકનો મોબાઇલ નંબર દાખલ કરો"
-              value={formData.mobileNumber}
+              value={Number(formData.mobileNumber)}
               onChange={handleChange}
               style={{ maxWidth: "130px" }}
               maxLength="10"
@@ -1139,13 +1143,6 @@ const SurvayForm = () => {
               value={formData.kitchenCount}
               onChange={handleChange}
               maxLength="3"
-              // onClick={() => {
-              //   if (formData.kitchenCount === 0)
-              //     setFormData((prevData) => ({
-              //       ...prevData,
-              //       kitchenCount: 1,
-              //     }));
-              // }}
             />
           </div>
 
@@ -1240,7 +1237,7 @@ const SurvayForm = () => {
         <br />
 
         {/* Image Upload Section */}
-        {imageAkarni ? (
+        {/* {imageAkarni ? (
           <>
             <br />
             <br />{" "}
@@ -1285,8 +1282,9 @@ const SurvayForm = () => {
             </div>
             <br />
             <br />
-          </>
-        ) : null}
+
+          </>      
+            ) : null} */}
 
         <button type="submit" className="submit-button">
           {isEditMode ? "અપડેટ" : "સબમિટ"}
