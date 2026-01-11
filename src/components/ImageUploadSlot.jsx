@@ -42,7 +42,7 @@ const ImageUploadSlot = ({ label, slotKey, formData, setFormData }) => {
       showMessage(`Uploading ${file.name}...`);
 
       const res = await axios.post(
-        `${await apiPath()}/api/images/`,
+        `${await apiPath()}/api/images`,
         formDataPayload,
         {
           headers: { "Content-Type": "multipart/form-data" },

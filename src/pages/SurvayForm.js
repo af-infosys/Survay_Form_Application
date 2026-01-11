@@ -5,7 +5,7 @@ import apiPath from "../isProduction";
 
 import "./SurvayForm.scss";
 import WorkSpot from "../components/WorkSpot";
-// import ImageUploadSlot from "../components/ImageUploadSlot.jsx";
+import ImageUploadSlot from "../components/ImageUploadSlot.jsx";
 
 // --- Constants for Local Storage Keys ---
 const FORM_DATA_KEY = "surveyFormData";
@@ -117,7 +117,7 @@ const SurvayForm = () => {
   const [areasError, setAreasError] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState(null);
-  // const [imageAkarni, setImageAkarni] = useState(false);
+  const [imageAkarni, setImageAkarni] = useState(false);
 
   // 2. AUTO-SAVE EFFECT - Save formData and floors to localStorage on change
   useEffect(() => {
@@ -448,15 +448,23 @@ const SurvayForm = () => {
       const result = await response.json();
 
       const data = result?.data;
-      if (!Array.isArray(data) || data?.length === 0) return;
+      if (!Array.isArray(data) || data?.length === 0) {
+        setFormData((prevData) => ({
+          ...prevData,
+          serialNumber: 1,
+          propertyNumber: 1,
+          areaName: "",
+        }));
+        return;
+      }
 
       console.log(data || "No data found");
 
       // Set new serial number
       setFormData((prevData) => ({
         ...prevData,
-        serialNumber: Number(data[data?.length - 1][0]) + 1 || "",
-        propertyNumber: Number(data[data?.length - 1][0]) + 1 || "",
+        serialNumber: Number(data[data?.length - 1][0]) + 1 || "1",
+        propertyNumber: Number(data[data?.length - 1][0]) + 1 || "1",
         areaName: data[data?.length - 1][1] || "",
       }));
     } catch (err) {
@@ -497,33 +505,33 @@ const SurvayForm = () => {
   };
 
   // Original fetchImageMode logic
-  // useEffect(() => {
-  //   const fetchImageMode = async () => {
-  //     try {
-  //       const res = await fetch(
-  //         `${await apiPath()}/api/valuation/getImageMode/${user.id}`,
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //           },
-  //         }
-  //       );
-  //       const data = await res.json();
-  //       console.log("Image Mode: ", data);
-  //       setImageAkarni(data?.isImage);
-  //     } catch (err) {
-  //       console.log("Image Catched", err);
-  //       setImageAkarni(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchImageMode = async () => {
+      try {
+        const res = await fetch(
+          `${await apiPath()}/api/valuation/getImageMode/${user.id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const data = await res.json();
+        console.log("Image Mode: ", data);
+        setImageAkarni(data?.isImage);
+      } catch (err) {
+        console.log("Image Catched", err);
+        setImageAkarni(false);
+      }
+    };
 
-  //   if (user?.id) {
-  //     // Only run if user ID is available
-  //     fetchImageMode();
-  //   }
-  // }, [user?.id]);
+    if (user?.id) {
+      // Only run if user ID is available
+      fetchImageMode();
+    }
+  }, [user?.id]);
 
   // --- Render (Omitted for brevity, as it's the same) ---
   return (
@@ -1237,7 +1245,7 @@ const SurvayForm = () => {
         <br />
 
         {/* Image Upload Section */}
-        {/* {imageAkarni ? (
+        {imageAkarni ? (
           <>
             <br />
             <br />{" "}
@@ -1282,9 +1290,8 @@ const SurvayForm = () => {
             </div>
             <br />
             <br />
-
-          </>      
-            ) : null} */}
+          </>
+        ) : null}
 
         <button type="submit" className="submit-button">
           {isEditMode ? "અપડેટ" : "સબમિટ"}
