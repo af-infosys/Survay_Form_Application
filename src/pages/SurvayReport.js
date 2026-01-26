@@ -9,19 +9,45 @@ const SurvayReport = () => {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [projectId, setProjectId] = useState(null);
 
   const navigate = useNavigate();
 
   const { user } = useAuth();
 
   const fetchRecords = async () => {
+    let project = null;
+
     try {
-      const response = await fetch(`${await apiPath()}/api/sheet`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const result = await response.json();
-      setRecords(result.data); // result.data માંથી રેકોર્ડ્સ સેટ કરો
+      fetch(`${await apiPath()}/api/work/${user.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((res) => res.json())
+        .then(async (data) => {
+          setProjectId(data?.work?._id);
+          project = data?.work?._id;
+          console.log(data?.work?._id);
+
+          // setWorkSpot(user.workSpot);
+          // } catch (err) {
+          //   console.log(err);
+          //   return;
+          // }
+
+          // try {
+          const response = await fetch(
+            `${await apiPath()}/api/sheet?workId=${projectId || project}`,
+          );
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const result = await response.json();
+          setRecords(result.data); // result.data માંથી રેકોર્ડ્સ સેટ કરો
+        });
     } catch (err) {
       console.error("Error fetching records:", err);
       setError("ડેટા લાવવામાં નિષ્ફળ. કૃપા કરીને ફરી પ્રયાસ કરો.");
@@ -82,7 +108,7 @@ const SurvayReport = () => {
   const [searchTerm, setSearchTerm] = useState(initialState.searchTerm);
   const [areaFilter, setAreaFilter] = useState(initialState.areaFilter);
   const [categoryFilter, setCategoryFilter] = useState(
-    initialState.categoryFilter
+    initialState.categoryFilter,
   );
   const [isSorted, setIsSorted] = useState(initialState.isSorted);
   const [isReversed, setIsReversed] = useState(initialState.isReversed);
@@ -123,14 +149,14 @@ const SurvayReport = () => {
     // 2. Area Filter (Index 1)
     if (areaFilter) {
       filteredRecords = filteredRecords.filter(
-        (record) => record[1] === areaFilter
+        (record) => record[1] === areaFilter,
       );
     }
 
     // 3. Category Filter (Index 7)
     if (categoryFilter) {
       filteredRecords = filteredRecords.filter(
-        (record) => record[7] === categoryFilter
+        (record) => record[7] === categoryFilter,
       );
     }
 
@@ -172,12 +198,17 @@ const SurvayReport = () => {
   const handleDelete = async (id) => {
     try {
       console.log("Attempting to delete record with ID:", id);
+
+      // passing projectId as workId in body
       await fetch(`${await apiPath()}/api/sheet/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        body: JSON.stringify({
+          workId: projectId,
+        }),
       });
       setRecords([]);
 
@@ -589,7 +620,7 @@ const SurvayReport = () => {
                         onClick={() => {
                           if (
                             !window.confirm(
-                              `ID = '${record[0]}' \nAre you Sure to Delete this Record?`
+                              `ID = '${record[0]}' \nAre you Sure to Delete this Record?`,
                             )
                           )
                             return;

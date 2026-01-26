@@ -57,6 +57,31 @@ const SurvayForm = () => {
   const isEditMode = !!id;
   const navigate = useNavigate();
 
+  const [projectId, setProjectId] = useState(null);
+
+  useEffect(() => {
+    const fetchRecords = async () => {
+      try {
+        fetch(`${await apiPath()}/api/work/${user.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+          .then((res) => res.json())
+          .then(async (data) => {
+            setProjectId(data?.work?._id);
+          });
+      } catch (err) {
+        console.log(err);
+        return;
+      }
+    };
+
+    fetchRecords();
+  }, []);
+
   // --- Utility to convert Gujarati to English Digits ---
   const convertGujaratiToEnglishDigits = (input) => {
     const gujaratiDigits = "૦૧૨૩૪૫૬૭૮૯";
@@ -64,7 +89,7 @@ const SurvayForm = () => {
 
     return input.replace(
       /[૦૧૨૩૪૫૬૭૮૯]/g,
-      (char) => englishDigits[gujaratiDigits.indexOf(char)]
+      (char) => englishDigits[gujaratiDigits.indexOf(char)],
     );
   };
   // ----------------------------------------------------
@@ -198,7 +223,7 @@ const SurvayForm = () => {
     const englishValue = convertGujaratiToEnglishDigits(value);
 
     const updatedFloors = floors.map((floor, i) =>
-      i === index ? { ...floor, [name]: englishValue } : floor
+      i === index ? { ...floor, [name]: englishValue } : floor,
     );
     setFloors(updatedFloors);
   };
@@ -278,6 +303,7 @@ const SurvayForm = () => {
       mobileNumber: Number(formData.mobileNumber),
       survayor: { ...formData.survayor, time: new Date() },
       floors: floors,
+      workId: projectId,
     };
 
     try {
@@ -320,7 +346,7 @@ const SurvayForm = () => {
         setFormError(
           `ફોર્મ ${isEditMode ? "અપડેટ" : "સબમિટ"} કરવામાં ભૂલ: ${
             result.message
-          }`
+          }`,
         );
       }
     } catch (error) {
@@ -339,7 +365,9 @@ const SurvayForm = () => {
       setFormLoading(true);
       setFormError(null);
       try {
-        const response = await fetch(`${await apiPath()}/api/sheet/${id}`);
+        const response = await fetch(
+          `${await apiPath()}/api/sheet/${id}?workId=${projectId}`,
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -409,7 +437,7 @@ const SurvayForm = () => {
     };
 
     fetchRecordForEdit();
-  }, [id, isEditMode, user?.id, user?.name]);
+  }, [id, isEditMode, user?.id, user?.name, projectId]);
 
   // Effect for loading areas and Image Mode (No Change Needed Here)
   useEffect(() => {
@@ -417,7 +445,9 @@ const SurvayForm = () => {
       setAreasLoading(true);
       setAreasError(null);
       try {
-        const response = await fetch(`${await apiPath()}/api/sheet/areas`);
+        const response = await fetch(
+          `${await apiPath()}/api/sheet/areas?workId=${projectId}`,
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -434,13 +464,15 @@ const SurvayForm = () => {
     };
 
     fetchAreas();
-  }, []);
+  }, [projectId]);
 
   console.log(formData);
 
   const fetchIndex = async () => {
     try {
-      const response = await fetch(`${await apiPath()}/api/sheet`);
+      const response = await fetch(
+        `${await apiPath()}/api/sheet?workId=${projectId}`,
+      );
       console.log(response);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -477,7 +509,7 @@ const SurvayForm = () => {
     if (!isEditMode) {
       fetchIndex();
     }
-  }, [isEditMode]);
+  }, [isEditMode, projectId]);
 
   // The rest of the component logic (deleteFloor, deleteRoomDetails, fetchImageMode, and render)
   // remains largely the same, but include the necessary imports and functions.
@@ -494,7 +526,7 @@ const SurvayForm = () => {
     setFloors((prevFloors) => {
       const newFloors = [...prevFloors]; // Create a shallow copy of the floors array
       const newRoomDetails = newFloors[floorIndex].roomDetails.filter(
-        (_, i) => i !== roomIndex
+        (_, i) => i !== roomIndex,
       );
       newFloors[floorIndex] = {
         ...newFloors[floorIndex], // Copy the rest of the floor data
@@ -509,14 +541,14 @@ const SurvayForm = () => {
     const fetchImageMode = async () => {
       try {
         const res = await fetch(
-          `${await apiPath()}/api/valuation/getImageMode/${user.id}`,
+          `${await apiPath()}/api/valuation/getImageMode/${user.id}?workId=${projectId}`,
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         );
         const data = await res.json();
         console.log("Image Mode: ", data);
@@ -531,7 +563,7 @@ const SurvayForm = () => {
       // Only run if user ID is available
       fetchImageMode();
     }
-  }, [user?.id]);
+  }, [user?.id, projectId]);
 
   // --- Render (Omitted for brevity, as it's the same) ---
   return (
@@ -711,7 +743,7 @@ const SurvayForm = () => {
               required
             >
               <option value="">કેટેગરી પસંદ કરો</option>
-              <option value="રહેણાંક">1. રહેણાંક - મકાન</option>
+              <option value="રહેણાંક - મકાન">1. રહેણાંક - મકાન</option>
               <option value="દુકાન">2. દુકાન</option>
               <option value="ધાર્મિક સ્થળ">3. ધાર્મિક સ્થળ</option>
               <option value="સરકારી મિલ્ક્ત">4. સરકારી મિલ્ક્ત</option>
@@ -1058,7 +1090,7 @@ const SurvayForm = () => {
                   વધુ વર્ણન ઉમેરો
                 </button>
               </div>
-            )
+            ),
           )}
         </div>
 
@@ -1284,7 +1316,7 @@ const SurvayForm = () => {
                     img3: formData.img3,
                   },
                   null,
-                  2
+                  2,
                 )}
               </pre>
             </div>

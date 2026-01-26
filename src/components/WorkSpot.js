@@ -21,6 +21,7 @@ const WorkSpot = () => {
         })
           .then((res) => res.json())
           .then((data) => {
+            console.log(data?.work?._id);
             setWorkSpot(data?.work?.spot);
           });
 
