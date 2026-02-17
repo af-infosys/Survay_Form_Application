@@ -301,7 +301,6 @@ const SurvayForm = () => {
     // Update time just before submission
     const finalFormData = {
       ...formData,
-      mobileNumber: Number(formData.mobileNumber),
       survayor: { ...formData.survayor, time: new Date() },
       floors: floors,
       workId: projectId,
@@ -395,7 +394,7 @@ const SurvayForm = () => {
             ownerName: record[3] || "",
             occName: record[4] || "",
             oldPropertyNumber: record[5] || "",
-            mobileNumber: Number(record[6]) | "",
+            mobileNumber: record[6] || "",
             propertyNameOnRecord: record[7] || "",
             houseCategory: record[8] || "",
             kitchenCount: Number(record[9]) || 0,
@@ -718,13 +717,13 @@ const SurvayForm = () => {
               7. મોબાઈલ નંબર (Whatsapp)
             </label>
             <input
-              type="tel"
+              type="text"
               id="mobileNumber"
               name="mobileNumber"
               className="form-input"
               placeholder="9876543210"
               title="કૃપા કરીને 10 અંકનો મોબાઇલ નંબર દાખલ કરો"
-              value={Number(formData.mobileNumber)}
+              value={formData.mobileNumber}
               onChange={handleChange}
               style={{ maxWidth: "130px" }}
               maxLength="10"
