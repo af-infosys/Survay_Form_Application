@@ -378,7 +378,7 @@ const SurvayForm = () => {
 
         if (record) {
           const isLandArea = () => {
-            JSON.parse(record[14]).map((floors) => {
+            JSON.parse(record[15]).map((floors) => {
               if (floors?.floorType === "ફળિયું") {
                 return true;
               }
