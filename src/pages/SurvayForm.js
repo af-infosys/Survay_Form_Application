@@ -17,6 +17,7 @@ const initialFormData = (user) => ({
   areaName: "",
   propertyNumber: "",
   ownerName: "",
+  occName: "",
   oldPropertyNumber: "",
   mobileNumber: "",
   propertyNameOnRecord: "",
@@ -392,31 +393,32 @@ const SurvayForm = () => {
             areaName: record[1] || "",
             propertyNumber: record[2] || "",
             ownerName: record[3] || "",
-            oldPropertyNumber: record[4] || "",
-            mobileNumber: Number(record[5]) | "",
-            propertyNameOnRecord: record[6] || "",
-            houseCategory: record[7] || "",
-            kitchenCount: Number(record[8]) || 0,
-            bathroomCount: Number(record[9]) || 0,
-            verandaCount: Number(record[10]) || 0,
-            tapCount: Number(record[11]) || 0,
-            toiletCount: Number(record[12]) || 0,
-            remarks: record[13] || "",
+            occName: record[4] || "",
+            oldPropertyNumber: record[5] || "",
+            mobileNumber: Number(record[6]) | "",
+            propertyNameOnRecord: record[7] || "",
+            houseCategory: record[8] || "",
+            kitchenCount: Number(record[9]) || 0,
+            bathroomCount: Number(record[10]) || 0,
+            verandaCount: Number(record[11]) || 0,
+            tapCount: Number(record[12]) || 0,
+            toiletCount: Number(record[13]) || 0,
+            remarks: record[14] || "",
 
             landArea: isLandArea(),
-            bp: record[13]?.includes("બિ.પ.") ? true : false,
+            bp: record[14]?.includes("બિ.પ.") ? true : false,
 
             survayor: { id: user?.id, name: user?.name, time: new Date() }, // Update survayor data on load
 
-            img1: record[25],
-            img2: record[26],
-            img3: record[27],
+            img1: record[26],
+            img2: record[27],
+            img3: record[28],
           });
 
           // Populate floors, parsing JSON if necessary
-          if (record[14]) {
+          if (record[15]) {
             try {
-              const parsedFloors = JSON.parse(record[14]);
+              const parsedFloors = JSON.parse(record[15]);
               setFloors(parsedFloors);
             } catch (jsonError) {
               console.error("Error parsing floors JSON:", jsonError);
@@ -676,10 +678,26 @@ const SurvayForm = () => {
             />
           </div>
 
+          <div className="form-field">
+            <label htmlFor="occName" className="form-label">
+              5. કબ્જેદારનું નામ *
+            </label>
+            <input
+              type="text"
+              id="occName"
+              name="occName"
+              className="form-input"
+              placeholder="Name Fathername Surname"
+              value={formData.occName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
           {/* Field 5: જુનો મિલકત નંબર */}
           <div className="form-field">
             <label htmlFor="oldPropertyNumber" className="form-label">
-              5. જુનો મિલકત નંબર
+              6. જુનો મિલકત નંબર
             </label>
             <input
               type="text"
@@ -697,7 +715,7 @@ const SurvayForm = () => {
           {/* Field 6: મોબાઈલ નંબર */}
           <div className="form-field">
             <label htmlFor="mobileNumber" className="form-label">
-              6. મોબાઈલ નંબર (Whatsapp)
+              7. મોબાઈલ નંબર (Whatsapp)
             </label>
             <input
               type="tel"
@@ -716,7 +734,7 @@ const SurvayForm = () => {
           {/* Field 7: મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/ કારખાના/ કંપનીનું નામ */}
           <div className="form-field md:col-span-2">
             <label htmlFor="propertyNameOnRecord" className="form-label">
-              7. મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/ કારખાના/ કંપનીનું નામ
+              8. મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/ કારખાના/ કંપનીનું નામ
             </label>
             <input
               type="text"
@@ -732,7 +750,7 @@ const SurvayForm = () => {
           {/* Field 9: મકાન category */}
           <div className="form-field">
             <label htmlFor="houseCategory" className="form-label">
-              8. મકાન category *
+              9. મકાન category *
             </label>
             <select
               id="houseCategory"
@@ -785,7 +803,7 @@ const SurvayForm = () => {
           </div>
         </div>
 
-        <h2 className="section-title mt-8">9. માળની વિગતો *</h2>
+        <h2 className="section-title mt-8">10. માળની વિગતો *</h2>
 
         <div id="floorsContainer">
           {floors.map((floor, floorIndex) =>
@@ -1125,7 +1143,7 @@ const SurvayForm = () => {
               htmlFor="landArea"
               style={{ textWrap: "nowrap", userSelect: "none" }}
             >
-              10. ફળિયું (ખુલ્લી જગ્યા)
+              11. ફળિયું (ખુલ્લી જગ્યા)
             </label>
 
             <input
@@ -1149,7 +1167,7 @@ const SurvayForm = () => {
               htmlFor="bp"
               style={{ textWrap: "nowrap", userSelect: "none" }}
             >
-              11. બિ.પ.
+              12. બિ.પ.
             </label>
 
             <input
@@ -1261,7 +1279,7 @@ const SurvayForm = () => {
         {/* Field 21: રીમાર્કસ */}
         <div className="form-field md:col-span-2">
           <label htmlFor="remarks" className="form-label">
-            17. નોંધ/રીમાર્કસ
+            નોંધ/રીમાર્કસ
           </label>
           <textarea
             id="remarks"
