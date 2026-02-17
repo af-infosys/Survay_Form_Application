@@ -509,7 +509,7 @@ const SurvayReport = () => {
 
           <tbody className="bg-white divide-y divide-gray-200">
             {finalRecords.map((record, index) => {
-              let survayorData = record[16];
+              let survayorData = record[17];
 
               if (typeof survayorData === "string") {
                 try {
@@ -555,49 +555,49 @@ const SurvayReport = () => {
                     className="whitespace-normal text-sm text-gray-500"
                     style={{ padding: "3px 8px" }}
                   >
-                    {record[15]}
+                    {record[16]}
                   </td>
                   {/* B.P. */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
                     style={{ padding: "3px 8px" }}
                   >
-                    {record[13]?.includes("બિ.પ.") ? "બિ.પ." : ""}
+                    {record[14]?.includes("બિ.પ.") ? "બિ.પ." : ""}
                   </td>
                   {/* Mobile Number */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
                     style={{ padding: "3px 8px" }}
                   >
-                    {record[5]}
+                    {record[6]}
                   </td>
                   {/* Category */}
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
                     style={{ padding: "3px 8px" }}
                   >
-                    {record[7]}
+                    {record[8]}
                   </td>
                   {/* Tap Connections */}
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
                     style={{ padding: "3px 8px" }}
                   >
-                    {record[11]}
+                    {record[12]}
                   </td>
                   {/* Bathroom */}
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
                     style={{ padding: "3px 8px" }}
                   >
-                    {record[12]}
+                    {record[13]}
                   </td>
                   {/* Notes/Remarks */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
                     style={{ padding: "3px 8px", minWidth: "140px" }}
                   >
-                    {record[13]}
+                    {record[14]}
                   </td>
                   {/* Surveryor name & Action Buttons */}
                   {user.id === survayorData?.id ? (

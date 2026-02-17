@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import apiPath from "../isProduction";
+import { useAuth } from "../config/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Society = () => {
   const [societies, setSocieties] = useState([]);
@@ -11,17 +13,39 @@ const Society = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [actionMessage, setActionMessage] = useState(""); // For success/error messages after add/edit
 
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [projectId, setProjectId] = useState(null);
+
   // Function to fetch areas
   const fetchAreas = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${await apiPath()}/api/sheet/areas`); // Make sure this matches your backend URL
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const result = await response.json();
-      setSocieties(result.data); // Set the fetched areas to state
+      let project = null;
+
+      fetch(`${await apiPath()}/api/work/${user.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((res) => res.json())
+        .then(async (data) => {
+          setProjectId(data?.work?._id);
+          project = data?.work?._id;
+          console.log(data?.work?._id);
+
+          const response = await fetch(
+            `${await apiPath()}/api/sheet/areas?workId=${project}`,
+          ); // Make sure this matches your backend URL
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const result = await response.json();
+          setSocieties(result.data); // Set the fetched areas to state
+        });
     } catch (err) {
       console.error("Error fetching areas:", err);
       setError("વિસ્તારો લાવવામાં નિષ્ફળ.");
@@ -49,13 +73,13 @@ const Society = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ areaName: newAreaName }),
+        body: JSON.stringify({ areaName: newAreaName, workId: projectId }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          errorData.message || `HTTP error! status: ${response.status}`
+          errorData.message || `HTTP error! status: ${response.status}`,
         );
       }
 
@@ -107,14 +131,17 @@ const Society = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ newAreaName: editAreaName }),
-        }
+          body: JSON.stringify({
+            newAreaName: editAreaName,
+            workId: projectId,
+          }),
+        },
       );
 
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          errorData.message || `HTTP error! status: ${response.status}`
+          errorData.message || `HTTP error! status: ${response.status}`,
         );
       }
 
