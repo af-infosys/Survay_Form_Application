@@ -102,20 +102,20 @@ const SurvayForm = () => {
     }
 
     // Try to load from localStorage
-    const savedFormData = localStorage.getItem(FORM_DATA_KEY);
-    if (savedFormData) {
-      try {
-        const parsedData = JSON.parse(savedFormData);
-        // Ensure survayor data is updated with the current user
-        return {
-          ...parsedData,
-          survayor: { id: user?.id, name: user?.name, time: new Date() },
-        };
-      } catch (e) {
-        console.error("Failed to parse saved form data:", e);
-        return initialFormData(user);
-      }
-    }
+    // const savedFormData = localStorage.getItem(FORM_DATA_KEY);
+    // if (savedFormData) {
+    //   try {
+    //     const parsedData = JSON.parse(savedFormData);
+    //     // Ensure survayor data is updated with the current user
+    //     return {
+    //       ...parsedData,
+    //       survayor: { id: user?.id, name: user?.name, time: new Date() },
+    //     };
+    //   } catch (e) {
+    //     console.error("Failed to parse saved form data:", e);
+    //     return initialFormData(user);
+    //   }
+    // }
     return initialFormData(user);
   });
 
@@ -125,17 +125,17 @@ const SurvayForm = () => {
     }
 
     // Try to load from localStorage
-    const savedFloorsData = localStorage.getItem(FLOORS_DATA_KEY);
-    if (savedFloorsData) {
-      try {
-        const parsedData = JSON.parse(savedFloorsData);
-        return parsedData;
-      } catch (e) {
-        console.error("Failed to parse saved floors data:", e);
-        return initialFloorsState;
-      }
-    }
-    return initialFloorsState;
+    // const savedFloorsData = localStorage.getItem(FLOORS_DATA_KEY);
+    // if (savedFloorsData) {
+    //   try {
+    //     const parsedData = JSON.parse(savedFloorsData);
+    //     return parsedData;
+    //   } catch (e) {
+    //     console.error("Failed to parse saved floors data:", e);
+    //     return initialFloorsState;
+    //   }
+    // }
+    return [];
   });
 
   const [areas, setAreas] = useState([]);
@@ -927,8 +927,6 @@ const SurvayForm = () => {
                           </option>
                           <option value="પાકા">પાકા</option>
                           <option value="કાચા">કાચા</option>
-                          <option value="પ્લોટ">પ્લોટ</option>
-                          <option value="પ્લોટ">પ્લોટ</option>
                         </select>
                       </div>
 
