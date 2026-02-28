@@ -689,7 +689,6 @@ const SurvayForm = () => {
               placeholder="Name Fathername Surname"
               value={formData.occName}
               onChange={handleChange}
-              required
             />
           </div>
 
