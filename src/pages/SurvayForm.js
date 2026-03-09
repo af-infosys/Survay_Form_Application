@@ -160,6 +160,15 @@ const SurvayForm = () => {
     const { name, value, checked } = e.target;
     const englishValue = convertGujaratiToEnglishDigits(value);
 
+    // Handle Plot Become Empty Slots
+    if (name === "houseCategory") {
+      if (formData?.houseCategory.includes("પ્લોટ")) {
+        setFloors(() => {
+          return [];
+        });
+      }
+    }
+
     // Handle Checkbox for landArea
     if (name === "landArea") {
       if (checked === true) {
@@ -729,26 +738,10 @@ const SurvayForm = () => {
             />
           </div>
 
-          {/* Field 7: મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/ કારખાના/ કંપનીનું નામ */}
-          <div className="form-field md:col-span-2">
-            <label htmlFor="propertyNameOnRecord" className="form-label">
-              8. મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/ કારખાના/ કંપનીનું નામ
-            </label>
-            <input
-              type="text"
-              id="propertyNameOnRecord"
-              name="propertyNameOnRecord"
-              className="form-input"
-              placeholder=""
-              value={formData.propertyNameOnRecord}
-              onChange={handleChange}
-            />
-          </div>
-
           {/* Field 9: મકાન category */}
           <div className="form-field">
             <label htmlFor="houseCategory" className="form-label">
-              9. મકાન category *
+              8. મકાન category *
             </label>
             <select
               id="houseCategory"
@@ -764,395 +757,480 @@ const SurvayForm = () => {
               <option value="ધાર્મિક સ્થળ">3. ધાર્મિક સ્થળ</option>
               <option value="સરકારી મિલ્ક્ત">4. સરકારી મિલ્ક્ત</option>
               <option value="પ્રાઈવેટ - સંસ્થાઓ">5. પ્રાઈવેટ - સંસ્થાઓ</option>
+
               <option value="પ્લોટ ખાનગી - ખુલ્લી જગ્યા">
                 6. પ્લોટ ખાનગી - ખુલ્લી જગ્યા
               </option>
-              <option value="પ્લોટ સરકારી - કોમનપ્લોટ">
-                7. પ્લોટ સરકારી - કોમનપ્લોટ
+              <option value="પ્લોટ (ફરતી દિવાલ) ખાનગી">
+                7. પ્લોટ (ફરતી દિવાલ) ખાનગી
               </option>
+              <option value="પ્લોટ સરકારી - કોમનપ્લોટ">
+                8. પ્લોટ સરકારી - કોમનપ્લોટ
+              </option>
+              <option value="પ્લોટ (ફરતી દિવાલ) સરકારી">
+                9. પ્લોટ (ફરતી દિવાલ) સરકારી
+              </option>
+
               <option value="કારખાના - ઇન્ડસ્ટ્રીજ઼">
-                8. કારખાના - ઇન્ડસ્ટ્રીજ઼
+                10. કારખાના - ઇન્ડસ્ટ્રીજ઼
               </option>
               <option value="ટ્રસ્ટ મિલ્કત / NGO">
-                9. ટ્રસ્ટ મિલ્કત / NGO
+                11. ટ્રસ્ટ મિલ્કત / NGO
               </option>
               <option value="મંડળી - સેવા સહકારી મંડળી">
-                10. મંડળી - સેવા સહકારી મંડળી
+                12. મંડળી - સેવા સહકારી મંડળી
               </option>
               <option value="બેંક - સરકારી">11. બેંક - સરકારી</option>
               <option value="બેંક - અર્ધ સરકારી બેંક">
-                12. બેંક - અર્ધ સરકારી બેંક
+                13. બેંક - અર્ધ સરકારી બેંક
               </option>
-              <option value="બેંક - પ્રાઇટ બેંક">13. બેંક - પ્રાઇટ બેંક</option>
-              <option value="સરકારી સહાય આવાસ">14. સરકારી સહાય આવાસ</option>
-              <option value="કોમ્પપ્લેક્ષ">15. કોમ્પપ્લેક્ષ</option>
+              <option value="બેંક - પ્રાઇટ બેંક">14. બેંક - પ્રાઇટ બેંક</option>
+              <option value="સરકારી સહાય આવાસ">15. સરકારી સહાય આવાસ</option>
+              <option value="કોમ્પપ્લેક્ષ">16. કોમ્પપ્લેક્ષ</option>
 
               <option value="હિરાના કારખાના નાના">
-                16. હિરાના કારખાના નાના
+                17. હિરાના કારખાના નાના
               </option>
               <option value="હિરાના કારખાના મોટા">
-                17. હિરાના કારખાના મોટા
+                18. હિરાના કારખાના મોટા
               </option>
-              <option value="મોબાઈલ ટાવર">18. મોબાઈલ ટાવર</option>
+              <option value="મોબાઈલ ટાવર">19. મોબાઈલ ટાવર</option>
               <option value="પેટ્રોલ પંપ, ગેસ પંપ">
-                19. પેટ્રોલ પંપ, ગેસ પંપ
+                20. પેટ્રોલ પંપ, ગેસ પંપ
               </option>
             </select>
           </div>
         </div>
 
-        <h2 className="section-title mt-8">10. માળની વિગતો *</h2>
+        {/* Field 7: મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/ કારખાના/ કંપનીનું નામ */}
+        <div className="form-field md:col-span-2">
+          <label htmlFor="propertyNameOnRecord" className="form-label">
+            9. મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/ કારખાના/ કંપનીનું નામ
+          </label>
+          <input
+            type="text"
+            id="propertyNameOnRecord"
+            name="propertyNameOnRecord"
+            className="form-input"
+            list="propertyNames"
+            value={formData.propertyNameOnRecord}
+            onChange={handleChange}
+          />
 
-        <div id="floorsContainer">
-          {floors.map((floor, floorIndex) =>
-            floor.floorType === "ફળિયું" ? null : (
-              <div
-                key={floorIndex}
-                className="floor-section mb-6 p-4 border rounded-lg shadow-sm"
-              >
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="floor-section-title text-lg font-semibold">
-                    માળ:{" "}
-                    <span className="floor-index">
-                      {floor.floorType || `માળ ${floorIndex + 1}`}
-                    </span>
-                  </h3>
-
-                  <div className="form-field mb-4" style={{ display: "flex" }}>
-                    <label
-                      htmlFor={`floorTypeSelect-${floorIndex}`}
-                      className="form-label"
-                    >
-                      માળનો પ્રકાર *
-                    </label>
-                    <select
-                      id={`floorTypeSelect-${floorIndex}`}
-                      name="floorType"
-                      className="form-select w-full p-2 border rounded"
-                      value={floor.floorType}
-                      onChange={(e) => handleFloorTypeChange(floorIndex, e)}
-                      required
-                    >
-                      <option value="" selected disabled>
-                        માળ પસંદ કરો
-                      </option>
-                      <option value="ગ્રાઉન્ડ ફ્લોર">ગ્રાઉન્ડ ફ્લોર</option>
-                      <option value="પ્રથમ માળ">પ્રથમ માળ</option>
-                      <option value="બીજો માળ">બીજો માળ</option>
-                      <option value="ત્રીજો માળ">ત્રીજો માળ</option>
-                      <option value="ચોથો માળ">ચોથો માળ</option>
-                      <option value="પાંચમો માળ">પાંચમો માળ</option>
-                    </select>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => deleteFloor(floorIndex)}
-                    className="delete-button text-red-600 hover:text-red-800"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </button>
-                </div>
-
-                {floor.roomDetails.map((room, roomIndex) => (
-                  <div
-                    key={roomIndex}
-                    className="room-details-section p-4 my-4 bg-gray-50 rounded-md"
-                    style={{ background: "#ffd7d3" }}
-                  >
-                    <div className="flex justify-between items-center mb-3">
-                      <h4 className="font-medium text-gray-700">
-                        વર્ણન : {roomIndex + 1} *
-                      </h4>
-
-                      {floor.roomDetails.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            deleteRoomDetails(floorIndex, roomIndex)
-                          }
-                          className="delete-button text-red-600 hover:text-red-800"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          Delete
-                        </button>
-                      )}
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
-                      {/* Floor-level type select, now inside the room loop */}
-                      <div className="form-field mb-4">
-                        <label
-                          htmlFor={`roomTypeSelect-${floorIndex}-${roomIndex}`}
-                          className="form-label"
-                        >
-                          પ્રકાર
-                        </label>
-                        <select
-                          id={`roomTypeSelect-${floorIndex}-${roomIndex}`}
-                          name="type"
-                          className="form-select w-full p-2 border rounded"
-                          value={room.type}
-                          onChange={(e) =>
-                            handleRoomDetailsChange(floorIndex, roomIndex, e)
-                          }
-                          required
-                        >
-                          <option value="" selected disabled>
-                            Select
-                          </option>
-                          <option value="પાકા">પાકા</option>
-                          <option value="કાચા">કાચા</option>
-                        </select>
-                      </div>
-
-                      {/* Inputs for number of rooms */}
-                      <div
-                        className="form-group flex space-x-0 items-end mt-4"
-                        style={{ justifyContent: "space-between" }}
-                      >
-                        {/* સ્લેબ */}
-                        <div className="form-field">
-                          <label
-                            htmlFor={`slabRooms-${floorIndex}-${roomIndex}`}
-                            className="form-label text-sm"
-                          >
-                            સ્લેબ
-                          </label>
-                          <input
-                            type="number"
-                            id={`slabRooms-${floorIndex}-${roomIndex}`}
-                            name="slabRooms"
-                            className="form-input p-2 border rounded w-20"
-                            min="0"
-                            value={room.slabRooms}
-                            onChange={(e) =>
-                              handleRoomDetailsChange(floorIndex, roomIndex, e)
-                            }
-                            maxLength="3"
-                            style={{ maxWidth: "45px" }}
-                          />
-                        </div>
-
-                        {/* પતરા */}
-                        <div className="form-field">
-                          <label
-                            htmlFor={`tinRooms-${floorIndex}-${roomIndex}`}
-                            className="form-label text-sm"
-                          >
-                            પતરા
-                          </label>
-                          <input
-                            type="number"
-                            id={`tinRooms-${floorIndex}-${roomIndex}`}
-                            name="tinRooms"
-                            className="form-input p-2 border rounded w-20"
-                            min="0"
-                            value={room.tinRooms}
-                            onChange={(e) =>
-                              handleRoomDetailsChange(floorIndex, roomIndex, e)
-                            }
-                            maxLength="3"
-                            style={{ maxWidth: "45px" }}
-                          />
-                        </div>
-
-                        {/* પીઢીયા */}
-                        <div className="form-field">
-                          <label
-                            htmlFor={`woodenRooms-${floorIndex}-${roomIndex}`}
-                            className="form-label text-sm"
-                          >
-                            પીઢીયા
-                          </label>
-                          <input
-                            type="number"
-                            id={`woodenRooms-${floorIndex}-${roomIndex}`}
-                            name="woodenRooms"
-                            className="form-input p-2 border rounded w-20"
-                            min="0"
-                            value={room.woodenRooms}
-                            onChange={(e) =>
-                              handleRoomDetailsChange(floorIndex, roomIndex, e)
-                            }
-                            maxLength="3"
-                            style={{ maxWidth: "45px" }}
-                          />
-                        </div>
-
-                        {/* નળીયા */}
-                        <div className="form-field">
-                          <label
-                            htmlFor={`tileRooms-${floorIndex}-${roomIndex}`}
-                            className="form-label text-sm"
-                          >
-                            નળીયા
-                          </label>
-                          <input
-                            type="number"
-                            id={`tileRooms-${floorIndex}-${roomIndex}`}
-                            name="tileRooms"
-                            className="form-input p-2 border rounded w-20"
-                            min="0"
-                            value={room.tileRooms}
-                            onChange={(e) =>
-                              handleRoomDetailsChange(floorIndex, roomIndex, e)
-                            }
-                            maxLength="3"
-                            style={{ maxWidth: "45px" }}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Field: રૂમ હોલ દુકાન ગોડાઉન */}
-                      <div className="form-field">
-                        <label
-                          htmlFor={`roomType-${floorIndex}-${roomIndex}`}
-                          className="form-label"
-                        >
-                          રૂમ હોલ દુકાન ગોડાઉન
-                        </label>
-                        <select
-                          id={`roomType-${floorIndex}-${roomIndex}`}
-                          name="roomHallShopGodown"
-                          className="form-select w-full p-2 border rounded"
-                          value={room.roomHallShopGodown}
-                          onChange={(e) =>
-                            handleRoomDetailsChange(floorIndex, roomIndex, e)
-                          }
-                          required
-                        >
-                          <option value="" selected disabled>
-                            Select
-                          </option>
-                          <option value="રૂમ">રૂમ (Room)</option>
-
-                          <option value="હોલ નાનો">હોલ નાનો</option>
-                          <option value="હોલ મોટો">હોલ મોટો</option>
-                          {/* <option value="હોલ">હોલ (Hall)</option> */}
-
-                          <option value="દુકાન નાની">દુકાન નાની</option>
-                          <option value="દુકાન મોટી">દુકાન મોટી</option>
-                          {/* <option value="દુકાન">દુકાન (Shop)</option> */}
-
-                          <option value="ગોડાઉન નાનું">ગોડાઉન નાનું </option>
-                          <option value="ગોડાઉન મોટું">ગોડાઉન મોટું</option>
-                          {/* <option value="ગોડાઉન">ગોડાઉન (Godown)</option> */}
-
-                          <option value="ઢાળિયું">ઢાળિયું</option>
-                          <option value="કેબિન">કેબિન</option>
-                          <option value="પાળું">પાળું</option>
-
-                          <option value="શેડ નાના પતરાવાળા">
-                            શેડ નાના પતરાવાળા
-                          </option>
-                          <option value="શેડ મોટા પતરાવાળા">
-                            શેડ મોટા પતરાવાળા
-                          </option>
-
-                          <option value="પ્લોટ">પ્લોટ</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                <button
-                  type="button"
-                  onClick={() => addRoomDetails(floorIndex)}
-                  className="flex items-center px-4 py-2 mt-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
-                  style={{ background: "#8f40bc" }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 mr-1"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  વધુ વર્ણન ઉમેરો
-                </button>
-              </div>
-            ),
-          )}
+          <datalist id="propertyNames">
+            <option
+              value={
+                !formData?.houseCategory.includes("પ્લોટ") &&
+                !formData?.houseCategory.includes("મકાન")
+                  ? formData?.ownerName
+                  : ""
+              }
+            />
+          </datalist>
         </div>
 
-        <button type="button" onClick={addFloor} className="add-floor-button">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-              clipRule="evenodd"
-            />
-          </svg>
-          વધુ માળ ઉમેરો
-        </button>
+        {formData?.houseCategory.includes("પ્લોટ") ? (
+          <></>
+        ) : (
+          <>
+            <h2 className="section-title mt-8">10. માળની વિગતો * (વર્ણન)</h2>
+
+            <div id="floorsContainer">
+              {floors.map((floor, floorIndex) =>
+                floor.floorType === "ફળિયું" ? null : (
+                  <div
+                    key={floorIndex}
+                    className="floor-section mb-6 p-4 border rounded-lg shadow-sm"
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="floor-section-title text-lg font-semibold">
+                        માળ:{" "}
+                        <span className="floor-index">
+                          {floor.floorType || `માળ ${floorIndex + 1}`}
+                        </span>
+                      </h3>
+
+                      <div
+                        className="form-field mb-4"
+                        style={{ display: "flex" }}
+                      >
+                        <label
+                          htmlFor={`floorTypeSelect-${floorIndex}`}
+                          className="form-label"
+                        >
+                          માળનો પ્રકાર *
+                        </label>
+                        <select
+                          id={`floorTypeSelect-${floorIndex}`}
+                          name="floorType"
+                          className="form-select w-full p-2 border rounded"
+                          value={floor.floorType}
+                          onChange={(e) => handleFloorTypeChange(floorIndex, e)}
+                          required
+                        >
+                          <option value="" selected disabled>
+                            માળ પસંદ કરો
+                          </option>
+                          <option value="ગ્રાઉન્ડ ફ્લોર">ગ્રાઉન્ડ ફ્લોર</option>
+                          <option value="પ્રથમ માળ">પ્રથમ માળ</option>
+                          <option value="બીજો માળ">બીજો માળ</option>
+                          <option value="ત્રીજો માળ">ત્રીજો માળ</option>
+                          <option value="ચોથો માળ">ચોથો માળ</option>
+                          <option value="પાંચમો માળ">પાંચમો માળ</option>
+                        </select>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => deleteFloor(floorIndex)}
+                        className="delete-button text-red-600 hover:text-red-800"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
+                    {floor.roomDetails.map((room, roomIndex) => (
+                      <div
+                        key={roomIndex}
+                        className="room-details-section p-4 my-4 bg-gray-50 rounded-md"
+                        style={{ background: "#ffd7d3" }}
+                      >
+                        <div className="flex justify-between items-center mb-3">
+                          <h4 className="font-medium text-gray-700">
+                            વર્ણન : {roomIndex + 1} *
+                          </h4>
+
+                          {floor.roomDetails.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                deleteRoomDetails(floorIndex, roomIndex)
+                              }
+                              className="delete-button text-red-600 hover:text-red-800"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                              Delete
+                            </button>
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+                          {/* Floor-level type select, now inside the room loop */}
+                          <div className="form-field mb-4">
+                            <label
+                              htmlFor={`roomTypeSelect-${floorIndex}-${roomIndex}`}
+                              className="form-label"
+                            >
+                              પ્રકાર
+                            </label>
+                            <select
+                              id={`roomTypeSelect-${floorIndex}-${roomIndex}`}
+                              name="type"
+                              className="form-select w-full p-2 border rounded"
+                              value={room.type}
+                              onChange={(e) =>
+                                handleRoomDetailsChange(
+                                  floorIndex,
+                                  roomIndex,
+                                  e,
+                                )
+                              }
+                              required
+                            >
+                              <option value="" selected disabled>
+                                Select
+                              </option>
+                              <option value="પાકા">પાકા</option>
+                              <option value="કાચા">કાચા</option>
+                            </select>
+                          </div>
+
+                          {/* Inputs for number of rooms */}
+                          <div
+                            className="form-group flex space-x-0 items-end mt-4"
+                            style={{ justifyContent: "space-between" }}
+                          >
+                            {/* સ્લેબ */}
+                            <div className="form-field">
+                              <label
+                                htmlFor={`slabRooms-${floorIndex}-${roomIndex}`}
+                                className="form-label text-sm"
+                              >
+                                સ્લેબ
+                              </label>
+                              <input
+                                type="number"
+                                id={`slabRooms-${floorIndex}-${roomIndex}`}
+                                name="slabRooms"
+                                className="form-input p-2 border rounded w-20"
+                                min="0"
+                                value={room.slabRooms}
+                                onChange={(e) =>
+                                  handleRoomDetailsChange(
+                                    floorIndex,
+                                    roomIndex,
+                                    e,
+                                  )
+                                }
+                                maxLength="3"
+                                style={{ maxWidth: "45px" }}
+                              />
+                            </div>
+
+                            {/* પતરા */}
+                            <div className="form-field">
+                              <label
+                                htmlFor={`tinRooms-${floorIndex}-${roomIndex}`}
+                                className="form-label text-sm"
+                              >
+                                પતરા
+                              </label>
+                              <input
+                                type="number"
+                                id={`tinRooms-${floorIndex}-${roomIndex}`}
+                                name="tinRooms"
+                                className="form-input p-2 border rounded w-20"
+                                min="0"
+                                value={room.tinRooms}
+                                onChange={(e) =>
+                                  handleRoomDetailsChange(
+                                    floorIndex,
+                                    roomIndex,
+                                    e,
+                                  )
+                                }
+                                maxLength="3"
+                                style={{ maxWidth: "45px" }}
+                              />
+                            </div>
+
+                            {/* પીઢીયા */}
+                            <div className="form-field">
+                              <label
+                                htmlFor={`woodenRooms-${floorIndex}-${roomIndex}`}
+                                className="form-label text-sm"
+                              >
+                                પીઢીયા
+                              </label>
+                              <input
+                                type="number"
+                                id={`woodenRooms-${floorIndex}-${roomIndex}`}
+                                name="woodenRooms"
+                                className="form-input p-2 border rounded w-20"
+                                min="0"
+                                value={room.woodenRooms}
+                                onChange={(e) =>
+                                  handleRoomDetailsChange(
+                                    floorIndex,
+                                    roomIndex,
+                                    e,
+                                  )
+                                }
+                                maxLength="3"
+                                style={{ maxWidth: "45px" }}
+                              />
+                            </div>
+
+                            {/* નળીયા */}
+                            <div className="form-field">
+                              <label
+                                htmlFor={`tileRooms-${floorIndex}-${roomIndex}`}
+                                className="form-label text-sm"
+                              >
+                                નળીયા
+                              </label>
+                              <input
+                                type="number"
+                                id={`tileRooms-${floorIndex}-${roomIndex}`}
+                                name="tileRooms"
+                                className="form-input p-2 border rounded w-20"
+                                min="0"
+                                value={room.tileRooms}
+                                onChange={(e) =>
+                                  handleRoomDetailsChange(
+                                    floorIndex,
+                                    roomIndex,
+                                    e,
+                                  )
+                                }
+                                maxLength="3"
+                                style={{ maxWidth: "45px" }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Field: રૂમ હોલ દુકાન ગોડાઉન */}
+                          <div className="form-field">
+                            <label
+                              htmlFor={`roomType-${floorIndex}-${roomIndex}`}
+                              className="form-label"
+                            >
+                              રૂમ હોલ દુકાન ગોડાઉન
+                            </label>
+                            <select
+                              id={`roomType-${floorIndex}-${roomIndex}`}
+                              name="roomHallShopGodown"
+                              className="form-select w-full p-2 border rounded"
+                              value={room.roomHallShopGodown}
+                              onChange={(e) =>
+                                handleRoomDetailsChange(
+                                  floorIndex,
+                                  roomIndex,
+                                  e,
+                                )
+                              }
+                              required
+                            >
+                              <option value="" selected disabled>
+                                Select
+                              </option>
+                              <option value="રૂમ">રૂમ (Room)</option>
+
+                              <option value="હોલ નાનો">હોલ નાનો</option>
+                              <option value="હોલ મોટો">હોલ મોટો</option>
+                              {/* <option value="હોલ">હોલ (Hall)</option> */}
+
+                              <option value="દુકાન નાની">દુકાન નાની</option>
+                              <option value="દુકાન મોટી">દુકાન મોટી</option>
+                              {/* <option value="દુકાન">દુકાન (Shop)</option> */}
+
+                              <option value="ગોડાઉન નાનું">
+                                ગોડાઉન નાનું{" "}
+                              </option>
+                              <option value="ગોડાઉન મોટું">ગોડાઉન મોટું</option>
+                              {/* <option value="ગોડાઉન">ગોડાઉન (Godown)</option> */}
+
+                              <option value="ઢાળિયું">ઢાળિયું</option>
+                              <option value="કેબિન">કેબિન</option>
+                              <option value="પાળું">પાળું</option>
+
+                              <option value="શેડ નાના પતરાવાળા">
+                                શેડ નાના પતરાવાળા
+                              </option>
+                              <option value="શેડ મોટા પતરાવાળા">
+                                શેડ મોટા પતરાવાળા
+                              </option>
+
+                              <option value="પ્લોટ">પ્લોટ</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+
+                    <button
+                      type="button"
+                      onClick={() => addRoomDetails(floorIndex)}
+                      className="flex items-center px-4 py-2 mt-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+                      style={{ background: "#8f40bc" }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 mr-1"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      વધુ વર્ણન ઉમેરો
+                    </button>
+                  </div>
+                ),
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={addFloor}
+              className="add-floor-button"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              વધુ માળ ઉમેરો
+            </button>
+
+            <br />
+          </>
+        )}
 
         <br />
         <br />
-        <br />
+
         <hr />
         <br />
         <br />
 
         {/* ફળિયું (ખુલ્લી જગ્યા) */}
         <div style={{ display: "flex", gap: "20px" }}>
-          <div className="form-field" style={{ display: "flex", gap: "20px" }}>
-            <label
-              className="form-label"
-              htmlFor="landArea"
-              style={{ textWrap: "nowrap", userSelect: "none" }}
-            >
-              11. ફળિયું (ખુલ્લી જગ્યા)
-            </label>
+          {formData?.houseCategory.includes("પ્લોટ") ? (
+            <></>
+          ) : (
+            <>
+              <div
+                className="form-field"
+                style={{ display: "flex", gap: "20px" }}
+              >
+                <label
+                  className="form-label"
+                  htmlFor="landArea"
+                  style={{ textWrap: "nowrap", userSelect: "none" }}
+                >
+                  11. ફળિયું (ખુલ્લી જગ્યા)
+                </label>
 
-            <input
-              type="checkbox"
-              id="landArea"
-              name="landArea"
-              className="form-input"
-              value={formData.landArea}
-              onChange={handleChange}
-              checked={formData.landArea}
-              style={{ width: "20px" }}
-            />
-          </div>
+                <input
+                  type="checkbox"
+                  id="landArea"
+                  name="landArea"
+                  className="form-input"
+                  value={formData.landArea}
+                  onChange={handleChange}
+                  checked={formData.landArea}
+                  style={{ width: "20px" }}
+                />
+              </div>
 
-          <div>|</div>
+              <div>|</div>
+            </>
+          )}
 
           {/* બિ.પ. */}
           <div className="form-field" style={{ display: "flex", gap: "20px" }}>
@@ -1275,15 +1353,21 @@ const SurvayForm = () => {
           <label htmlFor="remarks" className="form-label">
             નોંધ/રીમાર્કસ
           </label>
-          <textarea
+
+          <input
+            type="text"
             id="remarks"
             name="remarks"
-            className="form-textarea"
-            rows="3"
+            className="form-input"
+            list="remarksList"
             placeholder="કોઈ વધારાની નોંધ..."
             value={formData.remarks}
             onChange={handleChange}
-          ></textarea>
+          />
+
+          <datalist id="remarksList">
+            <option value={formData?.propertyNameOnRecord || ""} />
+          </datalist>
         </div>
 
         <br />
