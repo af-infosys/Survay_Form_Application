@@ -555,7 +555,7 @@ const SurvayReport = () => {
                     className="whitespace-normal text-sm text-gray-500"
                     style={{ padding: "3px 8px" }}
                   >
-                    {record[16]}
+                    {record[16]} {record[7] ? `, ${record[7]}` : ""}
                   </td>
                   {/* B.P. */}
                   <td
