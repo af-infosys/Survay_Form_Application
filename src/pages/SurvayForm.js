@@ -260,7 +260,7 @@ const SurvayForm = () => {
     setFloors((prevFloors) => [
       ...prevFloors,
       {
-        floorType: "",
+        floorType: `${prevFloors?.length === 0 ? "ગ્રાઉન્ડ ફ્લોર" : ""}`,
         roomDetails: [
           {
             type: "",
