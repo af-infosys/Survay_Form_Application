@@ -144,6 +144,8 @@ const SurvayForm = () => {
   const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState(null);
   const [imageAkarni, setImageAkarni] = useState(false);
+  const [ptvPlot, setPtvPlot] = useState(false);
+  const [govPlot, setGovPlot] = useState(false);
 
   // 2. AUTO-SAVE EFFECT - Save formData and floors to localStorage on change
   useEffect(() => {
@@ -563,6 +565,8 @@ const SurvayForm = () => {
         const data = await res.json();
         console.log("Image Mode: ", data);
         setImageAkarni(data?.isImage);
+        setPtvPlot(data?.isPtvPlot);
+        setGovPlot(data?.isGovPlot);
       } catch (err) {
         console.log("Image Catched", err);
         setImageAkarni(false);
@@ -758,18 +762,27 @@ const SurvayForm = () => {
               <option value="સરકારી મિલ્ક્ત">4. સરકારી મિલ્ક્ત</option>
               <option value="પ્રાઈવેટ - સંસ્થાઓ">5. પ્રાઈવેટ - સંસ્થાઓ</option>
 
-              <option value="પ્લોટ ખાનગી - ખુલ્લી જગ્યા">
-                6. પ્લોટ ખાનગી - ખુલ્લી જગ્યા
-              </option>
-              <option value="પ્લોટ (ફરતી દિવાલ) ખાનગી">
-                7. પ્લોટ (ફરતી દિવાલ) ખાનગી
-              </option>
-              <option value="પ્લોટ સરકારી - કોમનપ્લોટ">
-                8. પ્લોટ સરકારી - કોમનપ્લોટ
-              </option>
-              <option value="પ્લોટ (ફરતી દિવાલ) સરકારી">
-                9. પ્લોટ (ફરતી દિવાલ) સરકારી
-              </option>
+              {ptvPlot && (
+                <>
+                  <option value="પ્લોટ ખાનગી - ખુલ્લી જગ્યા">
+                    6. પ્લોટ ખાનગી - ખુલ્લી જગ્યા
+                  </option>
+                  <option value="પ્લોટ (ફરતી દિવાલ) ખાનગી">
+                    7. પ્લોટ (ફરતી દિવાલ) ખાનગી
+                  </option>
+                </>
+              )}
+
+              {govPlot && (
+                <>
+                  <option value="પ્લોટ સરકારી - કોમનપ્લોટ">
+                    8. પ્લોટ સરકારી - કોમનપ્લોટ
+                  </option>
+                  <option value="પ્લોટ (ફરતી દિવાલ) સરકારી">
+                    9. પ્લોટ (ફરતી દિવાલ) સરકારી
+                  </option>
+                </>
+              )}
 
               <option value="કારખાના - ઇન્ડસ્ટ્રીજ઼">
                 10. કારખાના - ઇન્ડસ્ટ્રીજ઼
