@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Upload, Trash, Image, Loader } from "lucide-react";
 import apiPath from "../isProduction";
 import axios from "axios";
@@ -7,7 +7,20 @@ const ImageUploadSlot = ({ label, slotKey, formData, setFormData }) => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const viewLink = formData[slotKey];
+  // const viewLink = JSON.parse(formData[26] || [])[slotKey];
+  const [viewLink, setViewLink] = useState("");
+
+  useEffect(() => {
+    try {
+      setViewLink(
+        JSON.parse(formData?.img1 || [])[
+          slotKey === "img1" ? 0 : slotKey === "img2" ? 1 : 2
+        ],
+      );
+    } catch (err) {
+      console.log("Error Loading Image: ", err);
+    }
+  }, [formData]);
 
   // Custom hook-like function to update formData state
   const updateFormData = useCallback(
@@ -17,7 +30,7 @@ const ImageUploadSlot = ({ label, slotKey, formData, setFormData }) => {
         [key]: value,
       }));
     },
-    [setFormData]
+    [setFormData],
   );
 
   const handleUpload = async () => {
@@ -46,7 +59,7 @@ const ImageUploadSlot = ({ label, slotKey, formData, setFormData }) => {
         formDataPayload,
         {
           headers: { "Content-Type": "multipart/form-data" },
-        }
+        },
       );
 
       console.log("uploaded: ", res.data);
@@ -95,12 +108,18 @@ const ImageUploadSlot = ({ label, slotKey, formData, setFormData }) => {
     }
   };
 
+  const getDriveImageUrl = (fileId) => {
+    if (!fileId) return null;
+
+    return `https://lh3.googleusercontent.com/u/0/d/${fileId}`;
+  };
+
   return (
     <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
       <h3 className="text-lg font-semibold text-gray-700 mb-3">{label}</h3>
 
       {/* Image Preview / Placeholder */}
-      <div className="relative w-full h-32 mb-4 bg-gray-200 rounded-md flex items-center justify-center overflow-hidden">
+      <div className="relative w-full mb-4 bg-gray-200 rounded-md flex items-center justify-center overflow-hidden">
         {viewLink ? (
           <>
             {/* <img
@@ -117,12 +136,28 @@ const ImageUploadSlot = ({ label, slotKey, formData, setFormData }) => {
             //   e.target.src = `https://placehold.co/400x200/DC2626/ffffff?text=Image+Load+Error`;
             // }}
           /> */}
-            <iframe
+            {/* <iframe
               src={`https://drive.google.com/file/d/${viewLink}/preview`}
               width="600"
               height="400"
               allow="autoplay"
-            ></iframe>
+            ></iframe> */}
+
+            <img
+              src={getDriveImageUrl(viewLink)}
+              alt={`Drive Image ${slotKey}`}
+              style={{
+                width: "100%",
+                height: "auto",
+                borderRadius: "8px",
+                border: "1px solid #ddd",
+              }}
+              crossOrigin="anonymous" // PDF generation ke liye zaroori hai
+              onError={(e) => {
+                // e.target.style.display = "none"; // Agar image load na ho toh hide kar de
+                console.error("Image failed to load for ID:", viewLink);
+              }}
+            />
           </>
         ) : (
           <div className="text-gray-400">
