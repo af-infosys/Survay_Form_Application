@@ -12,11 +12,7 @@ const ImageUploadSlot = ({ label, slotKey, formData, setFormData }) => {
 
   useEffect(() => {
     try {
-      setViewLink(
-        JSON.parse(formData?.img1 || [])[
-          slotKey === "img1" ? 0 : slotKey === "img2" ? 1 : 2
-        ],
-      );
+      setViewLink(formData[slotKey]);
     } catch (err) {
       console.log("Error Loading Image: ", err);
       setViewLink(formData[slotKey]);
