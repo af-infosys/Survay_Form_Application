@@ -19,6 +19,7 @@ const ImageUploadSlot = ({ label, slotKey, formData, setFormData }) => {
       );
     } catch (err) {
       console.log("Error Loading Image: ", err);
+      setViewLink(formData[slotKey]);
     }
   }, [formData]);
 
