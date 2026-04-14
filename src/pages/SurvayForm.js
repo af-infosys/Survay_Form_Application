@@ -135,7 +135,22 @@ const SurvayForm = () => {
     //     return initialFloorsState;
     //   }
     // }
-    return [];
+
+    return [
+      {
+        floorType: "ગ્રાઉન્ડ ફ્લોર",
+        roomDetails: [
+          {
+            type: "",
+            roomHallShopGodown: "",
+            slabRooms: "",
+            tinRooms: "",
+            woodenRooms: "",
+            tileRooms: "",
+          },
+        ],
+      },
+    ];
   });
 
   const [areas, setAreas] = useState([]);
@@ -420,9 +435,9 @@ const SurvayForm = () => {
 
             survayor: { id: user?.id, name: user?.name, time: new Date() }, // Update survayor data on load
 
-            img1: record[26],
-            img2: record[27],
-            img3: record[28],
+            img1: JSON.parse(record[26] || "[]")[0] || "",
+            img2: JSON.parse(record[26] || "[]")[1] || "",
+            img3: JSON.parse(record[26] || "[]")[2] || "",
           });
 
           // Populate floors, parsing JSON if necessary
@@ -1161,7 +1176,7 @@ const SurvayForm = () => {
                                 શેડ મોટા પતરાવાળા
                               </option>
 
-                              <option value="પ્લોટ">પ્લોટ</option>
+                              {/* <option value="પ્લોટ">પ્લોટ</option> */}
                             </select>
                           </div>
                         </div>
