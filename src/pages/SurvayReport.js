@@ -4,6 +4,7 @@ import { useAuth } from "../config/AuthContext";
 import { useNavigate } from "react-router-dom";
 import WorkSpot from "../components/WorkSpot";
 import "./SurvayReport.scss"; // CSS ને હવે ઇનલાઇન કરવામાં આવ્યું છે
+import DelayedImage from "../components/DelayedImage";
 
 const SurvayReport = () => {
   const [records, setRecords] = useState([]);
@@ -178,6 +179,35 @@ const SurvayReport = () => {
 
     return filteredRecords;
   }, [records, searchTerm, areaFilter, categoryFilter, isSorted, isReversed]);
+
+  const [imageAkarni, setImageAkarni] = useState(false);
+  useEffect(() => {
+    const fetchImageMode = async () => {
+      try {
+        const res = await fetch(
+          `${await apiPath()}/api/valuation/getImageMode/${user.id}?workId=${projectId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          },
+        );
+        const data = await res.json();
+        console.log("Image Mode: ", data);
+        setImageAkarni(data?.isImage);
+      } catch (err) {
+        console.log("Image Catched", err);
+        setImageAkarni(false);
+      }
+    };
+
+    if (user?.id) {
+      // Only run if user ID is available
+      fetchImageMode();
+    }
+  }, [user?.id, projectId]);
 
   if (loading) {
     return (
@@ -368,7 +398,10 @@ const SurvayReport = () => {
       </div>
 
       <div className="table-container rounded-lg shadow-md border border-gray-200">
-        <table className="min-w-full divide-y divide-gray-200">
+        <table
+          className="min-w-full divide-y divide-gray-200"
+          style={{ position: "sticky", top: "20px" }}
+        >
           <thead className="bg-gray-50">
             <tr>
               <th
@@ -406,6 +439,14 @@ const SurvayReport = () => {
                 id="thead"
               >
                 મિલ્કત ક્રમાંક
+              </th>
+
+              <th
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                style={{ padding: "5px 8px", textAlign: "center" }}
+                id="thead"
+              >
+                જુનો મિ.નં.
               </th>
 
               <th
@@ -473,6 +514,34 @@ const SurvayReport = () => {
                 નોંધ/રીમાર્કસ
               </th>
 
+              {imageAkarni ? (
+                <>
+                  <th
+                    className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    style={{ padding: "5px 8px", textAlign: "center" }}
+                    id="thead"
+                  >
+                    મુખ્ય દરવાજો
+                  </th>
+
+                  <th
+                    className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    style={{ padding: "5px 8px", textAlign: "center" }}
+                    id="thead"
+                  >
+                    રૂમનો દરવાજો{" "}
+                  </th>
+
+                  <th
+                    className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    style={{ padding: "5px 8px", textAlign: "center" }}
+                    id="thead"
+                  >
+                    માલિકનો ફોટો
+                  </th>
+                </>
+              ) : null}
+
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg"
                 id="thead"
@@ -490,7 +559,7 @@ const SurvayReport = () => {
           {/* Index Start */}
           <tr>
             {/* 1 to 18 th for index */}
-            {Array.from({ length: 12 }).map((_, index) => (
+            {Array.from({ length: imageAkarni ? 16 : 13 }).map((_, index) => (
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider"
                 style={{
@@ -525,80 +594,119 @@ const SurvayReport = () => {
                   {/* Index Number */}
                   <td
                     className="whitespace-nowrap text-sm font-medium text-gray-900"
-                    style={{ padding: "3px 8px" }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[0]}
                   </td>
                   {/* Owner Name */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "3px 8px" }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[3]}
                   </td>{" "}
                   {/* Area Name */}
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
-                    style={{ padding: "3px 8px" }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[1]}
                   </td>{" "}
                   {/* Property Index */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "3px 8px" }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[2]}
+                  </td>
+                  {/* Property Old Index */}
+                  <td
+                    className="whitespace-normal text-sm text-gray-500"
+                    style={{ padding: "2px 3px" }}
+                  >
+                    {record[5]}
                   </td>
                   {/* Property Description */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "3px 8px" }}
+                    style={{ padding: "2px 3px" }}
                   >
-                    {record[16]} {record[7] ? `, ${record[7]}` : ""}
+                    {record[8]?.includes("પ્લોટ") ? record[8] : ""} {record[16]}{" "}
+                    {record[7] ? `, ${record[7]}` : ""}
                   </td>
                   {/* B.P. */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "3px 8px" }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[14]?.includes("બિ.પ.") ? "બિ.પ." : ""}
                   </td>
                   {/* Mobile Number */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "3px 8px" }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[6]}
                   </td>
                   {/* Category */}
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
-                    style={{ padding: "3px 8px" }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[8]}
                   </td>
                   {/* Tap Connections */}
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
-                    style={{ padding: "3px 8px" }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[12]}
                   </td>
                   {/* Bathroom */}
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
-                    style={{ padding: "3px 8px" }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[13]}
                   </td>
                   {/* Notes/Remarks */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "3px 8px", minWidth: "140px" }}
+                    style={{ padding: "2px 3px", minWidth: "140px" }}
                   >
                     {record[14]}
                   </td>
+                  {imageAkarni ? (
+                    <>
+                      <td
+                        className="whitespace-normal text-sm text-gray-500"
+                        style={{ padding: "2px 3px" }}
+                      >
+                        <DelayedImage
+                          fileId={JSON.parse(record[26] || "[]")[0] || ""}
+                          delayIndex={index}
+                        />
+                      </td>
+                      <td
+                        className="whitespace-normal text-sm text-gray-500"
+                        style={{ padding: "2px 3px" }}
+                      >
+                        <DelayedImage
+                          fileId={JSON.parse(record[26] || "[]")[1] || ""}
+                          delayIndex={index + 1}
+                        />
+                      </td>
+                      <td
+                        className="whitespace-normal text-sm text-gray-500"
+                        style={{ padding: "2px 3px" }}
+                      >
+                        <DelayedImage
+                          fileId={JSON.parse(record[26] || "[]")[2] || ""}
+                          delayIndex={index + 2}
+                        />
+                      </td>
+                    </>
+                  ) : null}
                   {/* Surveryor name & Action Buttons */}
                   {user.id === survayorData?.id ? (
                     <td
@@ -607,12 +715,12 @@ const SurvayReport = () => {
                         display: "flex",
                         gap: ".5rem",
                         height: "100%",
-                        padding: "3px 8px",
+                        padding: "2px 3px",
                       }}
                     >
                       <button
                         onClick={() => navigate(`/form/${record[0]}`)}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
                       >
                         Edit
                       </button>
@@ -627,7 +735,7 @@ const SurvayReport = () => {
 
                           handleDelete(record[0]);
                         }}
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded"
                       >
                         Delete
                       </button>
@@ -637,7 +745,7 @@ const SurvayReport = () => {
                       className="whitespace-normal text-gray-500"
                       style={{
                         fontSize: ".7rem",
-                        padding: "3px 8px",
+                        padding: "2px 3px",
                         minWidth: "200px",
                       }}
                     >

@@ -3,14 +3,15 @@ body {
 }
 .form-container {
   //   max-width: 960px;
-  margin: 2rem auto;
-  padding: 2rem;
+  margin: 0.2rem auto;
+  margin-bottom: 2rem;
+  padding: 1rem;
   background-color: #ffffff;
   border-radius: 12px;
   //   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 .form-field {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.3rem;
 }
 
 .form-group {
@@ -44,7 +45,9 @@ body {
   border-radius: 8px;
   font-size: 1rem;
   color: #374151;
-  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition:
+    border-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
 
   &:focus {
     outline: none;
@@ -81,7 +84,9 @@ body {
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+  transition:
+    background-color 0.2s ease-in-out,
+    transform 0.1s ease-in-out;
   margin-top: -1rem !important;
   display: inline-flex;
   align-items: center;
@@ -101,7 +106,9 @@ body {
   border-radius: 8px;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+  transition:
+    background-color 0.2s ease-in-out,
+    transform 0.1s ease-in-out;
   margin-top: 2rem;
   width: 100%;
   font-size: 1.125rem;
@@ -109,6 +116,12 @@ body {
   &:hover {
     background-color: #059669; /* Darker green */
     transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #10b981;
   }
 }
 
@@ -131,7 +144,9 @@ body {
   border-radius: 8px;
   font-size: 1rem;
   color: #374151;
-  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition:
+    border-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
 }
 .form-input:focus,
 .form-select:focus,
@@ -168,7 +183,9 @@ body {
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+  transition:
+    background-color 0.2s ease-in-out,
+    transform 0.1s ease-in-out;
   margin-top: 2rem;
   display: inline-flex;
   align-items: center;
@@ -186,7 +203,9 @@ body {
   border-radius: 8px;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+  transition:
+    background-color 0.2s ease-in-out,
+    transform 0.1s ease-in-out;
   margin-top: 2rem;
   width: 100%;
   font-size: 1.125rem;

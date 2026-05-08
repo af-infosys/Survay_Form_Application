@@ -10,6 +10,7 @@ import ImageUploadSlot from "../components/ImageUploadSlot.jsx";
 // --- Constants for Local Storage Keys ---
 const FORM_DATA_KEY = "surveyFormData";
 const FLOORS_DATA_KEY = "surveyFloorsData";
+const LOCAL_STORAGE_KEY = "fieldVisibility";
 
 // --- Initial State Definition ---
 const initialFormData = (user) => ({
@@ -156,7 +157,7 @@ const SurvayForm = () => {
   const [areas, setAreas] = useState([]);
   const [areasLoading, setAreasLoading] = useState(true);
   const [areasError, setAreasError] = useState(null);
-  const [formLoading, setFormLoading] = useState(false);
+  const [formLoading, setFormLoading] = useState(true);
   const [formError, setFormError] = useState(null);
   const [imageAkarni, setImageAkarni] = useState(false);
   const [ptvPlot, setPtvPlot] = useState(false);
@@ -179,10 +180,16 @@ const SurvayForm = () => {
 
     // Handle Plot Become Empty Slots
     if (name === "houseCategory") {
-      if (formData?.houseCategory.includes("પ્લોટ")) {
-        setFloors(() => {
-          return [];
-        });
+      if (value.includes("પ્લોટ")) setFloors([]);
+
+      if (value.includes("સરકારી સહાય આવાસ")) {
+        setFormData((prevData) => ({
+          ...prevData,
+          propertyNameOnRecord: "સરકારી સહાય આવાસ",
+          [name]: value,
+        }));
+
+        return;
       }
     }
 
@@ -386,7 +393,7 @@ const SurvayForm = () => {
   // Effect to load existing data if in edit mode (No Change Needed Here)
   useEffect(() => {
     const fetchRecordForEdit = async () => {
-      if (!isEditMode || !id) return;
+      if (!isEditMode || !id || !projectId) return;
 
       setFormLoading(true);
       setFormError(null);
@@ -469,9 +476,13 @@ const SurvayForm = () => {
   // Effect for loading areas and Image Mode (No Change Needed Here)
   useEffect(() => {
     const fetchAreas = async () => {
+      setFormLoading(true);
       setAreasLoading(true);
       setAreasError(null);
+
       try {
+        if (!projectId) return;
+
         const response = await fetch(
           `${await apiPath()}/api/sheet/areas?workId=${projectId}`,
         );
@@ -487,6 +498,7 @@ const SurvayForm = () => {
         setAreasError("વિસ્તારો લાવવામાં નિષ્ફળ.");
       } finally {
         setAreasLoading(false);
+        setFormLoading(false);
       }
     };
 
@@ -497,6 +509,9 @@ const SurvayForm = () => {
 
   const fetchIndex = async () => {
     try {
+      setFormLoading(true);
+      if (!projectId) return;
+
       const response = await fetch(
         `${await apiPath()}/api/sheet?workId=${projectId}`,
       );
@@ -528,6 +543,8 @@ const SurvayForm = () => {
       }));
     } catch (err) {
       console.error("Error fetching records:", err);
+    } finally {
+      setFormLoading(false);
     }
   };
 
@@ -594,13 +611,36 @@ const SurvayForm = () => {
     }
   }, [user?.id, projectId]);
 
+  // Checkbox states
+  const [visibility, setVisibility] = useState({
+    showPropertyName: true,
+    showOccName: true,
+  });
+
+  // Load from localStorage
+  useEffect(() => {
+    if (isEditMode) {
+      setVisibility({
+        showPropertyName: true,
+        showOccName: true,
+      });
+      return;
+    }
+
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+
+    if (saved) {
+      setVisibility(JSON.parse(saved));
+    }
+  }, []);
+
   // --- Render (Omitted for brevity, as it's the same) ---
   return (
-    <div className="form-container p-8">
+    <div className="form-container">
       {/* Added margin for sidebar */}
 
-      <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        સર્વે ફોર્મ {isEditMode ? "(સંપાદિત કરો)" : ""}
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
+        સર્વે ફોર્મ {isEditMode ? "(સંપાદિત કરો)" : "(નવી મિલકત)"}
       </h1>
 
       <WorkSpot />
@@ -616,31 +656,82 @@ const SurvayForm = () => {
       )}
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-          {/* Field 1: અનું ક્રમાંક */}
-          <div className="form-field">
-            <label htmlFor="serialNumber" className="form-label">
-              1. અનું ક્રમાંક *
-            </label>
-            <input
-              type="text"
-              id="serialNumber"
-              name="serialNumber"
-              className="form-input"
-              placeholder="દા.ત. 001"
-              value={Number(formData.serialNumber)}
-              onChange={handleChange}
-              required
-              // disabled={isEditMode}
-              style={{ maxWidth: "82px" }}
-              maxLength="5"
-              disabled="disabled"
-            />
+          <div className="grid grid-cols-3 md:grid-cols-3 gap-x-2">
+            {/* Field 1: અનું ક્રમાંક */}
+            <div className="form-field">
+              <label
+                htmlFor="serialNumber"
+                className="form-label"
+                style={{ fontSize: "14px", whiteSpace: "nowrap" }}
+              >
+                1. અનું ક્રમાંક*
+              </label>
+              <input
+                type="number"
+                id="serialNumber"
+                name="serialNumber"
+                className="form-input"
+                placeholder="દા.ત. 001"
+                value={Number(formData.serialNumber)}
+                onChange={handleChange}
+                required
+                // disabled={isEditMode}
+                style={{ maxWidth: "80px" }}
+                maxLength="5"
+                disabled="disabled"
+              />
+            </div>
+
+            {/* Field 2: મિલ્કત ક્રમાંક */}
+            <div className="form-field">
+              <label
+                htmlFor="propertyNumber"
+                className="form-label"
+                style={{ fontSize: "14px", whiteSpace: "nowrap" }}
+              >
+                2. મિલ્કત ક્રમાંક*
+              </label>
+              <input
+                type="number"
+                id="propertyNumber"
+                name="propertyNumber"
+                className="form-input"
+                placeholder="દા.ત. P12345"
+                value={Number(formData.propertyNumber)}
+                onChange={handleChange}
+                required
+                style={{ maxWidth: "80px" }}
+                maxLength="5"
+              />
+            </div>
+
+            {/* Field 3: જુનો મિલકત નંબર */}
+            <div className="form-field">
+              <label
+                htmlFor="oldPropertyNumber"
+                className="form-label"
+                style={{ fontSize: "14px", whiteSpace: "nowrap" }}
+              >
+                3. જુનો મિલકત નંબર
+              </label>
+              <input
+                type="number"
+                id="oldPropertyNumber"
+                name="oldPropertyNumber"
+                className="form-input"
+                placeholder="જો હોય તો દાખલ કરો"
+                value={formData.oldPropertyNumber}
+                onChange={handleChange}
+                style={{ maxWidth: "80px" }}
+                maxLength="5"
+              />
+            </div>
           </div>
 
-          {/* Field 2: વિસ્તારનું નામ (હવે select dropdown) */}
+          {/* Field 4: વિસ્તારનું નામ (હવે select dropdown) */}
           <div className="form-field">
             <label htmlFor="areaName" className="form-label">
-              2. વિસ્તારનું નામ *
+              4. વિસ્તારનું નામ *
             </label>
             {areasLoading ? (
               <select className="form-select" disabled>
@@ -669,29 +760,10 @@ const SurvayForm = () => {
             )}
           </div>
 
-          {/* Field 3: મિલ્કત ક્રમાંક */}
-          <div className="form-field">
-            <label htmlFor="propertyNumber" className="form-label">
-              3. મિલ્કત ક્રમાંક *
-            </label>
-            <input
-              type="text"
-              id="propertyNumber"
-              name="propertyNumber"
-              className="form-input"
-              placeholder="દા.ત. P12345"
-              value={Number(formData.propertyNumber)}
-              onChange={handleChange}
-              required
-              style={{ maxWidth: "82px" }}
-              maxLength="5"
-            />
-          </div>
-
-          {/* Field 4: માલિકનું નામ */}
+          {/* Field 5: માલિકનું નામ */}
           <div className="form-field">
             <label htmlFor="ownerName" className="form-label">
-              4. માલિકનું નામ *
+              5. માલિકનું નામ *
             </label>
             <input
               type="text"
@@ -705,59 +777,43 @@ const SurvayForm = () => {
             />
           </div>
 
-          <div className="form-field">
-            <label htmlFor="occName" className="form-label">
-              5. કબ્જેદારનું નામ *
-            </label>
-            <input
-              type="text"
-              id="occName"
-              name="occName"
-              className="form-input"
-              placeholder="Name Fathername Surname"
-              value={formData.occName}
-              onChange={handleChange}
-            />
-          </div>
+          {visibility?.showOccName && (
+            <div className="form-field">
+              <label htmlFor="occName" className="form-label">
+                6. કબ્જેદારનું નામ
+              </label>
+              <input
+                type="text"
+                id="occName"
+                name="occName"
+                className="form-input"
+                placeholder="Name Fathername Surname"
+                value={formData.occName}
+                onChange={handleChange}
+              />
+            </div>
+          )}
 
-          {/* Field 5: જુનો મિલકત નંબર */}
-          <div className="form-field">
-            <label htmlFor="oldPropertyNumber" className="form-label">
-              6. જુનો મિલકત નંબર
-            </label>
-            <input
-              type="text"
-              id="oldPropertyNumber"
-              name="oldPropertyNumber"
-              className="form-input"
-              placeholder="જો હોય તો દાખલ કરો"
-              value={formData.oldPropertyNumber}
-              onChange={handleChange}
-              style={{ maxWidth: "82px" }}
-              maxLength="5"
-            />
-          </div>
-
-          {/* Field 6: મોબાઈલ નંબર */}
+          {/* Field 7: મોબાઈલ નંબર */}
           <div className="form-field">
             <label htmlFor="mobileNumber" className="form-label">
               7. મોબાઈલ નંબર (Whatsapp)
             </label>
             <input
-              type="text"
+              type="number"
               id="mobileNumber"
               name="mobileNumber"
               className="form-input"
               placeholder="9876543210"
               title="કૃપા કરીને 10 અંકનો મોબાઇલ નંબર દાખલ કરો"
-              value={formData.mobileNumber}
+              value={Number(formData.mobileNumber || 0) || ""}
               onChange={handleChange}
               style={{ maxWidth: "130px" }}
               maxLength="10"
             />
           </div>
 
-          {/* Field 9: મકાન category */}
+          {/* Field 8: મકાન category */}
           <div className="form-field">
             <label htmlFor="houseCategory" className="form-label">
               8. મકાન category *
@@ -843,38 +899,40 @@ const SurvayForm = () => {
           </div>
         </div>
 
-        {/* Field 7: મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/ કારખાના/ કંપનીનું નામ */}
-        <div className="form-field md:col-span-2">
-          <label htmlFor="propertyNameOnRecord" className="form-label">
-            9. મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/ કારખાના/ કંપનીનું નામ
-          </label>
-          <input
-            type="text"
-            id="propertyNameOnRecord"
-            name="propertyNameOnRecord"
-            className="form-input"
-            list="propertyNames"
-            value={formData.propertyNameOnRecord}
-            onChange={handleChange}
-          />
-
-          <datalist id="propertyNames">
-            <option
-              value={
-                !formData?.houseCategory.includes("પ્લોટ") &&
-                !formData?.houseCategory.includes("મકાન")
-                  ? formData?.ownerName
-                  : ""
-              }
+        {/* Field 9: મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/ કારખાના/ કંપનીનું નામ */}
+        {visibility?.showPropertyName && (
+          <div className="form-field md:col-span-2">
+            <label htmlFor="propertyNameOnRecord" className="form-label">
+              9. મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/કારખાના/કંપનીનું નામ
+            </label>
+            <input
+              type="text"
+              id="propertyNameOnRecord"
+              name="propertyNameOnRecord"
+              className="form-input"
+              list="propertyNames"
+              value={formData.propertyNameOnRecord}
+              onChange={handleChange}
             />
-          </datalist>
-        </div>
+
+            <datalist id="propertyNames">
+              <option
+                value={
+                  !formData?.houseCategory.includes("પ્લોટ") &&
+                  !formData?.houseCategory.includes("મકાન")
+                    ? formData?.ownerName
+                    : ""
+                }
+              />
+            </datalist>
+          </div>
+        )}
 
         {formData?.houseCategory.includes("પ્લોટ") ? (
           <></>
         ) : (
           <>
-            <h2 className="section-title mt-8">10. માળની વિગતો * (વર્ણન)</h2>
+            <h2 className="section-title mt-2">10. માળની વિગતો * (વર્ણન)</h2>
 
             <div id="floorsContainer">
               {floors.map((floor, floorIndex) =>
@@ -912,12 +970,14 @@ const SurvayForm = () => {
                           <option value="" selected disabled>
                             માળ પસંદ કરો
                           </option>
-                          <option value="ગ્રાઉન્ડ ફ્લોર">ગ્રાઉન્ડ ફ્લોર</option>
-                          <option value="પ્રથમ માળ">પ્રથમ માળ</option>
-                          <option value="બીજો માળ">બીજો માળ</option>
-                          <option value="ત્રીજો માળ">ત્રીજો માળ</option>
-                          <option value="ચોથો માળ">ચોથો માળ</option>
-                          <option value="પાંચમો માળ">પાંચમો માળ</option>
+                          <option value="ગ્રાઉન્ડ ફ્લોર">
+                            0 ગ્રાઉન્ડ ફ્લોર
+                          </option>
+                          <option value="પ્રથમ માળ">1. પ્રથમ માળ</option>
+                          <option value="બીજો માળ">2. બીજો માળ</option>
+                          <option value="ત્રીજો માળ">3. ત્રીજો માળ</option>
+                          <option value="ચોથો માળ">4. ચોથો માળ</option>
+                          <option value="પાંચમો માળ">5. પાંચમો માળ</option>
                         </select>
                       </div>
 
@@ -1280,7 +1340,7 @@ const SurvayForm = () => {
               htmlFor="bp"
               style={{ textWrap: "nowrap", userSelect: "none" }}
             >
-              12. બિ.પ.
+              બિ.પ.
             </label>
 
             <input
@@ -1392,7 +1452,7 @@ const SurvayForm = () => {
         {/* Field 21: રીમાર્કસ */}
         <div className="form-field md:col-span-2">
           <label htmlFor="remarks" className="form-label">
-            નોંધ/રીમાર્કસ
+            12. નોંધ/રીમાર્કસ
           </label>
 
           <input
@@ -1411,15 +1471,13 @@ const SurvayForm = () => {
           </datalist>
         </div>
 
-        <br />
-
         {/* Image Upload Section */}
         {imageAkarni ? (
           <>
             <br />
             <br />{" "}
             <h2 className="text-2xl font-bold text-gray-800 pt-4 border-t mt-8">
-              Image Documentation
+              13. ફોટા
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <ImageUploadSlot
@@ -1441,7 +1499,7 @@ const SurvayForm = () => {
                 setFormData={setFormData}
               />
             </div>{" "}
-            <div className="mt-8 pt-6 border-t border-gray-200 text-sm text-gray-600">
+            {/* <div className="mt-8 pt-6 border-t border-gray-200 text-sm text-gray-600">
               <h3 className="font-semibold mb-2">
                 Current Form State (for debug):
               </h3>
@@ -1456,13 +1514,13 @@ const SurvayForm = () => {
                   2,
                 )}
               </pre>
-            </div>
+            </div> */}
             <br />
             <br />
           </>
         ) : null}
 
-        <button type="submit" className="submit-button">
+        <button type="submit" className="submit-button" disabled={formLoading}>
           {isEditMode ? "અપડેટ" : "સબમિટ"}
         </button>
       </form>
