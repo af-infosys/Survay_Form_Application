@@ -290,10 +290,10 @@ const SurvayReport = () => {
           }
         
           tbody tr:nth-child(even) {
-            background-color: #f3f4f6; /* વૈકલ્પિક પંક્તિઓ માટે શેડિંગ */
+            background-color: #f3f4f6; 
           }
           tbody tr:hover {
-            background-color: #e5e7eb; /* હોવર ઇફેક્ટ */
+            background-color: #e5e7eb;
           }
           .rounded-tl-lg { border-top-left-radius: 0.5rem; }
           .rounded-tr-lg { border-top-right-radius: 0.5rem; }
@@ -398,10 +398,7 @@ const SurvayReport = () => {
       </div>
 
       <div className="table-container rounded-lg shadow-md border border-gray-200">
-        <table
-          className="min-w-full divide-y divide-gray-200"
-          style={{ position: "sticky", top: "20px" }}
-        >
+        <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               <th
@@ -491,7 +488,7 @@ const SurvayReport = () => {
                 style={{ padding: "5px 8px", textAlign: "center" }}
                 id="thead"
               >
-                શૌચાલય
+                શૌ.
               </th>
 
               {imageAkarni ? (
@@ -536,27 +533,27 @@ const SurvayReport = () => {
                 Action
               </th>
             </tr>
-          </thead>
 
-          {/* Index Start */}
-          <tr>
-            {/* 1 to 18 th for index */}
-            {Array.from({ length: imageAkarni ? 14 : 13 }).map((_, index) => (
-              <th
-                className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{
-                  textAlign: "center",
-                  color: "white",
-                  background: background,
-                  padding: "3px",
-                }}
-                key={index}
-              >
-                {index + 1}
-              </th>
-            ))}
-          </tr>
-          {/* Index End */}
+            {/* Index Start */}
+            <tr>
+              {/* 1 to 18 th for index */}
+              {Array.from({ length: imageAkarni ? 14 : 13 }).map((_, index) => (
+                <th
+                  className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    background: background,
+                    padding: "3px",
+                  }}
+                  key={index}
+                >
+                  {index + 1}
+                </th>
+              ))}
+            </tr>
+            {/* Index End */}
+          </thead>
 
           <tbody className="bg-white divide-y divide-gray-200">
             {finalRecords.map((record, index) => {
@@ -651,7 +648,7 @@ const SurvayReport = () => {
                     >
                       <DelayedImage
                         fileId={JSON.parse(record[26] || "[]")[0] || ""}
-                        delayIndex={index}
+                        delayIndex={0}
                       />
                     </td>
                   ) : null}

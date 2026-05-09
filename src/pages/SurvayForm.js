@@ -630,7 +630,6 @@ const SurvayForm = () => {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
 
     if (saved) {
-      window.alert(saved);
       setVisibility(JSON.parse(saved));
     }
   }, []);
@@ -1443,6 +1442,60 @@ const SurvayForm = () => {
               maxLength="3"
             />
           </div>
+        </div>
+
+        <br />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            paddingInline: "20px",
+          }}
+        >
+          <button
+            style={{
+              background: "yellow",
+              padding: "5px 12px",
+              borderRadius: "10px",
+            }}
+            type="button"
+            onClick={() => {
+              setFormData((prev) => {
+                return {
+                  ...prev,
+
+                  kitchenCount: 1,
+                  bathroomCount: 1,
+                  verandaCount: 1,
+                  tapCount: 1,
+                  toiletCount: 1,
+                };
+              });
+            }}
+          >
+            બધા - 5
+          </button>
+
+          <button
+            style={{
+              background: "orange",
+              padding: "5px 12px",
+              borderRadius: "10px",
+            }}
+            type="button"
+            onClick={() => {
+              setFormData((prev) => {
+                return {
+                  ...prev,
+
+                  tapCount: 1,
+                  toiletCount: 1,
+                };
+              });
+            }}
+          >
+            નળ, શૌ. - 2
+          </button>
         </div>
 
         <br />
