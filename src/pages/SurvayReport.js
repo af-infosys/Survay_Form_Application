@@ -463,14 +463,6 @@ const SurvayReport = () => {
               </th>
 
               <th
-                className="text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg"
-                style={{ padding: "5px 8px", textAlign: "center" }}
-                id="thead"
-              >
-                બિ.પ.
-              </th>
-
-              <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider"
                 style={{ padding: "5px 8px", textAlign: "center" }}
                 id="thead"
@@ -502,6 +494,16 @@ const SurvayReport = () => {
                 શૌચાલય
               </th>
 
+              {imageAkarni ? (
+                <th
+                  className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  style={{ padding: "5px 8px", textAlign: "center" }}
+                  id="thead"
+                >
+                  ફોટો
+                </th>
+              ) : null}
+
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider"
                 style={{
@@ -514,33 +516,13 @@ const SurvayReport = () => {
                 નોંધ/રીમાર્કસ
               </th>
 
-              {imageAkarni ? (
-                <>
-                  <th
-                    className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    style={{ padding: "5px 8px", textAlign: "center" }}
-                    id="thead"
-                  >
-                    મુખ્ય દરવાજો
-                  </th>
-
-                  <th
-                    className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    style={{ padding: "5px 8px", textAlign: "center" }}
-                    id="thead"
-                  >
-                    રૂમનો દરવાજો{" "}
-                  </th>
-
-                  <th
-                    className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    style={{ padding: "5px 8px", textAlign: "center" }}
-                    id="thead"
-                  >
-                    માલિકનો ફોટો
-                  </th>
-                </>
-              ) : null}
+              <th
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg"
+                style={{ padding: "5px 8px", textAlign: "center" }}
+                id="thead"
+              >
+                બિ.પ.
+              </th>
 
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg"
@@ -559,7 +541,7 @@ const SurvayReport = () => {
           {/* Index Start */}
           <tr>
             {/* 1 to 18 th for index */}
-            {Array.from({ length: imageAkarni ? 16 : 13 }).map((_, index) => (
+            {Array.from({ length: imageAkarni ? 14 : 13 }).map((_, index) => (
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider"
                 style={{
@@ -634,13 +616,6 @@ const SurvayReport = () => {
                     {record[8]?.includes("પ્લોટ") ? record[8] : ""} {record[16]}{" "}
                     {record[7] ? `, ${record[7]}` : ""}
                   </td>
-                  {/* B.P. */}
-                  <td
-                    className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "2px 3px" }}
-                  >
-                    {record[14]?.includes("બિ.પ.") ? "બિ.પ." : ""}
-                  </td>
                   {/* Mobile Number */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
@@ -669,6 +644,17 @@ const SurvayReport = () => {
                   >
                     {record[13]}
                   </td>
+                  {imageAkarni ? (
+                    <td
+                      className="whitespace-normal text-sm text-gray-500"
+                      style={{ padding: "2px 3px" }}
+                    >
+                      <DelayedImage
+                        fileId={JSON.parse(record[26] || "[]")[0] || ""}
+                        delayIndex={index}
+                      />
+                    </td>
+                  ) : null}
                   {/* Notes/Remarks */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
@@ -676,37 +662,13 @@ const SurvayReport = () => {
                   >
                     {record[14]}
                   </td>
-                  {imageAkarni ? (
-                    <>
-                      <td
-                        className="whitespace-normal text-sm text-gray-500"
-                        style={{ padding: "2px 3px" }}
-                      >
-                        <DelayedImage
-                          fileId={JSON.parse(record[26] || "[]")[0] || ""}
-                          delayIndex={index}
-                        />
-                      </td>
-                      <td
-                        className="whitespace-normal text-sm text-gray-500"
-                        style={{ padding: "2px 3px" }}
-                      >
-                        <DelayedImage
-                          fileId={JSON.parse(record[26] || "[]")[1] || ""}
-                          delayIndex={index + 1}
-                        />
-                      </td>
-                      <td
-                        className="whitespace-normal text-sm text-gray-500"
-                        style={{ padding: "2px 3px" }}
-                      >
-                        <DelayedImage
-                          fileId={JSON.parse(record[26] || "[]")[2] || ""}
-                          delayIndex={index + 2}
-                        />
-                      </td>
-                    </>
-                  ) : null}
+                  {/* B.P. */}
+                  <td
+                    className="whitespace-normal text-sm text-gray-500"
+                    style={{ padding: "2px 3px" }}
+                  >
+                    {record[14]?.includes("બિ.પ.") ? "બિ.પ." : ""}
+                  </td>
                   {/* Surveryor name & Action Buttons */}
                   {user.id === survayorData?.id ? (
                     <td

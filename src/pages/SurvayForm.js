@@ -630,6 +630,7 @@ const SurvayForm = () => {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
 
     if (saved) {
+      window.alert(saved);
       setVisibility(JSON.parse(saved));
     }
   }, []);
@@ -777,22 +778,21 @@ const SurvayForm = () => {
             />
           </div>
 
-          {visibility?.showOccName && (
-            <div className="form-field">
-              <label htmlFor="occName" className="form-label">
-                6. કબ્જેદારનું નામ
-              </label>
-              <input
-                type="text"
-                id="occName"
-                name="occName"
-                className="form-input"
-                placeholder="Name Fathername Surname"
-                value={formData.occName}
-                onChange={handleChange}
-              />
-            </div>
-          )}
+          <div className="form-field">
+            <label htmlFor="occName" className="form-label">
+              6. કબ્જેદારનું નામ
+            </label>
+            <input
+              type="text"
+              id="occName"
+              name="occName"
+              className="form-input"
+              placeholder="Name Fathername Surname"
+              value={formData.occName}
+              onChange={handleChange}
+              disabled={visibility?.showOccName ? false : true}
+            />
+          </div>
 
           {/* Field 7: મોબાઈલ નંબર */}
           <div className="form-field">
@@ -861,72 +861,71 @@ const SurvayForm = () => {
               <option value="પ્લોટ (ફરતી દિવાલ) ખાનગી">
                 7. પ્લોટ (ફરતી દિવાલ) ખાનગી
               </option>
+              <option value="સરકારી સહાય આવાસ">8. સરકારી સહાય આવાસ</option>
               <option value="પ્લોટ સરકારી - કોમનપ્લોટ">
-                8. પ્લોટ સરકારી - કોમનપ્લોટ
+                9. પ્લોટ સરકારી - કોમનપ્લોટ
               </option>
               <option value="પ્લોટ (ફરતી દિવાલ) સરકારી">
-                9. પ્લોટ (ફરતી દિવાલ) સરકારી
+                10. પ્લોટ (ફરતી દિવાલ) સરકારી
               </option>
 
               <option value="કારખાના - ઇન્ડસ્ટ્રીજ઼">
-                10. કારખાના - ઇન્ડસ્ટ્રીજ઼
+                11. કારખાના - ઇન્ડસ્ટ્રીજ઼
               </option>
               <option value="ટ્રસ્ટ મિલ્કત / NGO">
-                11. ટ્રસ્ટ મિલ્કત / NGO
+                12. ટ્રસ્ટ મિલ્કત / NGO
               </option>
               <option value="મંડળી - સેવા સહકારી મંડળી">
-                12. મંડળી - સેવા સહકારી મંડળી
+                13. મંડળી - સેવા સહકારી મંડળી
               </option>
-              <option value="બેંક - સરકારી">11. બેંક - સરકારી</option>
+              <option value="બેંક - સરકારી">14. બેંક - સરકારી</option>
               <option value="બેંક - અર્ધ સરકારી બેંક">
-                13. બેંક - અર્ધ સરકારી બેંક
+                15. બેંક - અર્ધ સરકારી બેંક
               </option>
-              <option value="બેંક - પ્રાઇટ બેંક">14. બેંક - પ્રાઇટ બેંક</option>
-              <option value="સરકારી સહાય આવાસ">15. સરકારી સહાય આવાસ</option>
-              <option value="કોમ્પપ્લેક્ષ">16. કોમ્પપ્લેક્ષ</option>
+              <option value="બેંક - પ્રાઇટ બેંક">16. બેંક - પ્રાઇટ બેંક</option>
+              <option value="કોમ્પપ્લેક્ષ">17. કોમ્પપ્લેક્ષ</option>
 
               <option value="હિરાના કારખાના નાના">
-                17. હિરાના કારખાના નાના
+                18. હિરાના કારખાના નાના
               </option>
               <option value="હિરાના કારખાના મોટા">
-                18. હિરાના કારખાના મોટા
+                19. હિરાના કારખાના મોટા
               </option>
-              <option value="મોબાઈલ ટાવર">19. મોબાઈલ ટાવર</option>
+              <option value="મોબાઈલ ટાવર">20. મોબાઈલ ટાવર</option>
               <option value="પેટ્રોલ પંપ, ગેસ પંપ">
-                20. પેટ્રોલ પંપ, ગેસ પંપ
+                21. પેટ્રોલ પંપ, ગેસ પંપ
               </option>
             </select>
           </div>
         </div>
 
         {/* Field 9: મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/ કારખાના/ કંપનીનું નામ */}
-        {visibility?.showPropertyName && (
-          <div className="form-field md:col-span-2">
-            <label htmlFor="propertyNameOnRecord" className="form-label">
-              9. મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/કારખાના/કંપનીનું નામ
-            </label>
-            <input
-              type="text"
-              id="propertyNameOnRecord"
-              name="propertyNameOnRecord"
-              className="form-input"
-              list="propertyNames"
-              value={formData.propertyNameOnRecord}
-              onChange={handleChange}
-            />
+        <div className="form-field md:col-span-2">
+          <label htmlFor="propertyNameOnRecord" className="form-label">
+            9. મિલ્ક્ત પર લખેલ નામ મકાન/દુકાન/કારખાના/કંપનીનું નામ
+          </label>
+          <input
+            type="text"
+            id="propertyNameOnRecord"
+            name="propertyNameOnRecord"
+            className="form-input"
+            list="propertyNames"
+            value={formData.propertyNameOnRecord}
+            onChange={handleChange}
+            disabled={visibility?.showPropertyName ? false : true}
+          />
 
-            <datalist id="propertyNames">
-              <option
-                value={
-                  !formData?.houseCategory.includes("પ્લોટ") &&
-                  !formData?.houseCategory.includes("મકાન")
-                    ? formData?.ownerName
-                    : ""
-                }
-              />
-            </datalist>
-          </div>
-        )}
+          <datalist id="propertyNames">
+            <option
+              value={
+                !formData?.houseCategory.includes("પ્લોટ") &&
+                !formData?.houseCategory.includes("મકાન")
+                  ? formData?.ownerName
+                  : ""
+              }
+            />
+          </datalist>
+        </div>
 
         {formData?.houseCategory.includes("પ્લોટ") ? (
           <></>
@@ -1477,16 +1476,18 @@ const SurvayForm = () => {
             <br />
             <br />{" "}
             <h2 className="text-2xl font-bold text-gray-800 pt-4 border-t mt-8">
-              13. ફોટા
+              13. ફોટો
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
               <ImageUploadSlot
-                label="1. મુખ્ય દરવાજો / Main Gate"
+                label={`મિલ્કત નં. ${formData?.propertyNumber}`}
+                label2={`નામ: ${formData?.ownerName}`}
                 slotKey="img1"
                 formData={formData}
                 setFormData={setFormData}
               />
-              <ImageUploadSlot
+
+              {/* <ImageUploadSlot
                 label="2. રૂમનો દરવાજો"
                 slotKey="img2"
                 formData={formData}
@@ -1497,24 +1498,8 @@ const SurvayForm = () => {
                 slotKey="img3"
                 formData={formData}
                 setFormData={setFormData}
-              />
+              /> */}
             </div>{" "}
-            {/* <div className="mt-8 pt-6 border-t border-gray-200 text-sm text-gray-600">
-              <h3 className="font-semibold mb-2">
-                Current Form State (for debug):
-              </h3>
-              <pre className="bg-gray-50 p-3 rounded-lg overflow-x-auto text-xs">
-                {JSON.stringify(
-                  {
-                    img1: formData.img1,
-                    img2: formData.img2,
-                    img3: formData.img3,
-                  },
-                  null,
-                  2,
-                )}
-              </pre>
-            </div> */}
             <br />
             <br />
           </>

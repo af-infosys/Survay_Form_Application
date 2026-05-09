@@ -3,7 +3,13 @@ import { Upload, Trash, Image, Loader } from "lucide-react";
 import apiPath from "../isProduction";
 import axios from "axios";
 
-const ImageUploadSlot = ({ label, slotKey, formData, setFormData }) => {
+const ImageUploadSlot = ({
+  label,
+  label2 = "",
+  slotKey,
+  formData,
+  setFormData,
+}) => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -114,6 +120,7 @@ const ImageUploadSlot = ({ label, slotKey, formData, setFormData }) => {
   return (
     <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
       <h3 className="text-lg font-semibold text-gray-700 mb-3">{label}</h3>
+      <h3 className="text-lg font-semibold text-gray-700 mb-3">{label2}</h3>
 
       {/* Image Preview / Placeholder */}
       <div className="relative w-full mb-4 bg-gray-200 rounded-md flex items-center justify-center overflow-hidden">
