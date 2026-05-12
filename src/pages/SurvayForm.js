@@ -595,6 +595,7 @@ const SurvayForm = () => {
           },
         );
         const data = await res.json();
+
         console.log("Image Mode: ", data);
         setImageAkarni(data?.isImage);
         setPtvPlot(data?.isPtvPlot);
@@ -832,7 +833,7 @@ const SurvayForm = () => {
               <option value="સરકારી મિલ્ક્ત">4. સરકારી મિલ્ક્ત</option>
               <option value="પ્રાઈવેટ - સંસ્થાઓ">5. પ્રાઈવેટ - સંસ્થાઓ</option>
 
-              {/* {ptvPlot && (
+              {ptvPlot !== false ? (
                 <>
                   <option value="પ્લોટ ખાનગી - ખુલ્લી જગ્યા">
                     6. પ્લોટ ખાનગી - ખુલ્લી જગ્યા
@@ -841,9 +842,11 @@ const SurvayForm = () => {
                     7. પ્લોટ (ફરતી દિવાલ) ખાનગી
                   </option>
                 </>
-              )} */}
+              ) : null}
 
-              {/* {govPlot && (
+              <option value="સરકારી સહાય આવાસ">8. સરકારી સહાય આવાસ</option>
+
+              {govPlot !== false ? (
                 <>
                   <option value="પ્લોટ સરકારી - કોમનપ્લોટ">
                     8. પ્લોટ સરકારી - કોમનપ્લોટ
@@ -852,21 +855,20 @@ const SurvayForm = () => {
                     9. પ્લોટ (ફરતી દિવાલ) સરકારી
                   </option>
                 </>
-              )} */}
+              ) : null}
 
-              <option value="પ્લોટ ખાનગી - ખુલ્લી જગ્યા">
+              {/* <option value="પ્લોટ ખાનગી - ખુલ્લી જગ્યા">
                 6. પ્લોટ ખાનગી - ખુલ્લી જગ્યા
               </option>
               <option value="પ્લોટ (ફરતી દિવાલ) ખાનગી">
                 7. પ્લોટ (ફરતી દિવાલ) ખાનગી
               </option>
-              <option value="સરકારી સહાય આવાસ">8. સરકારી સહાય આવાસ</option>
               <option value="પ્લોટ સરકારી - કોમનપ્લોટ">
                 9. પ્લોટ સરકારી - કોમનપ્લોટ
               </option>
               <option value="પ્લોટ (ફરતી દિવાલ) સરકારી">
                 10. પ્લોટ (ફરતી દિવાલ) સરકારી
-              </option>
+              </option> */}
 
               <option value="કારખાના - ઇન્ડસ્ટ્રીજ઼">
                 11. કારખાના - ઇન્ડસ્ટ્રીજ઼
