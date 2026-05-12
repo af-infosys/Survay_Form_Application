@@ -939,21 +939,64 @@ const SurvayForm = () => {
                     key={floorIndex}
                     className="floor-section mb-6 p-4 border rounded-lg shadow-sm"
                   >
-                    <div className="flex justify-between items-center mb-4">
-                      <h3 className="floor-section-title text-lg font-semibold">
-                        માળ:{" "}
-                        <span className="floor-index">
-                          {floor.floorType || `માળ ${floorIndex + 1}`}
+                    <div
+                      className="flex justify-between items-center mb-4"
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        width: "100%",
+                      }}
+                    >
+                      <h3
+                        className="floor-section-title text-lg font-semibold"
+                        style={{
+                          display: "flex",
+                          flexWrap: "nowrap",
+                          justifyContent: "space-between",
+                          width: "100%",
+                        }}
+                      >
+                        <span>
+                          માળ:{" "}
+                          <span className="floor-index">
+                            {floor.floorType || `માળ ${floorIndex + 1}`}
+                          </span>
                         </span>
+
+                        <button
+                          type="button"
+                          onClick={() => deleteFloor(floorIndex)}
+                          className="delete-button text-red-600 hover:text-red-800"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                        </button>
                       </h3>
 
                       <div
                         className="form-field mb-4"
-                        style={{ display: "flex" }}
+                        style={{
+                          display: "flex",
+                          flexWrap: "nowrap",
+                          gap: "15px",
+                        }}
                       >
                         <label
                           htmlFor={`floorTypeSelect-${floorIndex}`}
                           className="form-label"
+                          style={{ whiteSpace: "nowrap" }}
                         >
                           માળનો પ્રકાર *
                         </label>
@@ -978,27 +1021,6 @@ const SurvayForm = () => {
                           <option value="પાંચમો માળ">5. પાંચમો માળ</option>
                         </select>
                       </div>
-
-                      <button
-                        type="button"
-                        onClick={() => deleteFloor(floorIndex)}
-                        className="delete-button text-red-600 hover:text-red-800"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </button>
                     </div>
 
                     {floor.roomDetails.map((room, roomIndex) => (
@@ -1097,6 +1119,7 @@ const SurvayForm = () => {
                                 }
                                 maxLength="3"
                                 style={{ maxWidth: "45px" }}
+                                disabled={room.type === "કાચા"}
                               />
                             </div>
 
@@ -1210,17 +1233,32 @@ const SurvayForm = () => {
                               <option value="રૂમ">રૂમ (Room)</option>
 
                               <option value="હોલ નાનો">હોલ નાનો</option>
-                              <option value="હોલ મોટો">હોલ મોટો</option>
+                              <option
+                                value="હોલ મોટો"
+                                disabled={room.type === "કાચા"}
+                              >
+                                હોલ મોટો
+                              </option>
                               {/* <option value="હોલ">હોલ (Hall)</option> */}
 
                               <option value="દુકાન નાની">દુકાન નાની</option>
-                              <option value="દુકાન મોટી">દુકાન મોટી</option>
+                              <option
+                                value="દુકાન મોટી"
+                                disabled={room.type === "કાચા"}
+                              >
+                                દુકાન મોટી
+                              </option>
                               {/* <option value="દુકાન">દુકાન (Shop)</option> */}
 
                               <option value="ગોડાઉન નાનું">
                                 ગોડાઉન નાનું{" "}
                               </option>
-                              <option value="ગોડાઉન મોટું">ગોડાઉન મોટું</option>
+                              <option
+                                value="ગોડાઉન મોટું"
+                                disabled={room.type === "કાચા"}
+                              >
+                                ગોડાઉન મોટું
+                              </option>
                               {/* <option value="ગોડાઉન">ગોડાઉન (Godown)</option> */}
 
                               <option value="ઢાળિયું">ઢાળિયું</option>
@@ -1230,7 +1268,10 @@ const SurvayForm = () => {
                               <option value="શેડ નાના પતરાવાળા">
                                 શેડ નાના પતરાવાળા
                               </option>
-                              <option value="શેડ મોટા પતરાવાળા">
+                              <option
+                                value="શેડ મોટા પતરાવાળા"
+                                disabled={room.type === "કાચા"}
+                              >
                                 શેડ મોટા પતરાવાળા
                               </option>
 
