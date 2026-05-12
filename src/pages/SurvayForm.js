@@ -833,29 +833,33 @@ const SurvayForm = () => {
               <option value="સરકારી મિલ્ક્ત">4. સરકારી મિલ્ક્ત</option>
               <option value="પ્રાઈવેટ - સંસ્થાઓ">5. પ્રાઈવેટ - સંસ્થાઓ</option>
 
-              {ptvPlot !== false ? (
-                <>
-                  <option value="પ્લોટ ખાનગી - ખુલ્લી જગ્યા">
-                    6. પ્લોટ ખાનગી - ખુલ્લી જગ્યા
-                  </option>
-                  <option value="પ્લોટ (ફરતી દિવાલ) ખાનગી">
-                    7. પ્લોટ (ફરતી દિવાલ) ખાનગી
-                  </option>
-                </>
-              ) : null}
+              <option
+                value="પ્લોટ ખાનગી - ખુલ્લી જગ્યા"
+                disabled={ptvPlot === false}
+              >
+                6. પ્લોટ ખાનગી - ખુલ્લી જગ્યા
+              </option>
+              <option
+                value="પ્લોટ (ફરતી દિવાલ) ખાનગી"
+                disabled={ptvPlot === false}
+              >
+                7. પ્લોટ (ફરતી દિવાલ) ખાનગી
+              </option>
 
               <option value="સરકારી સહાય આવાસ">8. સરકારી સહાય આવાસ</option>
 
-              {govPlot !== false ? (
-                <>
-                  <option value="પ્લોટ સરકારી - કોમનપ્લોટ">
-                    8. પ્લોટ સરકારી - કોમનપ્લોટ
-                  </option>
-                  <option value="પ્લોટ (ફરતી દિવાલ) સરકારી">
-                    9. પ્લોટ (ફરતી દિવાલ) સરકારી
-                  </option>
-                </>
-              ) : null}
+              <option
+                value="પ્લોટ સરકારી - કોમનપ્લોટ"
+                disabled={govPlot === false}
+              >
+                8. પ્લોટ સરકારી - કોમનપ્લોટ
+              </option>
+              <option
+                value="પ્લોટ (ફરતી દિવાલ) સરકારી"
+                disabled={govPlot === false}
+              >
+                9. પ્લોટ (ફરતી દિવાલ) સરકારી
+              </option>
 
               {/* <option value="પ્લોટ ખાનગી - ખુલ્લી જગ્યા">
                 6. પ્લોટ ખાનગી - ખુલ્લી જગ્યા
