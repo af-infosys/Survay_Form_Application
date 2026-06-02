@@ -154,6 +154,8 @@ const SurvayForm = () => {
     ];
   });
 
+  console.log(floors);
+
   const [areas, setAreas] = useState([]);
   const [areasLoading, setAreasLoading] = useState(true);
   const [areasError, setAreasError] = useState(null);
@@ -208,6 +210,7 @@ const SurvayForm = () => {
                 tinRooms: "",
                 woodenRooms: "",
                 tileRooms: "",
+                description: "",
               },
             ],
           },
@@ -293,6 +296,7 @@ const SurvayForm = () => {
             tinRooms: "",
             woodenRooms: "",
             tileRooms: "",
+            description: "",
           },
         ],
       },
@@ -309,6 +313,7 @@ const SurvayForm = () => {
         tinRooms: "",
         woodenRooms: "",
         tileRooms: "",
+        description: "",
       });
       return newFloors;
     });
@@ -852,13 +857,13 @@ const SurvayForm = () => {
                 value="પ્લોટ સરકારી - કોમનપ્લોટ"
                 disabled={govPlot === false}
               >
-                8. પ્લોટ સરકારી - કોમનપ્લોટ
+                9. પ્લોટ સરકારી - કોમનપ્લોટ
               </option>
               <option
                 value="પ્લોટ (ફરતી દિવાલ) સરકારી"
                 disabled={govPlot === false}
               >
-                9. પ્લોટ (ફરતી દિવાલ) સરકારી
+                10. પ્લોટ (ફરતી દિવાલ) સરકારી
               </option>
 
               {/* <option value="પ્લોટ ખાનગી - ખુલ્લી જગ્યા">
@@ -1065,7 +1070,7 @@ const SurvayForm = () => {
                           )}
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-4">
                           {/* Floor-level type select, now inside the room loop */}
                           <div className="form-field mb-4">
                             <label
@@ -1099,7 +1104,10 @@ const SurvayForm = () => {
                           {/* Inputs for number of rooms */}
                           <div
                             className="form-group flex space-x-0 items-end mt-4"
-                            style={{ justifyContent: "space-between" }}
+                            style={{
+                              justifyContent: "space-between",
+                              marginTop: "5px",
+                            }}
                           >
                             {/* સ્લેબ */}
                             <div className="form-field">
@@ -1283,6 +1291,33 @@ const SurvayForm = () => {
 
                               {/* <option value="પ્લોટ">પ્લોટ</option> */}
                             </select>
+                          </div>
+
+                          <div className="form-field">
+                            <label
+                              htmlFor={`other-${floorIndex}-${roomIndex}`}
+                              className="form-label"
+                            >
+                              અન્ય વિગત
+                            </label>
+
+                            <input
+                              type="text"
+                              id={`description-${floorIndex}-${roomIndex}`}
+                              name="description"
+                              className="form-input p-2 border rounded w-20"
+                              min="0"
+                              value={room.description}
+                              onChange={(e) =>
+                                handleRoomDetailsChange(
+                                  floorIndex,
+                                  roomIndex,
+                                  e,
+                                )
+                              }
+                              style={{ maxWidth: "180px" }}
+                              placeholder="રૂમનું નામ"
+                            />
                           </div>
                         </div>
                       </div>
@@ -1525,6 +1560,31 @@ const SurvayForm = () => {
 
           <button
             style={{
+              background: "red",
+              padding: "5px 12px",
+              borderRadius: "10px",
+              color: "white",
+            }}
+            type="button"
+            onClick={() => {
+              setFormData((prev) => {
+                return {
+                  ...prev,
+
+                  kitchenCount: "",
+                  bathroomCount: "",
+                  verandaCount: "",
+                  tapCount: "",
+                  toiletCount: "",
+                };
+              });
+            }}
+          >
+            Clear
+          </button>
+
+          <button
+            style={{
               background: "orange",
               padding: "5px 12px",
               borderRadius: "10px",
@@ -1574,7 +1634,7 @@ const SurvayForm = () => {
         {imageAkarni ? (
           <>
             <br />
-            <br />{" "}
+            <br />
             <h2 className="text-2xl font-bold text-gray-800 pt-4 border-t mt-8">
               13. ફોટો
             </h2>
@@ -1587,12 +1647,16 @@ const SurvayForm = () => {
                 setFormData={setFormData}
               />
 
-              {/* <ImageUploadSlot
-                label="2. રૂમનો દરવાજો"
-                slotKey="img2"
-                formData={formData}
-                setFormData={setFormData}
-              />
+              {Number(imageAkarni) === 2 ? (
+                <ImageUploadSlot
+                  label="ફોટો 2"
+                  slotKey="img2"
+                  formData={formData}
+                  setFormData={setFormData}
+                />
+              ) : null}
+
+              {/*
               <ImageUploadSlot
                 label="3. માલિકનો ફોટો (Optional)"
                 slotKey="img3"
