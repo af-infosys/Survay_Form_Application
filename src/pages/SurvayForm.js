@@ -1631,7 +1631,7 @@ const SurvayForm = () => {
         </div>
 
         {/* Image Upload Section */}
-        {imageAkarni ? (
+        {Number(imageAkarni) !== 0 ? (
           <>
             <br />
             <br />
