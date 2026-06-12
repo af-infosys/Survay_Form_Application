@@ -660,7 +660,7 @@ const SurvayForm = () => {
       {formError && (
         <div className="text-center text-red-600 text-lg mb-4">{formError}</div>
       )}
-      <form onSubmit={handleSubmit} style={{ marginBottom: "50px" }}>
+      <form onSubmit={handleSubmit} style={{ paddingBottom: "150px" }}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
           <div className="grid grid-cols-3 md:grid-cols-3 gap-x-2">
             {/* Field 1: અનું ક્રમાંક */}
@@ -1610,7 +1610,10 @@ const SurvayForm = () => {
         <br />
 
         {/* Field 21: રીમાર્કસ */}
-        <div className="form-field md:col-span-2">
+        <div
+          className="form-field md:col-span-2"
+          style={{ marginBottom: "50px" }}
+        >
           <label htmlFor="remarks" className="form-label">
             12. નોંધ/રીમાર્કસ
           </label>
@@ -1632,7 +1635,7 @@ const SurvayForm = () => {
         </div>
 
         {/* Image Upload Section */}
-        {Number(imageAkarni) !== 0 ? (
+        {Number(imageAkarni || 0) !== 0 ? (
           <>
             <br />
             <br />
@@ -1648,7 +1651,7 @@ const SurvayForm = () => {
                 setFormData={setFormData}
               />
 
-              {Number(imageAkarni) === 2 ? (
+              {Number(imageAkarni || 0) === 2 ? (
                 <ImageUploadSlot
                   label="ફોટો 2"
                   slotKey="img2"

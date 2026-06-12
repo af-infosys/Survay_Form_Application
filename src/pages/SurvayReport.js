@@ -1,12 +1,22 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import apiPath from "../isProduction";
 import { useAuth } from "../config/AuthContext";
 import { useNavigate } from "react-router-dom";
 import WorkSpot from "../components/WorkSpot";
 import "./SurvayReport.scss"; // CSS ને હવે ઇનલાઇન કરવામાં આવ્યું છે
 import DelayedImage from "../components/DelayedImage";
+import { Search } from "lucide-react";
 
 const SurvayReport = () => {
+  const tableRef = useRef(null);
+  const handleScroll = (e) => {
+    const scrollTop = e.target.scrollTop;
+    const scrollLeft = e.target.scrollLeft;
+
+    localStorage.setItem("scrollTop", scrollTop);
+    localStorage.setItem("scrollLeft", scrollLeft);
+  };
+
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -47,7 +57,19 @@ const SurvayReport = () => {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const result = await response.json();
-          setRecords(result.data); // result.data માંથી રેકોર્ડ્સ સેટ કરો
+          setRecords(result.data);
+
+          setTimeout(() => {
+            const savedScrollTop = localStorage.getItem("scrollTop");
+            const savedScrollLeft = localStorage.getItem("scrollLeft");
+
+            if (tableRef.current && savedScrollTop) {
+              tableRef.current.scrollTop = Number(savedScrollTop);
+            }
+            if (tableRef.current && savedScrollLeft) {
+              tableRef.current.scrollLeft = Number(savedScrollLeft);
+            }
+          }, 1500);
         });
     } catch (err) {
       console.error("Error fetching records:", err);
@@ -58,12 +80,33 @@ const SurvayReport = () => {
   };
   const [areas, setAreas] = useState([]);
 
+  const fetchAreas = async () => {
+    try {
+      if (!projectId) return;
+
+      const response = await fetch(
+        `${await apiPath()}/api/sheet/areas?workId=${projectId}`,
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      setAreas(result.data);
+      console.log(result.data);
+    } catch (err) {
+      console.error("Error fetching areas:", err);
+    }
+  };
+
   useEffect(() => {
+    fetchAreas();
     fetchRecords();
-  }, []);
+  }, [projectId]);
 
   const HOUSE_CATEGORIES = [
-    "રહેણાંક",
+    "રહેણાંક - મકાન",
     "દુકાન",
     "ધાર્મિક સ્થળ",
     "સરકારી મિલ્ક્ત",
@@ -135,11 +178,15 @@ const SurvayReport = () => {
     if (searchTerm) {
       const lowerCaseSearch = searchTerm.toLowerCase();
       filteredRecords = filteredRecords.filter((record) => {
+        const mId1 = Number(record[0]);
+        const mId2 = Number(record[2]);
         const ownerName = record[3]?.toLowerCase() || "";
         const mobile = record[5]?.toLowerCase() || "";
         const remarks = record[13]?.toLowerCase() || "";
 
         return (
+          mId1.toString().includes(lowerCaseSearch) ||
+          mId2.toString().includes(lowerCaseSearch) ||
           ownerName.includes(lowerCaseSearch) ||
           mobile.includes(lowerCaseSearch) ||
           remarks.includes(lowerCaseSearch)
@@ -157,7 +204,7 @@ const SurvayReport = () => {
     // 3. Category Filter (Index 7)
     if (categoryFilter) {
       filteredRecords = filteredRecords.filter(
-        (record) => record[7] === categoryFilter,
+        (record) => record[8] === categoryFilter,
       );
     }
 
@@ -327,8 +374,12 @@ const SurvayReport = () => {
               className="input-style w-full pl-10"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ paddingBlock: "5px" }}
             />
-            {/* <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/> */}
+            <Search
+              size={20}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            />
           </div>
 
           {/* 2. Area Filter Dropdown (Index 1) */}
@@ -339,9 +390,9 @@ const SurvayReport = () => {
               onChange={(e) => setAreaFilter(e.target.value)}
             >
               <option value="">All Areas</option>
-              {areas.map((area) => (
-                <option key={area} value={area}>
-                  {area}
+              {areas?.map((area) => (
+                <option key={area?.id} value={area?.name}>
+                  {area?.id}. {area?.name}
                 </option>
               ))}
             </select>
@@ -397,7 +448,11 @@ const SurvayReport = () => {
         </div>
       </div>
 
-      <div className="table-container rounded-lg shadow-md border border-gray-200">
+      <div
+        ref={tableRef}
+        className="table-container rounded-lg shadow-md border border-gray-200"
+        onScroll={handleScroll}
+      >
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -491,14 +546,26 @@ const SurvayReport = () => {
                 શૌ.
               </th>
 
-              {imageAkarni ? (
-                <th
-                  className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  style={{ padding: "5px 8px", textAlign: "center" }}
-                  id="thead"
-                >
-                  ફોટો
-                </th>
+              {Number(imageAkarni || 0) !== 0 ? (
+                <>
+                  <th
+                    className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    style={{ padding: "5px 8px", textAlign: "center" }}
+                    id="thead"
+                  >
+                    ફોટો {Number(imageAkarni || 0) === 2 ? "1" : null}
+                  </th>
+
+                  {Number(imageAkarni || 0) === 2 ? (
+                    <th
+                      className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      style={{ padding: "5px 8px", textAlign: "center" }}
+                      id="thead"
+                    >
+                      ફોટો 2
+                    </th>
+                  ) : null}
+                </>
               ) : null}
 
               <th
@@ -537,7 +604,9 @@ const SurvayReport = () => {
             {/* Index Start */}
             <tr>
               {/* 1 to 18 th for index */}
-              {Array.from({ length: imageAkarni ? 14 : 13 }).map((_, index) => (
+              {Array.from({
+                length: Number(imageAkarni || 0) !== 0 ? 14 : 13,
+              }).map((_, index) => (
                 <th
                   className="text-xs font-medium text-gray-500 uppercase tracking-wider"
                   style={{
@@ -641,7 +710,7 @@ const SurvayReport = () => {
                   >
                     {record[13]}
                   </td>
-                  {imageAkarni ? (
+                  {Number(imageAkarni || 0) !== 0 ? (
                     <td
                       className="whitespace-normal text-sm text-gray-500"
                       style={{ padding: "2px 3px" }}
