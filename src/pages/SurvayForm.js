@@ -660,7 +660,7 @@ const SurvayForm = () => {
       {formError && (
         <div className="text-center text-red-600 text-lg mb-4">{formError}</div>
       )}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ marginBottom: "50px" }}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
           <div className="grid grid-cols-3 md:grid-cols-3 gap-x-2">
             {/* Field 1: અનું ક્રમાંક */}
@@ -1288,6 +1288,7 @@ const SurvayForm = () => {
                               >
                                 શેડ મોટા પતરાવાળા
                               </option>
+                              <option value="ફરતી દિવાલ">ફરતી દિવાલ</option>
 
                               {/* <option value="પ્લોટ">પ્લોટ</option> */}
                             </select>
@@ -1669,7 +1670,12 @@ const SurvayForm = () => {
           </>
         ) : null}
 
-        <button type="submit" className="submit-button" disabled={formLoading}>
+        <button
+          type="submit"
+          className="submit-button"
+          disabled={formLoading}
+          style={{ position: "fixed", bottom: "80px", maxWidth: "92vw" }}
+        >
           {isEditMode ? "અપડેટ" : "સબમિટ"}
         </button>
       </form>
