@@ -43,13 +43,6 @@ const SurvayReport = () => {
           project = data?.work?._id;
           console.log(data?.work?._id);
 
-          // setWorkSpot(user.workSpot);
-          // } catch (err) {
-          //   console.log(err);
-          //   return;
-          // }
-
-          // try {
           const response = await fetch(
             `${await apiPath()}/api/sheet?workId=${projectId || project}`,
           );
@@ -69,7 +62,7 @@ const SurvayReport = () => {
             if (tableRef.current && savedScrollLeft) {
               tableRef.current.scrollLeft = Number(savedScrollLeft);
             }
-          }, 1500);
+          }, 900);
         });
     } catch (err) {
       console.error("Error fetching records:", err);

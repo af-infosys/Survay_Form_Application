@@ -6,6 +6,7 @@ import apiPath from "../isProduction";
 import "./SurvayForm.scss";
 import WorkSpot from "../components/WorkSpot";
 import ImageUploadSlot from "../components/ImageUploadSlot.jsx";
+import Suggestions from "../components/OwnerSuggestions.jsx";
 
 // --- Constants for Local Storage Keys ---
 const FORM_DATA_KEY = "surveyFormData";
@@ -60,9 +61,12 @@ const SurvayForm = () => {
   const navigate = useNavigate();
 
   const [projectId, setProjectId] = useState(null);
+  const [records, setRecords] = useState([]);
 
   useEffect(() => {
     const fetchRecords = async () => {
+      let project = null;
+
       try {
         fetch(`${await apiPath()}/api/work/${user.id}`, {
           method: "GET",
@@ -74,6 +78,16 @@ const SurvayForm = () => {
           .then((res) => res.json())
           .then(async (data) => {
             setProjectId(data?.work?._id);
+            project = data?.work?._id;
+
+            const response = await fetch(
+              `${await apiPath()}/api/sheet?workId=${projectId || project}`,
+            );
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const result = await response.json();
+            setRecords(result.data);
           });
       } catch (err) {
         console.log(err);
@@ -479,34 +493,34 @@ const SurvayForm = () => {
   }, [id, isEditMode, user?.id, user?.name, projectId]);
 
   // Effect for loading areas and Image Mode (No Change Needed Here)
-  useEffect(() => {
-    const fetchAreas = async () => {
-      setFormLoading(true);
-      setAreasLoading(true);
-      setAreasError(null);
+  const fetchAreas = async () => {
+    setFormLoading(true);
+    setAreasLoading(true);
+    setAreasError(null);
 
-      try {
-        if (!projectId) return;
+    try {
+      if (!projectId) return;
 
-        const response = await fetch(
-          `${await apiPath()}/api/sheet/areas?workId=${projectId}`,
-        );
+      const response = await fetch(
+        `${await apiPath()}/api/sheet/areas?workId=${projectId}`,
+      );
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        setAreas(result.data);
-      } catch (err) {
-        console.error("Error fetching areas:", err);
-        setAreasError("વિસ્તારો લાવવામાં નિષ્ફળ.");
-      } finally {
-        setAreasLoading(false);
-        setFormLoading(false);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    };
 
+      const result = await response.json();
+      setAreas(result.data);
+    } catch (err) {
+      console.error("Error fetching areas:", err);
+      setAreasError("વિસ્તારો લાવવામાં નિષ્ફળ.");
+    } finally {
+      setAreasLoading(false);
+      setFormLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchAreas();
   }, [projectId]);
 
@@ -640,6 +654,8 @@ const SurvayForm = () => {
     }
   }, []);
 
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
   // --- Render (Omitted for brevity, as it's the same) ---
   return (
     <div className="form-container">
@@ -767,10 +783,11 @@ const SurvayForm = () => {
           </div>
 
           {/* Field 5: માલિકનું નામ */}
-          <div className="form-field">
+          <div className="form-field" style={{ position: "relative" }}>
             <label htmlFor="ownerName" className="form-label">
               5. માલિકનું નામ *
             </label>
+
             <input
               type="text"
               id="ownerName"
@@ -778,8 +795,36 @@ const SurvayForm = () => {
               className="form-input"
               placeholder="Name Fathername Surname"
               value={formData.ownerName}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e);
+                setShowSuggestions(true);
+              }}
+              onFocus={() => setShowSuggestions(true)}
+              onBlur={() => {
+                setTimeout(() => {
+                  setShowSuggestions(false);
+                }, 200);
+              }}
+              autoComplete="off"
               required
+            />
+
+            <Suggestions
+              records={records}
+              searchText={formData.ownerName}
+              visible={showSuggestions}
+              onSelect={(name) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  ownerName: name,
+                }));
+              }}
+              onAppend={(text) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  ownerName: text,
+                }));
+              }}
             />
           </div>
 
