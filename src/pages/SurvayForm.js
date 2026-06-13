@@ -1290,6 +1290,13 @@ const SurvayForm = () => {
                               </option>
                               <option value="ફરતી દિવાલ">ફરતી દિવાલ</option>
 
+                              <option value="મંદીર નાનું">મંદીર નાનું</option>
+                              <option value="મઢુલી">મઢુલી</option>
+                              <option value="ઓટો">ઓટો</option>
+                              <option value="છાપરૂ નાનું">છાપરૂ નાનું</option>
+
+                              <option value="other">Other - અન્ય</option>
+
                               {/* <option value="પ્લોટ">પ્લોટ</option> */}
                             </select>
                           </div>
