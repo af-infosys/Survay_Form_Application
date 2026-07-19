@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import WorkSpot from "../components/WorkSpot";
 import "./SurvayReport.scss"; // CSS ને હવે ઇનલાઇન કરવામાં આવ્યું છે
 import DelayedImage from "../components/DelayedImage";
-import { Search } from "lucide-react";
+import { ReceiptRussianRuble, Search } from "lucide-react";
 
 const SurvayReport = () => {
   const tableRef = useRef(null);
@@ -138,6 +138,7 @@ const SurvayReport = () => {
       categoryFilter: "",
       isSorted: false,
       isReversed: false,
+      isNew: false,
     };
   };
 
@@ -149,6 +150,8 @@ const SurvayReport = () => {
   );
   const [isSorted, setIsSorted] = useState(initialState.isSorted);
   const [isReversed, setIsReversed] = useState(initialState.isReversed);
+  const [isNew, setIsNew] = useState(initialState.isNew); // For  "Is New Property" checkbox
+
   const [isConfirming, setIsConfirming] = useState(null); // For custom delete confirmation
 
   // --- Persistence Effect (Saving filters to localStorage) ---
@@ -159,9 +162,10 @@ const SurvayReport = () => {
       categoryFilter,
       isSorted,
       isReversed,
+      isNew,
     };
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(filters));
-  }, [searchTerm, areaFilter, categoryFilter, isSorted, isReversed]);
+  }, [searchTerm, areaFilter, categoryFilter, isSorted, isReversed, isNew]);
 
   // --- Filtering, Searching, and Sorting Logic ---
   const getFilteredAndSortedRecords = useMemo(() => {
@@ -217,8 +221,31 @@ const SurvayReport = () => {
       filteredRecords = [...filteredRecords].reverse();
     }
 
+    // 6. New Records Filter (Index 24)
+    if (isNew) {
+      filteredRecords = filteredRecords.filter((record) => {
+        if (isNew === true) {
+          return (
+            record[24] === true ||
+            record[24] === "true" ||
+            record[24] === "TRUE"
+          );
+        } else {
+          return true; // If isNew is false, include all records
+        }
+      });
+    }
+
     return filteredRecords;
-  }, [records, searchTerm, areaFilter, categoryFilter, isSorted, isReversed]);
+  }, [
+    records,
+    searchTerm,
+    areaFilter,
+    categoryFilter,
+    isSorted,
+    isReversed,
+    isNew,
+  ]);
 
   const [imageAkarni, setImageAkarni] = useState(false);
   useEffect(() => {
@@ -434,6 +461,17 @@ const SurvayReport = () => {
             <span>Reverse</span>
           </label>
 
+          {/* 6. New Record Checkbox */}
+          <label className="flex items-center space-x-2 cursor-pointer text-sm text-gray-700">
+            <input
+              type="checkbox"
+              checked={isNew}
+              onChange={(e) => setIsNew(e.target.checked)}
+              className="form-checkbox h-4 w-4 text-red-600 rounded"
+            />
+            <span>New Records</span>
+          </label>
+
           {/* Status */}
           <div className="ml-auto text-sm font-medium text-gray-500">
             કુલ રેકોર્ડ્સ: {finalRecords.length} / {records.length}
@@ -620,6 +658,10 @@ const SurvayReport = () => {
           <tbody className="bg-white divide-y divide-gray-200">
             {finalRecords.map((record, index) => {
               let survayorData = record[17];
+              const isNewValueColor =
+                record[24] === true ||
+                record[24] === "true" ||
+                record[24] === "TRUE";
 
               if (typeof survayorData === "string") {
                 try {
@@ -635,7 +677,10 @@ const SurvayReport = () => {
                   {/* Index Number */}
                   <td
                     className="whitespace-nowrap text-sm font-medium text-gray-900"
-                    style={{ padding: "2px 3px" }}
+                    style={{
+                      padding: "2px 3px",
+                      background: isNewValueColor ? "#fef3c7" : null,
+                    }}
                   >
                     {record[0]}
                   </td>

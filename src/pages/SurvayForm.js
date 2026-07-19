@@ -35,6 +35,7 @@ const initialFormData = (user) => ({
   img1: "",
   img2: "",
   img3: "",
+  isNew: true,
 });
 
 const initialFloorsState = [
@@ -263,6 +264,15 @@ const SurvayForm = () => {
       return;
     }
 
+    // Generic checkbox handler
+    if (name === "isNew") {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: checked,
+      }));
+      return;
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: englishValue,
@@ -464,6 +474,13 @@ const SurvayForm = () => {
             img1: JSON.parse(record[26] || "[]")[0] || "",
             img2: JSON.parse(record[26] || "[]")[1] || "",
             img3: JSON.parse(record[26] || "[]")[2] || "",
+
+            isNew:
+              record[24] === true ||
+              record[24] === "true" ||
+              record[24] === "TRUE"
+                ? true
+                : false,
           });
 
           // Populate floors, parsing JSON if necessary
@@ -677,6 +694,27 @@ const SurvayForm = () => {
         <div className="text-center text-red-600 text-lg mb-4">{formError}</div>
       )}
       <form onSubmit={handleSubmit} style={{ paddingBottom: "150px" }}>
+        <div className="form-field" style={{ display: "flex", gap: "20px" }}>
+          <label
+            className="form-label"
+            htmlFor="isNew"
+            style={{ textWrap: "nowrap", userSelect: "none" }}
+          >
+            નવી મિલકત ?
+          </label>
+
+          <input
+            type="checkbox"
+            id="isNew"
+            name="isNew"
+            className="form-input"
+            value={formData.isNew}
+            onChange={handleChange}
+            checked={formData.isNew}
+            style={{ width: "20px" }}
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
           <div className="grid grid-cols-3 md:grid-cols-3 gap-x-2">
             {/* Field 1: અનું ક્રમાંક */}
