@@ -13,16 +13,22 @@ const Suggestions = ({
   // Full Suggestions
   // ----------------------------
 
-  const fullSuggestions = [
-    ...new Set(
-      records
-        ?.map((record) => record[3])
-        ?.filter(
-          (name) =>
-            name && name.toLowerCase().includes(searchText.toLowerCase()),
-        ),
-    ),
-  ];
+  // Set ka use unique names filter karne ke liye
+  const seenNames = new Set();
+  const fullSuggestions = [];
+
+  records?.forEach((record) => {
+    const id = record[0]; // Property ID
+    const name = record[3]; // Name
+
+    if (name && name.toLowerCase().includes(searchText.toLowerCase())) {
+      if (!seenNames.has(name)) {
+        seenNames.add(name);
+        // Name ke sath id bhi store kar rahe hain
+        fullSuggestions.push({ name, id });
+      }
+    }
+  });
 
   // ----------------------------
   // Word Suggestions
@@ -74,17 +80,6 @@ const Suggestions = ({
 
       {wordSuggestions.length > 0 && (
         <>
-          {/* <div
-            style={{
-              padding: "8px 12px",
-              fontWeight: "bold",
-              background: "#f5f5f5",
-              borderBottom: "1px solid #eee",
-            }}
-          >
-            🔤 Word Suggestions
-          </div> */}
-
           {wordSuggestions.map((word) => (
             <div
               key={word}
@@ -111,21 +106,10 @@ const Suggestions = ({
 
       {fullSuggestions.length > 0 && (
         <>
-          {/* <div
-            style={{
-              padding: "8px 12px",
-              fontWeight: "bold",
-              background: "#f5f5f5",
-              borderBottom: "1px solid #eee",
-            }}
-          >
-            👤 Full Suggestions
-          </div> */}
-
-          {fullSuggestions.map((name, index) => (
+          {fullSuggestions.map((item, index) => (
             <div
               key={index}
-              onClick={() => onSelect(name)}
+              onClick={() => onSelect(item.name)}
               style={{
                 padding: "10px 12px",
                 cursor: "pointer",
@@ -133,6 +117,9 @@ const Suggestions = ({
                   index !== fullSuggestions.length - 1
                     ? "1px solid #eee"
                     : "none",
+                display: "flex", // Flexbox for space-between
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = "#f5f5f5";
@@ -141,7 +128,21 @@ const Suggestions = ({
                 e.currentTarget.style.background = "#fff";
               }}
             >
-              {name}
+              {/* Left Side: Name */}
+              <span>{item.name}</span>
+
+              {/* Right Side: Property ID */}
+              <span
+                style={{
+                  fontSize: "12px",
+                  color: "#888",
+                  background: "#f0f0f0",
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                }}
+              >
+                #{item.id}
+              </span>
             </div>
           ))}
         </>

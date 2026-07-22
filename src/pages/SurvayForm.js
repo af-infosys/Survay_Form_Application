@@ -874,12 +874,17 @@ const SurvayForm = () => {
               type="text"
               id="occName"
               name="occName"
+              list="occNameList"
               className="form-input"
               placeholder="Name Fathername Surname"
               value={formData.occName}
               onChange={handleChange}
               disabled={visibility?.showOccName ? false : true}
             />
+
+            <datalist id="occNameList">
+              <option value={formData?.ownerName || ""} />
+            </datalist>
           </div>
 
           {/* Field 7: મોબાઈલ નંબર */}

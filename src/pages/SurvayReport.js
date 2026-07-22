@@ -687,35 +687,50 @@ const SurvayReport = () => {
                   {/* Owner Name */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "2px 3px" }}
+                    style={{
+                      padding: "2px 3px",
+                      background: isNewValueColor ? "#fef3c7" : null,
+                    }}
                   >
                     {record[3]}
                   </td>{" "}
                   {/* Area Name */}
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
-                    style={{ padding: "2px 3px" }}
+                    style={{
+                      padding: "2px 3px",
+                      background: isNewValueColor ? "#fef3c7" : null,
+                    }}
                   >
                     {record[1]}
                   </td>{" "}
                   {/* Property Index */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "2px 3px" }}
+                    style={{
+                      padding: "2px 3px",
+                      background: isNewValueColor ? "#fef3c7" : null,
+                    }}
                   >
                     {record[2]}
                   </td>
                   {/* Property Old Index */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "2px 3px" }}
+                    style={{
+                      padding: "2px 3px",
+                      background: isNewValueColor ? "#fef3c7" : null,
+                    }}
                   >
                     {record[5]}
                   </td>
                   {/* Property Description */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "2px 3px" }}
+                    style={{
+                      padding: "2px 3px",
+                      background: isNewValueColor ? "#fef3c7" : null,
+                    }}
                   >
                     {record[8]?.includes("પ્લોટ") ? record[8] : ""} {record[16]}{" "}
                     {record[7] ? `, ${record[7]}` : ""}
@@ -723,35 +738,50 @@ const SurvayReport = () => {
                   {/* Mobile Number */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "2px 3px" }}
+                    style={{
+                      padding: "2px 3px",
+                      background: isNewValueColor ? "#fef3c7" : null,
+                    }}
                   >
                     {record[6]}
                   </td>
                   {/* Category */}
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
-                    style={{ padding: "2px 3px" }}
+                    style={{
+                      padding: "2px 3px",
+                      background: isNewValueColor ? "#fef3c7" : null,
+                    }}
                   >
                     {record[8]}
                   </td>
                   {/* Tap Connections */}
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
-                    style={{ padding: "2px 3px" }}
+                    style={{
+                      padding: "2px 3px",
+                      background: isNewValueColor ? "#fef3c7" : null,
+                    }}
                   >
                     {record[12]}
                   </td>
                   {/* Bathroom */}
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
-                    style={{ padding: "2px 3px" }}
+                    style={{
+                      padding: "2px 3px",
+                      background: isNewValueColor ? "#fef3c7" : null,
+                    }}
                   >
                     {record[13]}
                   </td>
                   {Number(imageAkarni || 0) !== 0 ? (
                     <td
                       className="whitespace-normal text-sm text-gray-500"
-                      style={{ padding: "2px 3px" }}
+                      style={{
+                        padding: "2px 3px",
+                        background: isNewValueColor ? "#fef3c7" : null,
+                      }}
                     >
                       <DelayedImage
                         fileId={JSON.parse(record[26] || "[]")[0] || ""}
@@ -762,57 +792,73 @@ const SurvayReport = () => {
                   {/* Notes/Remarks */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "2px 3px", minWidth: "140px" }}
+                    style={{
+                      padding: "2px 3px",
+                      minWidth: "140px",
+                      background: isNewValueColor ? "#fef3c7" : null,
+                    }}
                   >
                     {record[14]}
                   </td>
                   {/* B.P. */}
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{ padding: "2px 3px" }}
+                    style={{
+                      padding: "2px 3px",
+                      background: isNewValueColor ? "#fef3c7" : null,
+                    }}
                   >
                     {record[14]?.includes("બિ.પ.") ? "બિ.પ." : ""}
                   </td>
                   {/* Surveryor name & Action Buttons */}
-                  {user.id === survayorData?.id ? (
-                    <td
-                      className="whitespace-normal text-sm text-gray-500"
-                      style={{
-                        display: "flex",
-                        gap: ".5rem",
-                        height: "100%",
-                        padding: "2px 3px",
-                      }}
+                  {/* {user.id === survayorData?.id ? ( */}
+                  <td
+                    className="whitespace-normal text-sm text-gray-500"
+                    style={{
+                      display: "flex",
+                      gap: ".5rem",
+                      height: "100%",
+                      padding: "2px 3px",
+                      background: isNewValueColor ? "#fef3c7" : null,
+                    }}
+                  >
+                    <button
+                      onClick={() => navigate(`/form/${record[0]}`)}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
                     >
-                      <button
-                        onClick={() => navigate(`/form/${record[0]}`)}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => {
-                          if (
-                            !window.confirm(
-                              `ID = '${record[0]}' \nAre you Sure to Delete this Record?`,
-                            )
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (
+                          !window.confirm(
+                            `ID = '${record[0]}' \nAre you Sure to Delete this Record?`,
                           )
-                            return;
+                        )
+                          return;
 
-                          handleDelete(record[0]);
-                        }}
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  ) : (
+                        handleDelete(record[0]);
+                      }}
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded"
+                    >
+                      Delete
+                    </button>
+
+                    <span style={{ whiteSpace: "nowrap" }}>
+                      Added by{" "}
+                      <b style={{ fontSize: ".8rem" }}>
+                        {survayorData?.name || "Unknown"}
+                      </b>
+                    </span>
+                  </td>
+                  {/* ) : (
                     <td
                       className="whitespace-normal text-gray-500"
                       style={{
                         fontSize: ".7rem",
                         padding: "2px 3px",
                         minWidth: "200px",
+                        background: isNewValueColor ? "#fef3c7" : null,
                       }}
                     >
                       Added by <br />{" "}
@@ -820,7 +866,7 @@ const SurvayReport = () => {
                         {survayorData?.name || "Unknown"}
                       </b>
                     </td>
-                  )}
+                  )} */}
                 </tr>
               );
             })}
