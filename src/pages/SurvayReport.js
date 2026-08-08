@@ -411,11 +411,7 @@ const SurvayReport = () => {
               className="input-style appearance-none w-full pr-10"
               value={areaFilter}
               onChange={(e) => {
-                if (areas?.includes(areaFilter)) {
-                  setAreaFilter(e.target.value);
-                } else {
-                  setAreaFilter("");
-                }
+                setAreaFilter(e.target.value);
               }}
             >
               <option value="">All Areas</option>
