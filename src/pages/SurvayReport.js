@@ -248,6 +248,8 @@ const SurvayReport = () => {
   ]);
 
   const [imageAkarni, setImageAkarni] = useState(false);
+  const [isMobile, setMobileShow] = useState(false);
+
   useEffect(() => {
     const fetchImageMode = async () => {
       try {
@@ -264,6 +266,7 @@ const SurvayReport = () => {
         const data = await res.json();
         console.log("Image Mode: ", data);
         setImageAkarni(data?.isImage);
+        setMobileShow(data?.isMobile || true);
       } catch (err) {
         console.log("Image Catched", err);
         setImageAkarni(false);
@@ -551,14 +554,15 @@ const SurvayReport = () => {
                 મિલકતનું વર્ણન
               </th>
 
-              <th
-                className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ padding: "5px 8px", textAlign: "center" }}
-                id="thead"
-              >
-                મોબાઈલ નંબર
-              </th>
-
+              {isMobile ? (
+                <th
+                  className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  style={{ padding: "5px 8px", textAlign: "center" }}
+                  id="thead"
+                >
+                  મોબાઈલ નંબર
+                </th>
+              ) : null}
               <th
                 className="text-xs font-medium text-gray-500 lowercase tracking-wider"
                 style={{ padding: "5px 8px", textAlign: "center" }}
@@ -642,7 +646,10 @@ const SurvayReport = () => {
             <tr>
               {/* 1 to 18 th for index */}
               {Array.from({
-                length: Number(imageAkarni || 0) !== 0 ? 14 : 13,
+                length:
+                  13 +
+                  Number(isMobile === true ? 1 : 0) +
+                  Number(imageAkarni !== 0 ? 1 : 0),
               }).map((_, index) => (
                 <th
                   className="text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -742,15 +749,17 @@ const SurvayReport = () => {
                     {record[7] ? `, ${record[7]}` : ""}
                   </td>
                   {/* Mobile Number */}
-                  <td
-                    className="whitespace-normal text-sm text-gray-500"
-                    style={{
-                      padding: "2px 3px",
-                      background: isNewValueColor ? "#fef3c7" : null,
-                    }}
-                  >
-                    {record[6]}
-                  </td>
+                  {isMobile ? (
+                    <td
+                      className="whitespace-normal text-sm text-gray-500"
+                      style={{
+                        padding: "2px 3px",
+                        background: isNewValueColor ? "#fef3c7" : null,
+                      }}
+                    >
+                      {record[6]}
+                    </td>
+                  ) : null}
                   {/* Category */}
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"

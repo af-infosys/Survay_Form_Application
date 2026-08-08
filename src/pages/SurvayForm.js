@@ -892,23 +892,25 @@ const SurvayForm = () => {
           </div>
 
           {/* Field 7: મોબાઈલ નંબર */}
-          <div className="form-field">
-            <label htmlFor="mobileNumber" className="form-label">
-              7. મોબાઈલ નંબર (Whatsapp)
-            </label>
-            <input
-              type="number"
-              id="mobileNumber"
-              name="mobileNumber"
-              className="form-input"
-              placeholder="9876543210"
-              title="કૃપા કરીને 10 અંકનો મોબાઇલ નંબર દાખલ કરો"
-              value={Number(formData.mobileNumber || 0) || ""}
-              onChange={handleChange}
-              style={{ maxWidth: "130px" }}
-              maxLength="10"
-            />
-          </div>
+          {isMobile ? (
+            <div className="form-field">
+              <label htmlFor="mobileNumber" className="form-label">
+                7. મોબાઈલ નંબર (Whatsapp)
+              </label>
+              <input
+                type="number"
+                id="mobileNumber"
+                name="mobileNumber"
+                className="form-input"
+                placeholder="9876543210"
+                title="કૃપા કરીને 10 અંકનો મોબાઇલ નંબર દાખલ કરો"
+                value={Number(formData.mobileNumber || 0) || ""}
+                onChange={handleChange}
+                style={{ maxWidth: "130px" }}
+                maxLength="10"
+              />
+            </div>
+          ) : null}
 
           {/* Field 8: મકાન category */}
           <div className="form-field">
