@@ -407,7 +407,13 @@ const SurvayReport = () => {
             <select
               className="input-style appearance-none w-full pr-10"
               value={areaFilter}
-              onChange={(e) => setAreaFilter(e.target.value)}
+              onChange={(e) => {
+                if (areas?.includes(areaFilter)) {
+                  setAreaFilter(e.target.value);
+                } else {
+                  setAreaFilter("");
+                }
+              }}
             >
               <option value="">All Areas</option>
               {areas?.map((area) => (
@@ -828,21 +834,23 @@ const SurvayReport = () => {
                     >
                       Edit
                     </button>
-                    <button
-                      onClick={() => {
-                        if (
-                          !window.confirm(
-                            `ID = '${record[0]}' \nAre you Sure to Delete this Record?`,
+                    {user.id === survayorData?.id ? (
+                      <button
+                        onClick={() => {
+                          if (
+                            !window.confirm(
+                              `ID = '${record[0]}' \nAre you Sure to Delete this Record?`,
+                            )
                           )
-                        )
-                          return;
+                            return;
 
-                        handleDelete(record[0]);
-                      }}
-                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded"
-                    >
-                      Delete
-                    </button>
+                          handleDelete(record[0]);
+                        }}
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded"
+                      >
+                        Delete
+                      </button>
+                    ) : null}
 
                     <span style={{ whiteSpace: "nowrap" }}>
                       Added by{" "}

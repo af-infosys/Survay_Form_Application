@@ -176,9 +176,11 @@ const SurvayForm = () => {
   const [areasError, setAreasError] = useState(null);
   const [formLoading, setFormLoading] = useState(true);
   const [formError, setFormError] = useState(null);
+
   const [imageAkarni, setImageAkarni] = useState(false);
   const [ptvPlot, setPtvPlot] = useState(false);
   const [govPlot, setGovPlot] = useState(false);
+  const [isMobile, setMobileShow] = useState(false);
 
   // 2. AUTO-SAVE EFFECT - Save formData and floors to localStorage on change
   useEffect(() => {
@@ -636,9 +638,11 @@ const SurvayForm = () => {
         setImageAkarni(data?.isImage);
         setPtvPlot(data?.isPtvPlot);
         setGovPlot(data?.isGovPlot);
+        setMobileShow(data?.isMobile || false);
       } catch (err) {
         console.log("Image Catched", err);
         setImageAkarni(false);
+        setMobileShow(true);
       }
     };
 
