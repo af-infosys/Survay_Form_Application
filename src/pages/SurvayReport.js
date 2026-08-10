@@ -488,25 +488,24 @@ const SurvayReport = () => {
         ref={tableRef}
         className="table-container rounded-lg shadow-md border border-gray-200"
         onScroll={handleScroll}
+        style={{ overflowX: "auto", position: "relative" }}
       >
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg"
-                style={{ padding: "5px 8px", textAlign: "center" }}
-                id="thead"
+                style={{ padding: "5px 4px", textAlign: "center" }}
               >
                 અનું કૂમાંક
               </th>
 
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                id="thead"
                 style={{
-                  minWidth: "150px",
-
-                  padding: "5px 8px",
+                  minWidth: "160px",
+                  maxWidth: "160px",
+                  padding: "5px 4px",
                   textAlign: "center",
                 }}
               >
@@ -515,35 +514,36 @@ const SurvayReport = () => {
 
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ padding: "5px 8px", textAlign: "center" }}
-                id="thead"
+                style={{
+                  // minWidth: isMobile ? "80px" : "120px",
+                  minWidth: "150px",
+                  maxWidth: "150px",
+                  padding: "5px 4px",
+                  textAlign: "center",
+                }}
               >
                 વિસ્તારનું નામ
               </th>
 
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ padding: "5px 8px", textAlign: "center" }}
-                id="thead"
+                style={{ padding: "5px 4px", textAlign: "center" }}
               >
                 મિલ્કત ક્રમાંક
               </th>
 
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ padding: "5px 8px", textAlign: "center" }}
-                id="thead"
+                style={{ padding: "5px 4px", textAlign: "center" }}
               >
                 જુનો મિ.નં.
               </th>
 
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                id="thead"
                 style={{
-                  minWidth: "300px",
-
-                  padding: "5px 8px",
+                  minWidth: isMobile ? "150px" : "300px",
+                  padding: "5px 4px",
                   textAlign: "center",
                 }}
               >
@@ -553,32 +553,29 @@ const SurvayReport = () => {
               {isMobile ? (
                 <th
                   className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  style={{ padding: "5px 8px", textAlign: "center" }}
-                  id="thead"
+                  style={{ padding: "5px 4px", textAlign: "center" }}
                 >
                   મોબાઈલ નંબર
                 </th>
               ) : null}
+
               <th
                 className="text-xs font-medium text-gray-500 lowercase tracking-wider"
-                style={{ padding: "5px 8px", textAlign: "center" }}
-                id="thead"
+                style={{ padding: "5px 4px", textAlign: "center" }}
               >
                 મકાન category
               </th>
 
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ padding: "5px 8px", textAlign: "center" }}
-                id="thead"
+                style={{ padding: "5px 4px", textAlign: "center" }}
               >
                 નળ
               </th>
 
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ padding: "5px 8px", textAlign: "center" }}
-                id="thead"
+                style={{ padding: "5px 4px", textAlign: "center" }}
               >
                 શૌ.
               </th>
@@ -587,8 +584,7 @@ const SurvayReport = () => {
                 <>
                   <th
                     className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    style={{ padding: "5px 8px", textAlign: "center" }}
-                    id="thead"
+                    style={{ padding: "5px 4px", textAlign: "center" }}
                   >
                     ફોટો {Number(imageAkarni || 0) === 2 ? "1" : null}
                   </th>
@@ -596,8 +592,7 @@ const SurvayReport = () => {
                   {Number(imageAkarni || 0) === 2 ? (
                     <th
                       className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      style={{ padding: "5px 8px", textAlign: "center" }}
-                      id="thead"
+                      style={{ padding: "5px 4px", textAlign: "center" }}
                     >
                       ફોટો 2
                     </th>
@@ -608,58 +603,83 @@ const SurvayReport = () => {
               <th
                 className="text-xs font-medium text-gray-500 uppercase tracking-wider"
                 style={{
-                  padding: "5px 8px",
+                  padding: "5px 4px",
                   textAlign: "center",
-                  minWidth: "140px",
+                  minWidth: isMobile ? "100px" : "140px",
                 }}
-                id="thead"
               >
                 નોંધ/રીમાર્કસ
               </th>
 
               <th
-                className="text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg"
-                style={{ padding: "5px 8px", textAlign: "center" }}
-                id="thead"
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                style={{ padding: "5px 4px", textAlign: "center" }}
               >
                 બિ.પ.
               </th>
 
+              {/* Action Header - Made STICKY & Placed before 'Added By' */}
               <th
-                className="text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg"
-                id="thead"
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50"
                 style={{
-                  minWidth: "130px",
-                  padding: "5px 8px",
+                  // minWidth: "60px",
+                  maxWidth: "fit-content",
+                  padding: "5px 4px",
                   textAlign: "center",
+                  position: "sticky",
+                  right: "80px", // Because 'Added By' takes 80px space
+                  zIndex: 20,
+                  boxShadow: "-2px 0 5px rgba(0,0,0,0.02)",
+                }}
+              ></th>
+
+              {/* Added By Header - Moved to Last and made STICKY */}
+              <th
+                className="text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg bg-gray-50"
+                style={{
+                  minWidth: "80px",
+                  padding: "5px 4px",
+                  textAlign: "center",
+
+                  boxShadow: "-2px 0 5px rgba(0,0,0,0.05)",
                 }}
               >
-                Action
+                Added By
               </th>
             </tr>
 
             {/* Index Start */}
             <tr>
-              {/* 1 to 18 th for index */}
               {Array.from({
                 length:
-                  13 +
+                  14 +
                   Number(isMobile === true ? 1 : 0) +
                   Number(imageAkarni !== 0 ? 1 : 0),
-              }).map((_, index) => (
-                <th
-                  className="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  style={{
-                    textAlign: "center",
-                    color: "white",
-                    background: background,
-                    padding: "3px",
-                  }}
-                  key={index}
-                >
-                  {index + 1}
-                </th>
-              ))}
+              }).map((_, index, arr) => {
+                // Make the last TWO index cells sticky
+                const isAction = index === arr.length - 2;
+                const isAddedBy = index === arr.length - 1;
+                const isSticky = isAction || isAddedBy;
+                const rightPos = isAddedBy ? 0 : isAction ? "80px" : "auto";
+
+                return (
+                  <th
+                    className="text-xs font-medium uppercase tracking-wider"
+                    style={{
+                      textAlign: "center",
+                      color: "white",
+                      background: background,
+                      padding: "3px",
+                      // position: isSticky ? "sticky" : "static",
+                      // right: rightPos,
+                      // zIndex: isSticky ? 20 : 1,
+                    }}
+                    key={index}
+                  >
+                    {index + 1}
+                  </th>
+                );
+              })}
             </tr>
             {/* Index End */}
           </thead>
@@ -672,6 +692,8 @@ const SurvayReport = () => {
                 record[24] === "true" ||
                 record[24] === "TRUE";
 
+              const rowBgColor = isNewValueColor ? "#fef3c7" : "#ffffff";
+
               if (typeof survayorData === "string") {
                 try {
                   survayorData = JSON.parse(survayorData);
@@ -682,117 +704,89 @@ const SurvayReport = () => {
               }
 
               return (
-                <tr key={index}>
-                  {/* Index Number */}
+                <tr
+                  key={index}
+                  style={{
+                    background: isNewValueColor ? "#fef3c7" : "transparent",
+                  }}
+                >
                   <td
                     className="whitespace-nowrap text-sm font-medium text-gray-900"
-                    style={{
-                      padding: "2px 3px",
-                      background: isNewValueColor ? "#fef3c7" : null,
-                    }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[0]}
                   </td>
-                  {/* Owner Name */}
+
                   <td
-                    className="whitespace-normal text-sm text-gray-500"
-                    style={{
-                      padding: "2px 3px",
-                      background: isNewValueColor ? "#fef3c7" : null,
-                    }}
+                    className="text-sm text-gray-500"
+                    style={{ padding: "2px 3px", wordBreak: "break-word" }}
                   >
                     {record[3]}
-                  </td>{" "}
-                  {/* Area Name */}
+                  </td>
+
                   <td
-                    className="whitespace-nowrap text-sm text-gray-500"
-                    style={{
-                      padding: "2px 3px",
-                      background: isNewValueColor ? "#fef3c7" : null,
-                    }}
+                    className="text-sm text-gray-500"
+                    style={{ padding: "2px 3px", wordBreak: "break-word" }}
                   >
                     {record[1]}
-                  </td>{" "}
-                  {/* Property Index */}
+                  </td>
+
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{
-                      padding: "2px 3px",
-                      background: isNewValueColor ? "#fef3c7" : null,
-                    }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[2]}
                   </td>
-                  {/* Property Old Index */}
+
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{
-                      padding: "2px 3px",
-                      background: isNewValueColor ? "#fef3c7" : null,
-                    }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[5]}
                   </td>
-                  {/* Property Description */}
+
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{
-                      padding: "2px 3px",
-                      background: isNewValueColor ? "#fef3c7" : null,
-                    }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[8]?.includes("પ્લોટ") ? record[8] : ""} {record[16]}{" "}
                     {record[7] ? `, ${record[7]}` : ""}
                   </td>
-                  {/* Mobile Number */}
+
                   {isMobile ? (
                     <td
                       className="whitespace-normal text-sm text-gray-500"
-                      style={{
-                        padding: "2px 3px",
-                        background: isNewValueColor ? "#fef3c7" : null,
-                      }}
+                      style={{ padding: "2px 3px" }}
                     >
                       {record[6]}
                     </td>
                   ) : null}
-                  {/* Category */}
+
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
-                    style={{
-                      padding: "2px 3px",
-                      background: isNewValueColor ? "#fef3c7" : null,
-                    }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[8]}
                   </td>
-                  {/* Tap Connections */}
+
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
-                    style={{
-                      padding: "2px 3px",
-                      background: isNewValueColor ? "#fef3c7" : null,
-                    }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[12]}
                   </td>
-                  {/* Bathroom */}
+
                   <td
                     className="whitespace-nowrap text-sm text-gray-500"
-                    style={{
-                      padding: "2px 3px",
-                      background: isNewValueColor ? "#fef3c7" : null,
-                    }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[13]}
                   </td>
+
                   {Number(imageAkarni || 0) !== 0 ? (
                     <td
                       className="whitespace-normal text-sm text-gray-500"
-                      style={{
-                        padding: "2px 3px",
-                        background: isNewValueColor ? "#fef3c7" : null,
-                      }}
+                      style={{ padding: "2px 3px" }}
                     >
                       <DelayedImage
                         fileId={JSON.parse(record[26] || "[]")[0] || ""}
@@ -800,44 +794,58 @@ const SurvayReport = () => {
                       />
                     </td>
                   ) : null}
-                  {/* Notes/Remarks */}
+
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{
-                      padding: "2px 3px",
-                      minWidth: "140px",
-                      background: isNewValueColor ? "#fef3c7" : null,
-                    }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[14]}
                   </td>
-                  {/* B.P. */}
+
                   <td
                     className="whitespace-normal text-sm text-gray-500"
-                    style={{
-                      padding: "2px 3px",
-                      background: isNewValueColor ? "#fef3c7" : null,
-                    }}
+                    style={{ padding: "2px 3px" }}
                   >
                     {record[14]?.includes("બિ.પ.") ? "બિ.પ." : ""}
                   </td>
-                  {/* Surveryor name & Action Buttons */}
-                  {/* {user.id === survayorData?.id ? ( */}
+
+                  {/* Action Column - Icons Only & STICKY */}
                   <td
-                    className="whitespace-normal text-sm text-gray-500"
+                    className="text-sm text-gray-500"
                     style={{
                       display: "flex",
-                      gap: ".5rem",
-                      height: "100%",
-                      padding: "2px 3px",
-                      background: isNewValueColor ? "#fef3c7" : null,
+                      flexDirection: "row", // Side-by-side as icons are small
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "0.4rem",
+                      padding: "4px",
+                      position: "sticky",
+                      right: "10px", // Fixed 80px away from right to make room for Added By
+                      zIndex: 10,
+                      background: rowBgColor,
+                      boxShadow: "-2px 0 5px rgba(0,0,0,0.02)",
                     }}
                   >
                     <button
                       onClick={() => navigate(`/form/${record[0]}`)}
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded"
+                      className="bg-blue-500 hover:bg-blue-700 text-white p-1.5 rounded"
+                      title="Edit"
                     >
-                      Edit
+                      {/* Edit (Pencil) Icon */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        />
+                      </svg>
                     </button>
                     {user.id === survayorData?.id ? (
                       <button
@@ -848,38 +856,47 @@ const SurvayReport = () => {
                             )
                           )
                             return;
-
                           handleDelete(record[0]);
                         }}
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded"
+                        className="bg-red-500 hover:bg-red-700 text-white p-1.5 rounded"
+                        title="Delete"
                       >
-                        Delete
+                        {/* Delete (Trash) Icon */}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
                       </button>
                     ) : null}
+                  </td>
 
-                    <span style={{ whiteSpace: "nowrap" }}>
-                      Added by{" "}
-                      <b style={{ fontSize: ".8rem" }}>
-                        {survayorData?.name || "Unknown"}
-                      </b>
+                  {/* Added By - Last Column & STICKY */}
+                  <td
+                    className="whitespace-normal text-sm text-gray-500 text-center"
+                    style={{
+                      padding: "2px 3px",
+                      minWidth: "80px",
+                      // position: "sticky",
+                      // right: 0,
+                      // zIndex: 10,
+                      background: rowBgColor,
+                      boxShadow: "-2px 0 5px rgba(0,0,0,0.05)",
+                    }}
+                  >
+                    <span style={{ fontSize: "0.8rem", fontWeight: "600" }}>
+                      {survayorData?.name || "Unknown"}
                     </span>
                   </td>
-                  {/* ) : (
-                    <td
-                      className="whitespace-normal text-gray-500"
-                      style={{
-                        fontSize: ".7rem",
-                        padding: "2px 3px",
-                        minWidth: "200px",
-                        background: isNewValueColor ? "#fef3c7" : null,
-                      }}
-                    >
-                      Added by <br />{" "}
-                      <b style={{ fontSize: ".8rem" }}>
-                        {survayorData?.name || "Unknown"}
-                      </b>
-                    </td>
-                  )} */}
                 </tr>
               );
             })}
@@ -887,7 +904,7 @@ const SurvayReport = () => {
             {records.length === 0 && !loading && !error && (
               <tr>
                 <td
-                  colSpan="11"
+                  colSpan="15"
                   className="px-6 py-4 text-center text-gray-500"
                 >
                   કોઈ રેકોર્ડ ઉપલબ્ધ નથી.
