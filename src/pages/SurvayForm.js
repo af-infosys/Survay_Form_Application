@@ -182,6 +182,7 @@ const SurvayForm = () => {
   const [ptvPlot, setPtvPlot] = useState(false);
   const [govPlot, setGovPlot] = useState(false);
   const [isMobile, setMobileShow] = useState(false);
+  const [isManualHouseTax, setIsManualHouseTax] = useState(false);
 
   // 2. AUTO-SAVE EFFECT - Save formData and floors to localStorage on change
   useEffect(() => {
