@@ -30,6 +30,7 @@ const initialFormData = (user) => ({
   tapCount: "",
   toiletCount: "",
   remarks: "",
+  propertyPrice: "",
   bp: "",
   survayor: { id: user?.id, name: user?.name, time: new Date() },
   img1: "",
@@ -467,6 +468,7 @@ const SurvayForm = () => {
             tapCount: Number(record[12]) || 0,
             toiletCount: Number(record[13]) || 0,
             remarks: record[14] || "",
+            propertyPrice: record[19] || "",
 
             landArea: isLandArea(),
             bp: record[14]?.includes("બિ.પ.") ? true : false,
@@ -639,6 +641,7 @@ const SurvayForm = () => {
         setPtvPlot(data?.isPtvPlot);
         setGovPlot(data?.isGovPlot);
         setMobileShow(data?.isMobile || false);
+        setIsManualHouseTax(data?.isManualHouseTax === true);
       } catch (err) {
         console.log("Image Catched", err);
         setImageAkarni(false);
@@ -1706,6 +1709,32 @@ const SurvayForm = () => {
             નળ, શૌ. - 2
           </button>
         </div>
+
+        <br />
+        <br />
+
+        {/* Manual House Price Input (Only when isManualHouseTax is true) */}
+        {isManualHouseTax && (
+          <div
+            className="form-field md:col-span-2"
+            style={{ marginBottom: "20px" }}
+          >
+            <label htmlFor="propertyPrice" className="form-label">
+              મિલ્કતની કિંમત (House Price) *
+            </label>
+            <input
+              type="number"
+              id="propertyPrice"
+              name="propertyPrice"
+              className="form-input"
+              min="0"
+              placeholder="દા.ત. 100000"
+              value={formData.propertyPrice}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        )}
 
         <br />
         <br />
