@@ -443,13 +443,13 @@ const SurvayForm = () => {
 
         if (record) {
           const isLandArea = () => {
-            JSON.parse(record[15]).map((floors) => {
-              if (floors?.floorType === "ફળિયું") {
-                return true;
-              }
-            });
-
-            return false;
+            try {
+              return JSON.parse(record[15] || "[]").some(
+                (floor) => floor?.floorType === "ફળિયું",
+              );
+            } catch {
+              return false;
+            }
           };
 
           // Populate formData
@@ -481,11 +481,9 @@ const SurvayForm = () => {
             img3: JSON.parse(record[26] || "[]")[2] || "",
 
             isNew:
-              record[24] === true ||
-              record[24] === "true" ||
-              record[24] === "TRUE"
-                ? true
-                : false,
+              record[27] === true ||
+              record[27] === "true" ||
+              record[27] === "TRUE",
           });
 
           // Populate floors, parsing JSON if necessary
